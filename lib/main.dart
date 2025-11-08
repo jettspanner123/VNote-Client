@@ -1,28 +1,34 @@
-import 'package:client/pages/home_screen.dart';
+import 'package:client/pages/registration_screen.dart';
 import 'package:client/store/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
+
+const Size REGISTRATION_WINDOW_SIZE = Size(1500, 1000);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
+    size: REGISTRATION_WINDOW_SIZE,
+    center: true,
     backgroundColor: Colors.transparent,
-    titleBarStyle: TitleBarStyle.hidden,
+    skipTaskbar: true,
+    titleBarStyle: TitleBarStyle.hidden
   );
 
   await windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.setAsFrameless();
+    await windowManager.setSize(REGISTRATION_WINDOW_SIZE);
+    await windowManager.center();
     await windowManager.show();
-    await windowManager.focus();
-    await windowManager.maximize();
   });
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeModel(),
       child: const MyApp(),
-    )
+    ),
   );
 }
 
@@ -37,7 +43,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const HomeScreen(),
+      home: const RegistrationScreen(),
     );
   }
 }
