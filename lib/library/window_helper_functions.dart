@@ -1,3 +1,4 @@
+import "package:flutter/material.dart";
 import 'package:window_manager/window_manager.dart';
 
 class WindowHelperFunctions {
@@ -6,7 +7,9 @@ class WindowHelperFunctions {
   }
 
   static Future<void> applyFullScreenWindowOptions() async {
+    await windowManager.setResizable(true);
     await windowManager.maximize();
+    await windowManager.setResizable(false);
     await windowManager.focus();
   }
 

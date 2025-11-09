@@ -3,6 +3,7 @@ import 'package:client/store/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
+import "dart:io";
 
 const Size REGISTRATION_WINDOW_SIZE = Size(1500, 1000);
 
@@ -15,13 +16,18 @@ void main() async {
     center: true,
     backgroundColor: Colors.transparent,
     skipTaskbar: true,
-    titleBarStyle: TitleBarStyle.hidden
+    titleBarStyle: TitleBarStyle.hidden,
+    // maximumSize: REGISTRATION_WINDOW_SIZE,
+    // minimumSize: REGISTRATION_WINDOW_SIZE
   );
 
   await windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.setAsFrameless();
-    await windowManager.setSize(REGISTRATION_WINDOW_SIZE);
-    await windowManager.center();
+    if (Platform.isMacOS) {
+      await windowManager.setAsFrameless();
+      await windowManager.setResizable(false);
+      await windowManager.setSize(REGISTRATION_WINDOW_SIZE);
+      await windowManager.center();
+    }
     await windowManager.show();
   });
   runApp(
