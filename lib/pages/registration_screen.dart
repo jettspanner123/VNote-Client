@@ -49,10 +49,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   late VideoPlayerController _controller;
   late int currentSelectedOption;
 
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController(),
+      _lastNameController = TextEditingController(),
+      _emailController = TextEditingController(),
+      _phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -241,10 +241,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         child: Row(
                           spacing: 20,
                           children: [
-                            Expanded(flex: 1, child: CustomInputField(textController: _firstNameController, labelText: "First Name", placeholder: "eg. Uddeshya")),
-                            Expanded(flex: 1, child: CustomInputField(textController: _lastNameController, labelText: "Last Name", placeholder: "eg. Singh")),
+                            Expanded(
+                              flex: 1,
+                              child: CustomInputField(
+                                textController: _firstNameController,
+                                labelText: "First Name",
+                                placeholder: "eg. Uddeshya",
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: CustomInputField(
+                                textController: _lastNameController,
+                                labelText: "Last Name",
+                                placeholder: "eg. Singh",
+                              ),
+                            ),
                           ],
-                      ),
+                        ),
                       ),
 
                       // MARK: Email Id
@@ -282,8 +296,33 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
 
                       Padding(
-                        padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
-                        child: Expanded(flex: 1, child: Row(children: [])),
+                        padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black.withValues(alpha: 0.25), width: 1),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(17),
+                                    child: Text(
+                                      "Create Account",
+                                      style: GoogleFonts.roboto(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -296,4 +335,3 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 }
-
