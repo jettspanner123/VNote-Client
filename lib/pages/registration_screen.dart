@@ -1,12 +1,19 @@
-import "dart:ffi";
+// MARK: Core Imports
 import "dart:ui";
 
-import "package:client/library/window_helper_functions.dart";
+// MARK: Package Imports
 import "package:client/store/theme_provider.dart";
 import "package:flutter/material.dart";
+import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:google_fonts/google_fonts.dart";
 import "package:provider/provider.dart";
 import "package:video_player/video_player.dart";
+
+// MARK: Components Import
+import "../components/static/current_registration_state_widget.dart";
+import "../components/static/registration_option_button.dart";
+import "../components/static/registration_form_submit_button.dart";
+import "../components/shared/custom_text_field.dart";
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -41,6 +48,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   late VideoPlayerController _controller;
   late int currentSelectedOption;
+
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -133,16 +145,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                       index: 0,
                                       currentSelectedIndex:
                                           currentSelectedOption,
+                                      description: "Sign up your account",
                                     ),
                                     CurrentRegistrationStateWidget(
                                       index: 1,
                                       currentSelectedIndex:
                                           currentSelectedOption,
+                                      description: "Set up your workspace",
                                     ),
                                     CurrentRegistrationStateWidget(
                                       index: 2,
                                       currentSelectedIndex:
                                           currentSelectedOption,
+                                      description: "Set up your profile",
                                     ),
                                   ],
                                 ),
@@ -159,9 +174,119 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               // MARK: Content Section
               Expanded(
                 flex: 3,
-                child: ElevatedButton(
-                  onPressed: WindowHelperFunctions.applyFullScreenWindowOptions,
-                  child: Text("Toggle Window"),
+                child: Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // MARK: Main Heading
+                      Text(
+                        "Sign Up Account",
+                        style: GoogleFonts.roboto(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+
+                      // MARK: Description
+                      Text(
+                        "Enter your personal data to create your account",
+                        style: GoogleFonts.roboto(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black.withValues(alpha: 0.75),
+                        ),
+                      ),
+
+                      // MARK: Dual Option Buttons
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Row(
+                            spacing: 20,
+                            children: [
+                              //MARK: Google Button
+                              RegistrationOptionButton(
+                                icon: FontAwesomeIcons.google,
+                                name: "Google",
+                              ),
+
+                              // MARK: Github Button
+                              RegistrationOptionButton(
+                                icon: FontAwesomeIcons.facebook,
+                                name: "Facebook",
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: Row(
+                          spacing: 20,
+                          children: [
+                            Expanded(child: Divider()),
+                            Text("Or", style: GoogleFonts.roboto(fontSize: 15)),
+                            Expanded(child: Divider()),
+                          ],
+                        ),
+                      ),
+
+                      // MARK: First and Last Name
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Row(
+                          spacing: 20,
+                          children: [
+                            Expanded(flex: 1, child: CustomInputField(textController: _firstNameController, labelText: "First Name", placeholder: "eg. Uddeshya")),
+                            Expanded(flex: 1, child: CustomInputField(textController: _lastNameController, labelText: "Last Name", placeholder: "eg. Singh")),
+                          ],
+                      ),
+                      ),
+
+                      // MARK: Email Id
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                        child: CustomInputField(
+                          textController: _emailController,
+                          labelText: "Email Id",
+                          placeholder: "eg. Uddeshya@gmail.com",
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                        child: CustomInputField(
+                          textController: _phoneNumberController,
+                          labelText: "Phone Number",
+                          placeholder: "eg. +91 9876543211",
+                        ),
+                      ),
+
+                      // MARK: Submit Form Button
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+                        child: Row(
+                          children: [
+                            // MARK: Submit Button
+                            Expanded(
+                              child: RegistrationFormSubmitButton(
+                                isEnabled: false,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
+                        child: Expanded(flex: 1, child: Row(children: [])),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -172,73 +297,3 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 }
 
-class CurrentRegistrationStateWidget extends StatefulWidget {
-  final int index;
-  final int currentSelectedIndex;
-
-  const CurrentRegistrationStateWidget({
-    super.key,
-    required this.index,
-    required this.currentSelectedIndex,
-  });
-
-  @override
-  State<CurrentRegistrationStateWidget> createState() =>
-      _CurrentRegistrationStateWidgetState();
-}
-
-class _CurrentRegistrationStateWidgetState
-    extends State<CurrentRegistrationStateWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: widget.index == widget.currentSelectedIndex
-              ? Colors.white
-              : Colors.white.withValues(alpha: 0.15),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(30, 30, 30, 30),
-          child: Column(
-            spacing: 30,
-            children: [
-              // MARK: Card Number
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    color: Colors.white.withValues(alpha: 0.25),
-                  ),
-                  child: Text(
-                    "1",
-                    style: GoogleFonts.roboto(
-                      fontSize: 17,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-
-              Text(
-                "Sign up you account",
-                style: GoogleFonts.roboto(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-
-      // MARK: Card Description
-    );
-  }
-}

@@ -9,27 +9,27 @@ const Size REGISTRATION_WINDOW_SIZE = Size(1500, 1000);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = const WindowOptions(
-    size: REGISTRATION_WINDOW_SIZE,
-    center: true,
-    backgroundColor: Colors.transparent,
-    skipTaskbar: true,
-    titleBarStyle: TitleBarStyle.hidden,
-    // maximumSize: REGISTRATION_WINDOW_SIZE,
-    // minimumSize: REGISTRATION_WINDOW_SIZE
-  );
+  if (!Platform.isAndroid && !Platform.isIOS) {
+    await windowManager.ensureInitialized();
 
-  await windowManager.waitUntilReadyToShow(windowOptions, () async {
-    if (Platform.isMacOS) {
+    WindowOptions windowOptions = const WindowOptions(
+      size: REGISTRATION_WINDOW_SIZE,
+      center: true,
+      backgroundColor: Colors.transparent,
+      skipTaskbar: true,
+      titleBarStyle: TitleBarStyle.hidden,
+    );
+
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.setAsFrameless();
+      await windowManager.setHasShadow(true);
       await windowManager.setResizable(false);
       await windowManager.setSize(REGISTRATION_WINDOW_SIZE);
       await windowManager.center();
-    }
-    await windowManager.show();
-  });
+      await windowManager.show();
+    });
+  }
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeModel(),
@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
       title: 'VNote',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        inputDecorationTheme: InputDecorationTheme(border: InputBorder.none),
       ),
       home: const RegistrationScreen(),
     );
