@@ -1,13 +1,16 @@
+import "package:client/models/sign_up_section_onboarding_progress_options.dart";
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 
 class CurrentRegistrationStateWidget extends StatefulWidget {
-  final int index;
-  final int currentSelectedIndex;
+  final int indexT;
+  final SignUpSectionOnboardingOptions index;
+  final SignUpSectionOnboardingOptions currentSelectedIndex;
   final String description;
 
   const CurrentRegistrationStateWidget({
     super.key,
+    required this.indexT,
     required this.index,
     required this.currentSelectedIndex,
     required this.description,
@@ -50,7 +53,7 @@ class _CurrentRegistrationStateWidgetState
                         : Colors.white.withValues(alpha: 0.25),
                   ),
                   child: Text(
-                    (widget.index + 1).toString(),
+                    (widget.indexT + 1).toString(),
                     style: GoogleFonts.roboto(
                       fontSize: 17,
                       color: Colors.white,

@@ -1,0 +1,1 @@
+enum RegistrationScreenType { signUp, logIn }

@@ -1,7 +1,5 @@
 import 'package:client/pages/registration_screen.dart';
-import 'package:client/store/theme_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
 import "dart:io";
 
@@ -30,12 +28,7 @@ void main() async {
       await windowManager.show();
     });
   }
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeModel(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

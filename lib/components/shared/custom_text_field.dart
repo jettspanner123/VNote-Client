@@ -5,13 +5,14 @@ class CustomInputField extends StatefulWidget {
   final bool wantLabel;
   final String labelText;
   final String placeholder;
-
+  final FormFieldValidator<String>? validator;
   const CustomInputField({
     super.key,
     required this.textController,
     this.wantLabel = true,
     this.labelText = "",
     this.placeholder = "",
+    this.validator
   });
 
   @override
@@ -29,7 +30,8 @@ class _CustomInputFieldState extends State<CustomInputField> {
         if (widget.wantLabel) Text(widget.labelText),
 
         // MARK: Input Field
-        TextField(
+        TextFormField(
+          validator: widget.validator,
           controller: widget.textController,
           decoration: InputDecoration(
             labelText: widget.placeholder,
