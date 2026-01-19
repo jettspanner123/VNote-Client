@@ -8,14 +8,16 @@ class StandardButtonText extends StatelessWidget {
   final TextAlign textAlign;
   final EdgeInsetsGeometry padding;
   final TextStyle? textStyle;
+  final double fontSize;
 
   const StandardButtonText({
     super.key,
     required this.text,
     this.foregroundColor = Colors.white,
     this.textAlign = TextAlign.center,
-    this.padding = const EdgeInsets.symmetric(vertical: 15),
+    this.padding = const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
     this.textStyle,
+    this.fontSize = 15,
   });
 
   @override
@@ -27,10 +29,7 @@ class StandardButtonText extends StatelessWidget {
         textAlign: textAlign,
         style:
             textStyle ??
-            GoogleFonts.funnelDisplay(
-              fontSize: ComponentConstants.standardButtonFontSize,
-              fontWeight: FontWeight.w600,
-            ).copyWith(color: foregroundColor),
+            GoogleFonts.funnelDisplay(fontSize: fontSize, fontWeight: FontWeight.w600).copyWith(color: foregroundColor),
       ),
     );
   }

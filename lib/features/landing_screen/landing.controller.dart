@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vnote_client/constants/color_factory.dart';
+import 'package:vnote_client/constants/navigation_factory.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/components/buttons/regular_button.dart';
 
@@ -61,6 +62,19 @@ class _LandingControllerScreenState extends State<LandingControllerScreen> with 
     );
 
     _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void onGetStartedButtonTap() {
+    _animationController.reverse();
+    Future.delayed(const Duration(seconds: 1), () {
+      Navigator.pushNamed(context, NavigationFactory.onboardingScreen);
+    });
   }
 
   @override
@@ -166,9 +180,7 @@ class _LandingControllerScreenState extends State<LandingControllerScreen> with 
           child: SlideTransition(
             position: _buttonOffsetAnimation,
             child: StandardButtonComponent(
-              onTap: () {
-                _animationController.reverse();
-              },
+              onTap: onGetStartedButtonTap,
               child: StandardButtonText(text: "Get Started"),
             ),
           ),
