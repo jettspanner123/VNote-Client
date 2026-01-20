@@ -94,61 +94,51 @@ class _LandingControllerScreenState extends State<LandingControllerScreen> with 
                 child: Column(
                   children: [
                     SizedBox(height: 20),
-                    RichText(
-                      text: TextSpan(
-                        style: GoogleFonts.funnelSans(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          height: 1.1,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SlideTransition(
+                          position: _titlePrimaryOffsetAnimation,
+                          child: Text(
+                            "STOP LOSING",
+                            style: GoogleFonts.newAmsterdam(
+                              fontSize: 50,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.black,
+                              height: 1,
+                              letterSpacing: 2,
+                            ),
+                          ),
                         ),
-                        children: [
-                          WidgetSpan(
-                            child: SlideTransition(
-                              position: _titlePrimaryOffsetAnimation,
-                              child: Text(
-                                "Stop losing ",
-                                style: GoogleFonts.funnelSans(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  height: 1.1,
-                                ),
-                              ),
-                            ),
-                          ),
 
-                          WidgetSpan(
-                            child: SlideTransition(
-                              position: _titleSecondaryOffsetAnimation,
-                              child: Text(
-                                "money.",
-                                style: GoogleFonts.funnelSans(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorFactory.accentColor,
-                                  height: 1.1,
-                                ),
-                              ),
+                        SlideTransition(
+                          position: _titleSecondaryOffsetAnimation,
+                          child: Text(
+                            "MONEY ",
+                            style: GoogleFonts.newAmsterdam(
+                              fontSize: 50,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 2,
+                              color: ColorFactory.accentColor,
+                              height: 1,
                             ),
                           ),
+                        ),
 
-                          WidgetSpan(
-                            child: SlideTransition(
-                              position: _titleTertiaryOffsetAnimation,
-                              child: Text(
-                                "Track Instantly.",
-                                style: GoogleFonts.funnelSans(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  height: 1,
-                                ),
-                              ),
+                        SlideTransition(
+                          position: _titleTertiaryOffsetAnimation,
+                          child: Text(
+                            "TRACK INSTANTLY.",
+                            style: GoogleFonts.newAmsterdam(
+                              fontSize: 50,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.black,
+                              height: 1,
+                              letterSpacing: 2,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

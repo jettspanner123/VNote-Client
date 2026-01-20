@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'VNote',
       debugShowCheckedModeBanner: false,
-      initialRoute: NavigationFactory.registrationScreen,
+      initialRoute: NavigationFactory.onboardingScreen,
       routes: {
         NavigationFactory.splashScreen: (context) => const SplashScreenController(),
         NavigationFactory.landingScreen: (context) => const LandingControllerScreen(),
