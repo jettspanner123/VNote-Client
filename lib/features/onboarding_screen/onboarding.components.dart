@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class OnboardingPageView extends StatelessWidget {
+class OnboardingPageView extends StatefulWidget {
   final String title;
   final String description;
   final String image;
   const OnboardingPageView({super.key, required this.title, required this.description, required this.image});
 
   @override
+  State<OnboardingPageView> createState() => _OnboardingPageViewState();
+}
+
+class _OnboardingPageViewState extends State<OnboardingPageView> {
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(height: 70),
+          SizedBox(height: 50),
 
           // Image
-          Image.asset(image, height: 300),
+          Image.asset(widget.image, height: 300),
 
           // Title
           Padding(
             padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
             child: Text(
-              title,
+              widget.title,
               textAlign: TextAlign.center,
-              style: GoogleFonts.funnelSans(fontSize: 27, fontWeight: FontWeight.bold, height: 1),
+              style: GoogleFonts.funnelSans(fontSize: 28, fontWeight: FontWeight.bold, height: 1),
             ),
           ),
 
@@ -34,9 +39,9 @@ class OnboardingPageView extends StatelessWidget {
           Padding(
             padding: EdgeInsetsGeometry.symmetric(horizontal: 40),
             child: Text(
-              description,
+              widget.description,
               textAlign: TextAlign.center,
-              style: GoogleFonts.funnelSans(fontSize: 16, fontWeight: FontWeight.w200),
+              style: GoogleFonts.funnelSans(fontSize: 19, fontWeight: FontWeight.w100, color: Colors.black),
             ),
           ),
         ],

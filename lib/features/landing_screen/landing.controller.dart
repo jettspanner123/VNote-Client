@@ -61,7 +61,10 @@ class _LandingControllerScreenState extends State<LandingControllerScreen> with 
       ),
     );
 
-    _animationController.forward();
+    // MARK: This is for starting the animation after the first frame is rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _animationController.forward();
+    });
   }
 
   @override

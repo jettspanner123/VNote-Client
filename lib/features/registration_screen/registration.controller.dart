@@ -28,31 +28,40 @@ class _RegistrationControllerScreenState extends State<RegistrationControllerScr
       body: SafeArea(
         child: Padding(
           padding: ComponentConstants.screenHorizontalPadding,
-          child: Column(
-            spacing: 0,
-            children: [
-              // Hero Image
-              Image.asset("assets/images/others/registration_screen_main.png", height: 300),
+          child: SingleChildScrollView(
+            child: Column(
+              spacing: 0,
+              children: [
+                // Hero Image
+                Container(
+                  color: Colors.blue,
+                  height: 240,
+                  child: Image.asset("assets/images/others/registration_screen_main.png", height: 300),
+                ),
 
-              // Registration Type Segment
-              SegmentedController<RegistrationControllerScreenOptions>(
-                selected: selectedScreen,
-                onSelectionChange: (newValue) {
-                  setState(() {
-                    selectedScreen = newValue;
-                  });
-                },
-                segments: [
-                  SegmentControl(value: RegistrationControllerScreenOptions.register, label: "Register"),
-                  SegmentControl(value: RegistrationControllerScreenOptions.login, label: "Login"),
-                ],
-              ),
+                // Registration Type Segment
+                Transform.translate(
+                  offset: const Offset(0, -8),
+                  child: SegmentedController<RegistrationControllerScreenOptions>(
+                    selected: selectedScreen,
+                    onSelectionChange: (newValue) {
+                      setState(() {
+                        selectedScreen = newValue;
+                      });
+                    },
+                    segments: [
+                      SegmentControl(value: RegistrationControllerScreenOptions.register, label: "Register"),
+                      SegmentControl(value: RegistrationControllerScreenOptions.login, label: "Login"),
+                    ],
+                  ),
+                ),
 
-              // Register and Login Views
-              selectedScreen == RegistrationControllerScreenOptions.register
-                  ? const RegisterSignUpView()
-                  : const Text("Login View"),
-            ],
+                // Register and Login Views
+                selectedScreen == RegistrationControllerScreenOptions.register
+                    ? const RegisterSignUpView()
+                    : const Text("Login View"),
+              ],
+            ),
           ),
         ),
       ),

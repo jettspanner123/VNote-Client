@@ -4,6 +4,7 @@ import 'package:vnote_client/features/landing_screen/landing.controller.dart';
 import 'package:vnote_client/features/onboarding_screen/onboarding.controller.dart';
 import 'package:vnote_client/features/questionare_screen/questionare.controller.dart';
 import 'package:vnote_client/features/registration_screen/registration.controller.dart';
+import 'package:vnote_client/features/splash_screen/splash.controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: NavigationFactory.registrationScreen,
       routes: {
+        NavigationFactory.splashScreen: (context) => const SplashScreenController(),
         NavigationFactory.landingScreen: (context) => const LandingControllerScreen(),
         NavigationFactory.onboardingScreen: (context) => const OnboardingControllerScreen(),
         NavigationFactory.questionareScreen: (context) => const QuestionareControllerScreen(),

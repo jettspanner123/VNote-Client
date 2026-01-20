@@ -1,3 +1,6 @@
+import "package:flutter/material.dart";
+import "package:vnote_client/constants/navigation_factory.dart";
+
 import "../../models/auth/onboarding/onboarding_data.dart";
 
 class OnboardingService {
@@ -18,4 +21,11 @@ class OnboardingService {
       image: "assets/images/onboarding_images/onboarding_three.png",
     ),
   ];
+
+  Future<void> completeOnboarding(BuildContext context, AnimationController animationController) async {
+    animationController.reverse().whenComplete(() async {
+      await Future.delayed(const Duration(milliseconds: 250));
+      Navigator.pushNamed(context, NavigationFactory.registrationScreen);
+    });
+  }
 }
