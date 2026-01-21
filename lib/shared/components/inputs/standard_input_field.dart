@@ -11,6 +11,7 @@ class StandardInputField extends StatefulWidget {
   final VoidCallback? onFocus;
   final VoidCallback? onFocusOut;
   final Widget? prefixWidget;
+  final bool isDisabled;
   const StandardInputField({
     super.key,
     required this.textController,
@@ -21,6 +22,7 @@ class StandardInputField extends StatefulWidget {
     this.onFocus,
     this.onFocusOut,
     this.prefixWidget,
+    this.isDisabled = false,
   });
 
   @override
@@ -50,6 +52,7 @@ class _StandardInputFieldState extends State<StandardInputField> with SingleTick
   Widget build(BuildContext context) {
     return TextFormField(
       focusNode: _focusNode,
+      enabled: !widget.isDisabled,
       keyboardType: widget.keyboardType,
       validator: widget.validator,
       controller: widget.textController,
@@ -61,7 +64,19 @@ class _StandardInputFieldState extends State<StandardInputField> with SingleTick
         prefixIcon: widget.icon,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.black.withAlpha(90), width: 1),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.black.withAlpha(50), width: 0.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.red),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         focusedBorder: OutlineInputBorder(

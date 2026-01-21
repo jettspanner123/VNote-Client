@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:vnote_client/shared/components/buttons/button_padding.dart';
+import 'package:vnote_client/constants/navigation_factory.dart';
+import 'package:vnote_client/features/forgot_password_screen/forgot_password.controller.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
-import 'package:vnote_client/shared/components/buttons/outline_button.dart';
-import 'package:vnote_client/shared/components/buttons/regular_button.dart';
+import 'package:vnote_client/shared/components/buttons/ghost_button.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_field.dart';
-import 'package:vnote_client/utils/keyboard_helper.dart';
+import 'package:vnote_client/shared/views/submit_button_with_dismiss_keyboard_button.dart';
 
 class RegistrationLoginView extends StatefulWidget {
   const RegistrationLoginView({super.key});
@@ -21,7 +21,6 @@ class _RegistrationLoginViewState extends State<RegistrationLoginView> {
 
   @override
   Widget build(BuildContext context) {
-    final isKeyboardUp = MediaQuery.of(context).viewInsets.bottom > 0;
     return Container(
       color: Colors.white,
       child: Column(
@@ -48,40 +47,18 @@ class _RegistrationLoginViewState extends State<RegistrationLoginView> {
           ),
 
           SizedBox(height: 30),
+          StandardButtonWithDismissKeyboardComponent(
+            globalKey: submitButtonKey,
+            child: StandardButtonText(text: "Submit"),
+          ),
+          SizedBox(height: 10),
           SizedBox(
             width: double.infinity,
-            child: Row(
-              spacing: 5,
-              children: [
-                AnimatedSize(
-                  duration: const Duration(milliseconds: 150),
-                  curve: Curves.fastEaseInToSlowEaseOut,
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 150),
-                    transitionBuilder: (child, animation) {
-                      return ScaleTransition(scale: animation, child: child);
-                    },
-                    child: isKeyboardUp
-                        ? OutlineButtonComponent(
-                            child: StandardButtonPadding(
-                              padding: const EdgeInsets.all(13),
-                              child: Icon(Icons.keyboard_arrow_down),
-                            ),
-                            onTap: () {
-                              KeyboardHelper.current.dismissKeyboad(context);
-                            },
-                          )
-                        : SizedBox.shrink(),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: StandardButtonComponent(
-                    key: submitButtonKey,
-                    child: StandardButtonText(text: "Create Account"),
-                  ),
-                ),
-              ],
+            child: GhostButtonComponent(
+              onTap: () {
+                NavigationFactory.current.pushPage(context, ForgotPasswordControllerScreen());
+              },
+              child: StandardButtonText(text: "Forgot Password?", foregroundColor: Colors.black),
             ),
           ),
         ],

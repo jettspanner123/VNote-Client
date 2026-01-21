@@ -13,4 +13,9 @@ class ComponentConstants {
 
   // Screen
   static const EdgeInsetsGeometry screenHorizontalPadding = EdgeInsets.symmetric(horizontal: 20.0);
+  static const EdgeInsetsGeometry secondaryScreenAppBarTopPadding = EdgeInsetsGeometry.only(
+    top: ComponentConstants.secondaryScreenAppBarHeight + 25,
+    bottom: 25,
+  );
+  static const double secondaryScreenAppBarHeight = 95;
 }

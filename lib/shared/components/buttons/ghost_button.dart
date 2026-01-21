@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class OutlineButtonComponent extends StatefulWidget {
+class GhostButtonComponent extends StatefulWidget {
   final Widget child;
   final VoidCallback? onTap;
   final bool? isLoading;
   final double borderRadius;
   final int animationDuration;
-  final BoxBorder? border;
+  final Color? backgroundColor;
 
-  const OutlineButtonComponent({
+  const GhostButtonComponent({
     super.key,
     required this.child,
     this.onTap,
     this.isLoading,
     this.borderRadius = 100,
     this.animationDuration = 25,
-    this.border,
+    this.backgroundColor,
   });
 
   @override
-  State<OutlineButtonComponent> createState() => _OutlineButtonComponentState();
+  State<GhostButtonComponent> createState() => _GhostButtonComponentState();
 }
 
-class _OutlineButtonComponentState extends State<OutlineButtonComponent> {
+class _GhostButtonComponentState extends State<GhostButtonComponent> {
   bool _isClicked = false;
   void _tapDownAction(TapDownDetails _) {
     if (_isClicked) return;
@@ -62,8 +62,9 @@ class _OutlineButtonComponentState extends State<OutlineButtonComponent> {
         child: AnimatedContainer(
           duration: Duration(milliseconds: widget.animationDuration),
           decoration: BoxDecoration(
-            border: widget.border ?? BoxBorder.all(color: Colors.black, width: 0.3),
+            border: BoxBorder.all(color: Colors.white),
             borderRadius: BorderRadius.circular(widget.borderRadius),
+            color: widget.backgroundColor ?? Colors.black.withAlpha(15),
           ),
           child: widget.child,
         ),
