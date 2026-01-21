@@ -21,8 +21,7 @@ class ForgotPasswordControllerScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControllerScreen> {
-  ForgotPasswordScreenOptions _currentScreen = ForgotPasswordScreenOptions.phoneNumberInput;
-  bool _isNavigatingForward = true;
+  ForgotPasswordScreenOptions _currentScreen = ForgotPasswordScreenOptions.otpInput;
 
   final _phoneNumberController = TextEditingController();
   final _otpController = TextEditingController();
@@ -41,7 +40,6 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
         // TODO: Send otp to the phone number.
 
         setState(() {
-          _isNavigatingForward = true;
           _currentScreen = ForgotPasswordScreenOptions.otpInput;
         });
       }
@@ -53,7 +51,6 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
         // TODO: Check if the otp is correct
 
         setState(() {
-          _isNavigatingForward = true;
           _currentScreen = ForgotPasswordScreenOptions.resetPasswordInput;
         });
       }
@@ -70,7 +67,6 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
       case ForgotPasswordScreenOptions.otpInput:
         _otpController.clear();
         setState(() {
-          _isNavigatingForward = false;
           _currentScreen = ForgotPasswordScreenOptions.phoneNumberInput;
         });
         break;
@@ -79,7 +75,6 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
         _resetConfirmPasswordController.clear();
         _otpController.clear();
         setState(() {
-          _isNavigatingForward = false;
           _currentScreen = ForgotPasswordScreenOptions.phoneNumberInput;
         });
         break;
@@ -99,41 +94,10 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
               return Stack(children: [...previousChildren, if (currentChild != null) currentChild]);
             },
             transitionBuilder: (child, animation) {
-              final isIncoming = animation.status != AnimationStatus.reverse;
-
-              Offset beginOffset;
-              Offset endOffset;
-
-              if (_isNavigatingForward) {
-                // Forward navigation: previous exits left, new enters from right
-                if (isIncoming) {
-                  // New view entering from right
-                  beginOffset = const Offset(1, 0);
-                  endOffset = Offset.zero;
-                } else {
-                  // Previous view exiting to left
-                  beginOffset = Offset.zero;
-                  endOffset = const Offset(-1, 0);
-                }
-              } else {
-                // Backward navigation: current exits right, previous enters from left
-                if (isIncoming) {
-                  // Previous view entering from left
-                  beginOffset = const Offset(-1, 0);
-                  endOffset = Offset.zero;
-                } else {
-                  // Current view exiting to right
-                  beginOffset = Offset.zero;
-                  endOffset = const Offset(1, 0);
-                }
-              }
-
-              final offsetAnimation = Tween<Offset>(
-                begin: beginOffset,
-                end: endOffset,
-              ).animate(CurvedAnimation(parent: animation, curve: Curves.fastEaseInToSlowEaseOut));
-
-              return SlideTransition(position: offsetAnimation, child: child);
+              return FadeTransition(
+                opacity: CurvedAnimation(parent: animation, curve: Curves.fastEaseInToSlowEaseOut),
+                child: child,
+              );
             },
             child: _currentScreen == ForgotPasswordScreenOptions.phoneNumberInput
                 ? Form(

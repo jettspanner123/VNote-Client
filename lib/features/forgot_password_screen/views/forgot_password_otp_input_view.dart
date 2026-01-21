@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vnote_client/features/forgot_password_screen/forgot_password.controller.dart';
-import 'package:vnote_client/models/validators/input_validators.dart';
-import 'package:vnote_client/shared/components/inputs/standard_input_field.dart';
+import 'package:vnote_client/shared/components/inputs/otp_input_field.dart';
 import 'package:vnote_client/shared/components/page/application_bar_back_button.dart';
 import 'package:vnote_client/shared/components/page/secondary_screen_description.dart';
 import 'package:vnote_client/shared/components/page/secondary_screen_heading.dart';
+import 'package:vnote_client/utils/keyboard_helper.dart';
 
 class ForgotPasswordOtpInputView extends StatefulWidget {
   final TextEditingController otpController;
@@ -35,12 +34,22 @@ class ForgotPasswordOtpInputViewState extends State<ForgotPasswordOtpInputView> 
           ),
 
           SizedBox(height: 20),
-          StandardInputField(
-            icon: Icon(Icons.phone),
-            placeholder: "Enter phone number.",
-            textController: widget.otpController,
-            validator: InputValidators.current.phoneNumberValidator,
-            keyboardType: TextInputType.number,
+          Row(
+            spacing: 10,
+            children: [
+              OtpInputField(textEditingController: widget.otpController, autoFocus: true),
+              OtpInputField(textEditingController: widget.otpController),
+              OtpInputField(textEditingController: widget.otpController),
+              OtpInputField(
+                wantNextFocus: false,
+                textEditingController: widget.otpController,
+                onChange: (value) {
+                  if (value.length == 1) {
+                    KeyboardHelper.current.dismissKeyboad(context);
+                  }
+                },
+              ),
+            ],
           ),
         ],
       ),
