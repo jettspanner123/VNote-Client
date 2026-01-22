@@ -64,9 +64,14 @@ class _StandardInputFieldState extends State<StandardInputField> with SingleTick
       validator: widget.validator,
       inputFormatters: widget.inputFormatters,
       controller: widget.textController,
-      style: GoogleFonts.funnelSans(fontSize: 16, fontWeight: FontWeight.w500),
+      style: GoogleFonts.funnelSans(fontSize: 15.5, fontWeight: FontWeight.w500),
       decoration: InputDecoration(
         hintText: widget.placeholder,
+        hintStyle: UIHelper.current.funnelTextStyle(
+          fontSize: 15.5,
+          color: Colors.black.withAlpha(80),
+          fontWeight: FontWeight.w500,
+        ),
         prefix: widget.prefixWidget,
         fillColor: Colors.white,
         prefixIcon: widget.icon,

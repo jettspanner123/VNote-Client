@@ -4,6 +4,7 @@ import 'package:vnote_client/shared/animations/slide_animation_controller.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/components/buttons/regular_button.dart';
 import 'package:vnote_client/shared/components/others/animated_success_badge.dart';
+import 'package:vnote_client/shared/components/page/application_bar_dismiss_button.dart';
 import 'package:vnote_client/shared/components/page/page_button_holder.dart';
 import 'package:vnote_client/utils/ui_helper.dart';
 
@@ -31,43 +32,50 @@ class _SuccessControllerScreenState extends State<SuccessControllerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: ComponentConstants.screenHorizontalPadding,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SlideAnimationControllerComponent(
-                  slideOffset: SlideAnimationValue(begin: const Offset(0, 2), end: const Offset(0, 0)),
-                  child: AnimatedSuccessBadgeComponent(size: widget.badgeIconSize),
+      body: Padding(
+        padding: ComponentConstants.screenHorizontalPadding,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [ApplicationBarDismissButtonComponent()],
                 ),
+              ),
+              SizedBox(height: 30),
+              SlideAnimationControllerComponent(
+                slideOffset: SlideAnimationValue(begin: const Offset(0, 2), end: const Offset(0, 0)),
+                child: AnimatedSuccessBadgeComponent(size: widget.badgeIconSize),
+              ),
 
-                SizedBox(height: 20),
+              SizedBox(height: 20),
 
-                SlideAnimationControllerComponent(
-                  slideOffset: SlideAnimationValue(begin: const Offset(0, 2), end: const Offset(0, 0)),
-                  child: Text(
-                    widget.heading,
-                    style: UIHelper.current.newAmsterdamTextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                  ),
+              SlideAnimationControllerComponent(
+                slideOffset: SlideAnimationValue(begin: const Offset(0, 2), end: const Offset(0, 0)),
+                child: Text(
+                  widget.heading,
+                  style: UIHelper.current.newAmsterdamTextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 ),
+              ),
 
-                SizedBox(height: 10),
+              SizedBox(height: 10),
 
-                SlideAnimationControllerComponent(
-                  slideOffset: SlideAnimationValue(begin: const Offset(0, 2), end: const Offset(0, 0)),
-                  child: Text(
-                    widget.description,
-                    textAlign: TextAlign.center,
-                    style: UIHelper.current.funnelTextStyle(fontSize: 16),
-                  ),
+              SlideAnimationControllerComponent(
+                slideOffset: SlideAnimationValue(begin: const Offset(0, 2), end: const Offset(0, 0)),
+                child: Text(
+                  widget.description,
+                  textAlign: TextAlign.center,
+                  style: UIHelper.current.funnelTextStyle(fontSize: 16),
                 ),
+              ),
 
-                SizedBox(height: 50),
-              ],
-            ),
+              SizedBox(height: 50),
+            ],
           ),
         ),
       ),

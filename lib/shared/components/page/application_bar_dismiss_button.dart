@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ApplicationBarBackButtonComponent extends StatefulWidget {
+class ApplicationBarDismissButtonComponent extends StatefulWidget {
   final VoidCallback? onTap;
-  const ApplicationBarBackButtonComponent({super.key, this.onTap});
+  const ApplicationBarDismissButtonComponent({super.key, this.onTap});
 
   @override
-  State<ApplicationBarBackButtonComponent> createState() => ApplicationBarBackButtonComponentState();
+  State<ApplicationBarDismissButtonComponent> createState() => ApplicationBarDismissButtonComponentState();
 }
 
-class ApplicationBarBackButtonComponentState extends State<ApplicationBarBackButtonComponent> {
+class ApplicationBarDismissButtonComponentState extends State<ApplicationBarDismissButtonComponent> {
   bool isTapped = false;
 
   void _handleTapDown(_) {
@@ -40,9 +40,9 @@ class ApplicationBarBackButtonComponentState extends State<ApplicationBarBackBut
   @override
   Widget build(BuildContext context) {
     return Listener(
-      onPointerDown: _handleTapDown,
-      onPointerUp: _handleTapUp,
       onPointerCancel: _handleTapCancel,
+      onPointerUp: _handleTapUp,
+      onPointerDown: _handleTapDown,
       child: GestureDetector(
         onTap:
             widget.onTap ??
@@ -60,7 +60,7 @@ class ApplicationBarBackButtonComponentState extends State<ApplicationBarBackBut
               border: BoxBorder.all(color: Colors.black.withAlpha(50)),
               borderRadius: BorderRadiusDirectional.circular(100),
             ),
-            child: Icon(Icons.chevron_left),
+            child: Icon(Icons.close),
           ),
         ),
       ),

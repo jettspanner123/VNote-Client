@@ -15,8 +15,8 @@ class _StandardInputLabelComponentState extends State<StandardInputLabelComponen
     return SizedBox(
       width: double.infinity,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        child: Text(widget.text, style: UIHelper.current.funnelTextStyle(fontSize: 13.5, fontWeight: FontWeight.bold)),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+        child: Text(widget.text, style: UIHelper.current.funnelTextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
       ),
     );
   }

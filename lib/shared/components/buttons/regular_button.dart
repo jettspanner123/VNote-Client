@@ -32,7 +32,7 @@ class StandardButtonComponent extends StatefulWidget {
 
 class _StandardButtonComponentState extends State<StandardButtonComponent> {
   bool _isClicked = false;
-  void _tapDownAction(TapDownDetails _) {
+  void _tapDownAction(_) {
     if (_isClicked) return;
     setState(() {
       _isClicked = true;
@@ -40,14 +40,14 @@ class _StandardButtonComponentState extends State<StandardButtonComponent> {
     HapticFeedback.lightImpact();
   }
 
-  void _tapCancelAction() {
+  void _tapCancelAction(_) {
     if (!_isClicked) return;
     setState(() {
       _isClicked = false;
     });
   }
 
-  void _tapUpAction(TapUpDetails _) {
+  void _tapUpAction(_) {
     if (!_isClicked) return;
     setState(() {
       _isClicked = false;
@@ -56,45 +56,47 @@ class _StandardButtonComponentState extends State<StandardButtonComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: _tapDownAction,
-      onTapUp: _tapUpAction,
-      onTapCancel: _tapCancelAction,
-      onTap: () {
-        widget.onTap?.call();
-      },
-      child: AnimatedScale(
-        scale: !widget.wantTapAnimation
-            ? 1
-            : _isClicked
-            ? 0.95
-            : 1.0,
-        duration: Duration(milliseconds: widget.animationDuration),
-        child: AnimatedContainer(
+    return Listener(
+      onPointerDown: _tapDownAction,
+      onPointerUp: _tapUpAction,
+      onPointerCancel: _tapCancelAction,
+      child: GestureDetector(
+        onTap: () {
+          widget.onTap?.call();
+        },
+        child: AnimatedScale(
+          scale: !widget.wantTapAnimation
+              ? 1
+              : _isClicked
+              ? 0.95
+              : 1.0,
           duration: Duration(milliseconds: widget.animationDuration),
-          decoration: BoxDecoration(
-            color: !widget.wantTapAnimation
-                ? widget.backgroundColor
-                : _isClicked
-                ? ColorFactory.accentColor
-                : widget.backgroundColor,
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-          ),
-          child: AnimatedSwitcher(
-            duration: Duration(milliseconds: 500),
-            transitionBuilder: (child, animation) {
-              final curvedAnimation = CurvedAnimation(parent: animation, curve: Curves.fastEaseInToSlowEaseOut);
-              return ScaleTransition(
-                scale: curvedAnimation,
-                child: FadeTransition(opacity: curvedAnimation, child: child),
-              );
-            },
-            child: widget.isLoading
-                ? Padding(
-                    padding: ComponentConstants.standardButtonPadding,
-                    child: CupertinoActivityIndicator(color: widget.loadingStateColor, radius: 11),
-                  )
-                : widget.child,
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: widget.animationDuration),
+            decoration: BoxDecoration(
+              color: !widget.wantTapAnimation
+                  ? widget.backgroundColor
+                  : _isClicked
+                  ? ColorFactory.accentColor
+                  : widget.backgroundColor,
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+            ),
+            child: AnimatedSwitcher(
+              duration: Duration(milliseconds: 500),
+              transitionBuilder: (child, animation) {
+                final curvedAnimation = CurvedAnimation(parent: animation, curve: Curves.fastEaseInToSlowEaseOut);
+                return ScaleTransition(
+                  scale: curvedAnimation,
+                  child: FadeTransition(opacity: curvedAnimation, child: child),
+                );
+              },
+              child: widget.isLoading
+                  ? Padding(
+                      padding: ComponentConstants.standardButtonPadding,
+                      child: CupertinoActivityIndicator(color: widget.loadingStateColor, radius: 11),
+                    )
+                  : widget.child,
+            ),
           ),
         ),
       ),

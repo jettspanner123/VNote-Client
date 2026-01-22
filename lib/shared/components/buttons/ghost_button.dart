@@ -25,7 +25,7 @@ class GhostButtonComponent extends StatefulWidget {
 
 class _GhostButtonComponentState extends State<GhostButtonComponent> {
   bool _isClicked = false;
-  void _tapDownAction(TapDownDetails _) {
+  void _tapDownAction(_) {
     if (_isClicked) return;
     setState(() {
       _isClicked = true;
@@ -33,14 +33,14 @@ class _GhostButtonComponentState extends State<GhostButtonComponent> {
     HapticFeedback.lightImpact();
   }
 
-  void _tapCancelAction() {
+  void _tapCancelAction(_) {
     if (!_isClicked) return;
     setState(() {
       _isClicked = false;
     });
   }
 
-  void _tapUpAction(TapUpDetails _) {
+  void _tapUpAction(_) {
     if (!_isClicked) return;
     setState(() {
       _isClicked = false;
@@ -49,24 +49,26 @@ class _GhostButtonComponentState extends State<GhostButtonComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: _tapDownAction,
-      onTapUp: _tapUpAction,
-      onTapCancel: _tapCancelAction,
-      onTap: () {
-        widget.onTap?.call();
-      },
-      child: AnimatedScale(
-        scale: _isClicked ? 0.95 : 1.0,
-        duration: Duration(milliseconds: widget.animationDuration),
-        child: AnimatedContainer(
+    return Listener(
+      onPointerDown: _tapDownAction,
+      onPointerUp: _tapUpAction,
+      onPointerCancel: _tapCancelAction,
+      child: GestureDetector(
+        onTap: () {
+          widget.onTap?.call();
+        },
+        child: AnimatedScale(
+          scale: _isClicked ? 0.95 : 1.0,
           duration: Duration(milliseconds: widget.animationDuration),
-          decoration: BoxDecoration(
-            border: BoxBorder.all(color: Colors.white),
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-            color: widget.backgroundColor ?? Colors.black.withAlpha(15),
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: widget.animationDuration),
+            decoration: BoxDecoration(
+              border: BoxBorder.all(color: Colors.white),
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+              color: widget.backgroundColor ?? Colors.black.withAlpha(15),
+            ),
+            child: widget.child,
           ),
-          child: widget.child,
         ),
       ),
     );

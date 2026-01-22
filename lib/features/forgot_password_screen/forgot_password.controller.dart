@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:vnote_client/constants/component_constants.dart';
+import 'package:vnote_client/features/forgot_password_screen/forgot_password.services.dart';
 import 'package:vnote_client/features/forgot_password_screen/views/forgot_password_otp_input_view.dart';
 import 'package:vnote_client/features/forgot_password_screen/views/forgot_password_password_input_view.dart';
 import 'package:vnote_client/features/forgot_password_screen/views/forgot_password_reset_password_input_view.dart';
-import 'package:vnote_client/features/helper_screens/success_screen.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/views/submit_button_with_dismiss_keyboard_button.dart';
-import 'package:vnote_client/utils/keyboard_helper.dart';
 
 final _forgotPasswordFormKey = GlobalKey<FormState>();
 final _forgotPasswordOtpFormKey = GlobalKey<FormState>();
@@ -22,7 +21,9 @@ class ForgotPasswordControllerScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControllerScreen> {
-  ForgotPasswordScreenOptions _currentScreen = ForgotPasswordScreenOptions.resetPasswordInput;
+  final forgotPasswordServices = ForgotPasswordServices();
+
+  ForgotPasswordScreenOptions _currentScreen = ForgotPasswordScreenOptions.phoneNumberInput;
 
   final _scrollController = ScrollController();
   final _phoneNumberController = TextEditingController();
@@ -32,54 +33,17 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
 
   // Handle Submit Button Action  {#117,51}
   void _handlePrimaryButtonAction() async {
-    if (_currentScreen == ForgotPasswordScreenOptions.phoneNumberInput) {
-      if (_forgotPasswordFormKey.currentState!.validate()) {
-        KeyboardHelper.current.dismissKeyboad(context);
-        await Future.delayed(const Duration(milliseconds: 500));
+    final data = await forgotPasswordServices.handlePrimaryButtonAction(
+      context,
+      _currentScreen,
+      _forgotPasswordFormKey,
+      _forgotPasswordOtpFormKey,
+    );
 
-        // TODO: Check if phone number exists in the database.
-
-        // TODO: Send otp to the phone number.
-
-        setState(() {
-          _currentScreen = ForgotPasswordScreenOptions.otpInput;
-        });
-      }
-    } else if (_currentScreen == ForgotPasswordScreenOptions.otpInput) {
-      if (_forgotPasswordOtpFormKey.currentState!.validate()) {
-        KeyboardHelper.current.dismissKeyboad(context);
-        await Future.delayed(const Duration(milliseconds: 500));
-
-        // TODO: Check if the otp is correct
-
-        setState(() {
-          _currentScreen = ForgotPasswordScreenOptions.resetPasswordInput;
-        });
-      }
-    } else {
-      // if (_forogtPasswordResetPasswordFormKey.currentState!.validate()) {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        isDismissible: false,
-        builder: (BuildContext context) {
-          return ClipRRect(
-            borderRadius: BorderRadiusGeometry.circular(50),
-            child: Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height - 200,
-              color: Colors.white,
-              child: SuccessControllerScreen(
-                badgeIconSize: 200,
-                heading: "Forgot Password",
-                description: "Your password has been successfully reset. You can now use the password to login again.",
-                navigationButtonText: "Go Back To Login Page",
-              ),
-            ),
-          );
-        },
-      );
-      // }
+    if (data != null) {
+      setState(() {
+        _currentScreen = data;
+      });
     }
   }
 

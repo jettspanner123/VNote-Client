@@ -27,7 +27,7 @@ class OutlineButtonComponent extends StatefulWidget {
 
 class _OutlineButtonComponentState extends State<OutlineButtonComponent> {
   bool _isClicked = false;
-  void _tapDownAction(TapDownDetails _) {
+  void _tapDownAction(_) {
     if (_isClicked) return;
     setState(() {
       _isClicked = true;
@@ -35,14 +35,14 @@ class _OutlineButtonComponentState extends State<OutlineButtonComponent> {
     HapticFeedback.lightImpact();
   }
 
-  void _tapCancelAction() {
+  void _tapCancelAction(_) {
     if (!_isClicked) return;
     setState(() {
       _isClicked = false;
     });
   }
 
-  void _tapUpAction(TapUpDetails _) {
+  void _tapUpAction(_) {
     if (!_isClicked) return;
     setState(() {
       _isClicked = false;
@@ -51,24 +51,26 @@ class _OutlineButtonComponentState extends State<OutlineButtonComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: _tapDownAction,
-      onTapUp: _tapUpAction,
-      onTapCancel: _tapCancelAction,
-      onTap: () {
-        widget.onTap?.call();
-      },
-      child: AnimatedScale(
-        scale: _isClicked ? 0.95 : 1.0,
-        duration: Duration(milliseconds: widget.animationDuration),
-        child: AnimatedContainer(
+    return Listener(
+      onPointerDown: _tapDownAction,
+      onPointerUp: _tapUpAction,
+      onPointerCancel: _tapCancelAction,
+      child: GestureDetector(
+        onTap: () {
+          widget.onTap?.call();
+        },
+        child: AnimatedScale(
+          scale: _isClicked ? 0.95 : 1.0,
           duration: Duration(milliseconds: widget.animationDuration),
-          decoration: BoxDecoration(
-            border: widget.border ?? BoxBorder.all(color: Colors.black, width: 0.3),
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-            color: widget.backgroundColor,
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: widget.animationDuration),
+            decoration: BoxDecoration(
+              border: widget.border ?? BoxBorder.all(color: Colors.black, width: 0.3),
+              borderRadius: BorderRadius.circular(widget.borderRadius),
+              color: widget.backgroundColor,
+            ),
+            child: widget.child,
           ),
-          child: widget.child,
         ),
       ),
     );
