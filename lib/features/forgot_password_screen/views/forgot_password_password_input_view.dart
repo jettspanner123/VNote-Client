@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:vnote_client/models/validators/input_validators.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_field.dart';
 import 'package:vnote_client/shared/components/page/application_bar_back_button.dart';
@@ -35,11 +36,17 @@ class _ForgotPasswordPhoneNumberInputViewState extends State<ForgotPasswordPhone
 
           SizedBox(height: 20),
           StandardInputField(
+            inputFormatters: [LengthLimitingTextInputFormatter(10), FilteringTextInputFormatter.digitsOnly],
             icon: Icon(Icons.phone),
             placeholder: "Enter phone number.",
             textController: widget.phoneNumberController,
             validator: InputValidators.current.phoneNumberValidator,
             keyboardType: TextInputType.number,
+            onChange: (value) {
+              if (value.length == 10) {
+                FocusScope.of(context).unfocus();
+              }
+            },
           ),
         ],
       ),

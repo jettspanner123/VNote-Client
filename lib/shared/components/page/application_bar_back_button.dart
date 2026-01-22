@@ -51,7 +51,7 @@ class ApplicationBarBackButtonComponentState extends State<ApplicationBarBackBut
       onTapUp: _handleTapUp,
       onTapCancel: _handleTapCancel,
       child: AnimatedScale(
-        scale: isTapped ? 1.15 : 1,
+        scale: isTapped ? 0.95 : 1,
         duration: const Duration(milliseconds: 100),
         child: Container(
           height: 50,

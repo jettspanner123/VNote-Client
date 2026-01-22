@@ -1,1 +1,3 @@
-class ForgotPasswordServices {}
+class ForgotPasswordServices {
+  void resendOtp() {}
+}

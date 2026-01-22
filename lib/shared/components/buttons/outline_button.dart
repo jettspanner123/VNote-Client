@@ -8,6 +8,7 @@ class OutlineButtonComponent extends StatefulWidget {
   final double borderRadius;
   final int animationDuration;
   final BoxBorder? border;
+  final Color backgroundColor;
 
   const OutlineButtonComponent({
     super.key,
@@ -17,6 +18,7 @@ class OutlineButtonComponent extends StatefulWidget {
     this.borderRadius = 100,
     this.animationDuration = 25,
     this.border,
+    this.backgroundColor = Colors.transparent,
   });
 
   @override
@@ -64,6 +66,7 @@ class _OutlineButtonComponentState extends State<OutlineButtonComponent> {
           decoration: BoxDecoration(
             border: widget.border ?? BoxBorder.all(color: Colors.black, width: 0.3),
             borderRadius: BorderRadius.circular(widget.borderRadius),
+            color: widget.backgroundColor,
           ),
           child: widget.child,
         ),

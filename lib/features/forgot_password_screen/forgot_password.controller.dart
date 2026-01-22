@@ -3,6 +3,7 @@ import 'package:vnote_client/constants/component_constants.dart';
 import 'package:vnote_client/features/forgot_password_screen/views/forgot_password_otp_input_view.dart';
 import 'package:vnote_client/features/forgot_password_screen/views/forgot_password_password_input_view.dart';
 import 'package:vnote_client/features/forgot_password_screen/views/forgot_password_reset_password_input_view.dart';
+import 'package:vnote_client/features/helper_screens/success_screen.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/views/submit_button_with_dismiss_keyboard_button.dart';
 import 'package:vnote_client/utils/keyboard_helper.dart';
@@ -21,14 +22,15 @@ class ForgotPasswordControllerScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControllerScreen> {
-  ForgotPasswordScreenOptions _currentScreen = ForgotPasswordScreenOptions.otpInput;
+  ForgotPasswordScreenOptions _currentScreen = ForgotPasswordScreenOptions.resetPasswordInput;
 
+  final _scrollController = ScrollController();
   final _phoneNumberController = TextEditingController();
   final _otpController = TextEditingController();
   final _resetPasswordController = TextEditingController();
   final _resetConfirmPasswordController = TextEditingController();
 
-  // MARK: Submit button action
+  // Handle Submit Button Action  {#117,51}
   void _handlePrimaryButtonAction() async {
     if (_currentScreen == ForgotPasswordScreenOptions.phoneNumberInput) {
       if (_forgotPasswordFormKey.currentState!.validate()) {
@@ -55,11 +57,33 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
         });
       }
     } else {
-      if (_forogtPasswordResetPasswordFormKey.currentState!.validate()) {}
+      // if (_forogtPasswordResetPasswordFormKey.currentState!.validate()) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        isDismissible: false,
+        builder: (BuildContext context) {
+          return ClipRRect(
+            borderRadius: BorderRadiusGeometry.circular(50),
+            child: Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height - 200,
+              color: Colors.white,
+              child: SuccessControllerScreen(
+                badgeIconSize: 200,
+                heading: "Forgot Password",
+                description: "Your password has been successfully reset. You can now use the password to login again.",
+                navigationButtonText: "Go Back To Login Page",
+              ),
+            ),
+          );
+        },
+      );
+      // }
     }
   }
 
-  // MARK: Cancel Button Action
+  // Handle Cancel Button Action  {#1fb,20}
   void _handleSecondaryButtonAction() async {
     switch (_currentScreen) {
       case ForgotPasswordScreenOptions.phoneNumberInput:
@@ -81,12 +105,27 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
     }
   }
 
+  // Scroll Down On Input Focus {#89f,11}
+  void _handleOnInputFocusScrollDown() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scrollController.hasClients) return;
+
+      _scrollController.animateTo(
+        200,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.fastEaseInToSlowEaseOut,
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
+          controller: _scrollController,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 500),
@@ -102,10 +141,7 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
             child: _currentScreen == ForgotPasswordScreenOptions.phoneNumberInput
                 ? Form(
                     key: _forgotPasswordFormKey,
-                    child: ForgotPasswordPhoneNumberInputView(
-                      key: ValueKey(ForgotPasswordScreenOptions.phoneNumberInput.toString()),
-                      phoneNumberController: _phoneNumberController,
-                    ),
+                    child: ForgotPasswordPhoneNumberInputView(phoneNumberController: _phoneNumberController),
                   )
                 : _currentScreen == ForgotPasswordScreenOptions.otpInput
                 ? Form(
@@ -113,6 +149,7 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
                     child: ForgotPasswordOtpInputView(
                       key: ValueKey(ForgotPasswordScreenOptions.otpInput.toString()),
                       otpController: _otpController,
+                      onInputFocus: _handleOnInputFocusScrollDown,
                     ),
                   )
                 : Form(
@@ -121,12 +158,12 @@ class _ForgotPasswordControllerScreenState extends State<ForgotPasswordControlle
                       key: ValueKey(ForgotPasswordScreenOptions.resetPasswordInput.toString()),
                       resetConfirmPasswordController: _resetConfirmPasswordController,
                       resetPasswordController: _resetPasswordController,
+                      onInputFocus: _handleOnInputFocusScrollDown,
                     ),
                   ),
           ),
         ),
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
         padding: ComponentConstants.screenHorizontalPadding,

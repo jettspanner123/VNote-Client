@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vnote_client/utils/ui_helper.dart';
 
 class StandardInputField extends StatefulWidget {
   final TextEditingController textController;
@@ -10,8 +12,10 @@ class StandardInputField extends StatefulWidget {
   final TextInputType keyboardType;
   final VoidCallback? onFocus;
   final VoidCallback? onFocusOut;
+  final Function(String)? onChange;
   final Widget? prefixWidget;
   final bool isDisabled;
+  final List<TextInputFormatter>? inputFormatters;
   const StandardInputField({
     super.key,
     required this.textController,
@@ -23,6 +27,8 @@ class StandardInputField extends StatefulWidget {
     this.onFocusOut,
     this.prefixWidget,
     this.isDisabled = false,
+    this.onChange,
+    this.inputFormatters,
   });
 
   @override
@@ -52,11 +58,13 @@ class _StandardInputFieldState extends State<StandardInputField> with SingleTick
   Widget build(BuildContext context) {
     return TextFormField(
       focusNode: _focusNode,
+      onChanged: widget.onChange,
       enabled: !widget.isDisabled,
       keyboardType: widget.keyboardType,
       validator: widget.validator,
+      inputFormatters: widget.inputFormatters,
       controller: widget.textController,
-      style: GoogleFonts.funnelSans(fontSize: 14),
+      style: GoogleFonts.funnelSans(fontSize: 16, fontWeight: FontWeight.w500),
       decoration: InputDecoration(
         hintText: widget.placeholder,
         prefix: widget.prefixWidget,
@@ -76,8 +84,10 @@ class _StandardInputFieldState extends State<StandardInputField> with SingleTick
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.red),
+          borderSide: BorderSide(color: Colors.red, width: 1.5),
         ),
+        errorStyle: UIHelper.current.funnelTextStyle(color: Colors.red, fontSize: 13, fontWeight: FontWeight.w500),
+        errorMaxLines: 2,
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),

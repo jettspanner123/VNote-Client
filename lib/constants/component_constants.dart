@@ -18,4 +18,11 @@ class ComponentConstants {
     bottom: 25,
   );
   static const double secondaryScreenAppBarHeight = 95;
+
+  // Rules
+  static const List<String> passwordRules = [
+    "Password must contain atleast 8 characters."
+        "Password must not excede 16 characters."
+        "Password must container a special character.",
+  ];
 }
