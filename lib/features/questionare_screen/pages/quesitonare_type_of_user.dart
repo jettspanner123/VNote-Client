@@ -4,6 +4,8 @@ import 'package:vnote_client/features/questionare_screen/questionare.components.
 import 'package:vnote_client/features/questionare_screen/questionare.controller.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_label.dart';
 
+enum QuesitonareTypeOfUser { personal, business, none }
+
 class QuesitonareTypeOfUserView extends StatefulWidget {
   const QuesitonareTypeOfUserView({super.key});
 
@@ -12,6 +14,7 @@ class QuesitonareTypeOfUserView extends StatefulWidget {
 }
 
 class _QuesitonareTypeOfUserViewState extends State<QuesitonareTypeOfUserView> {
+  QuesitonareTypeOfUser _currentSelected = QuesitonareTypeOfUser.personal;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,13 +25,36 @@ class _QuesitonareTypeOfUserViewState extends State<QuesitonareTypeOfUserView> {
             QuestionareTopSpaceHeight,
             QuestionareProgressIndicatorComponent(currentScreen: 1),
             QuestionareTopSpaceHeight,
-            QuestionareHeadingComponent(text: "Buisness Owner or only for Personal Use?"),
+            QuestionareHeadingComponent(text: "Buisness Owner or Personal Use?"),
             QuestionareSpacerHeight,
             QuestionareDescriptionComponent(
               text: "Are you willing to the app for your business or your personal perpouses?",
             ),
             QuestionareSpacerHeight,
             StandardInputLabelComponent(text: "Choose One"),
+
+            MultipleChoiceController<QuesitonareTypeOfUser>(
+              currentSelected: _currentSelected,
+              children: [
+                MultipleChoiceOption(
+                  value: QuesitonareTypeOfUser.personal,
+                  image: "assets/images/questionare_image/individual_user.png",
+                  title: "Personal Tracking",
+                  description: "Track your income and spending to manage your daily finances easily.",
+                ),
+                MultipleChoiceOption(
+                  value: QuesitonareTypeOfUser.business,
+                  image: "assets/images/questionare_image/buisness_owner.png",
+                  title: "Business Tracking",
+                  description: "Monitor business income and expenses to stay on top of transactions.",
+                ),
+              ],
+              onSelectionChange: (data) {
+                setState(() {
+                  _currentSelected = data.value;
+                });
+              },
+            ),
           ],
         ),
       ),

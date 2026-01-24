@@ -13,6 +13,22 @@ class InputValidators {
     return null;
   }
 
+  String? emailValidator(String? value) {
+    final email = value?.trim() ?? "";
+
+    if (email.isEmpty) return "Email is required";
+
+    final emailRegex = RegExp(
+      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@"
+      r"[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?"
+      r"(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+    );
+
+    if (!emailRegex.hasMatch(email)) return "Enter a valid email";
+
+    return null; // ✅ valid
+  }
+
   String? otpValidator(String? value) {
     final text = value?.trim() ?? "";
     if (text.isEmpty) return "Enter A Valid Number";
@@ -30,6 +46,13 @@ class InputValidators {
       if (value != other.text) return "Passwords do not match.";
     }
 
+    return null;
+  }
+
+  String? fullNameValidator(String? value) {
+    final text = value?.trim() ?? "";
+    if (text.isEmpty) return "Name cannot be empty";
+    if (text.length < 2) return "Name must be of atleast 2 characters.";
     return null;
   }
 }

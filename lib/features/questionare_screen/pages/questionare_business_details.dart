@@ -21,7 +21,7 @@ class _QuestionareBusinessDetailsViewState extends State<QuestionareBusinessDeta
             QuestionareTopSpaceHeight,
             QuestionareProgressIndicatorComponent(currentScreen: 2),
             QuestionareTopSpaceHeight,
-            QuestionareHeadingComponent(text: "Please tell us more about your business."),
+            QuestionareHeadingComponent(text: "Tell us about your business."),
             QuestionareSpacerHeight,
             QuestionareDescriptionComponent(
               text: "Please help us understand more about your business for personalized experience.",

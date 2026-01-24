@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -82,5 +83,12 @@ class UIHelper {
       decorationStyle: decorationStyle,
       decorationThickness: decorationThickness,
     );
+  }
+
+  void scrollDownToKey(GlobalKey key) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Scrollable.ensureVisible(key.currentContext!, duration: const Duration(milliseconds: 150));
+    });
   }
 }

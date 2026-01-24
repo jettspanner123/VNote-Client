@@ -94,17 +94,9 @@ class _RegistrationControllerScreenState extends State<RegistrationControllerScr
                 SlideTransition(
                   position: _slideFromBottomAnimation,
                   child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 500),
-                    layoutBuilder: (currentChild, previousChildren) {
-                      return Stack(
-                        alignment: Alignment.center,
-                        children: [...previousChildren, if (currentChild != null) currentChild],
-                      );
-                    },
+                    duration: const Duration(milliseconds: 150),
                     transitionBuilder: (child, animation) {
-                      final curved = CurvedAnimation(parent: animation, curve: Curves.fastEaseInToSlowEaseOut);
-                      final slide = Tween<Offset>(begin: const Offset(0, 3), end: const Offset(0, 0)).animate(curved);
-                      return SlideTransition(position: slide, child: child);
+                      return FadeTransition(opacity: animation, child: child);
                     },
                     child: selectedScreen == RegistrationControllerScreenOptions.register
                         ? const RegisterSignUpView(key: ValueKey("registration_screen_signup"))
