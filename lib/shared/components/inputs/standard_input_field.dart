@@ -77,7 +77,7 @@ class _StandardInputFieldState extends State<StandardInputField> with SingleTick
         prefixIcon: widget.icon,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.black.withAlpha(90), width: 1),
+          borderSide: BorderSide(color: Colors.black.withAlpha(90), width: 0.3),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -85,11 +85,11 @@ class _StandardInputFieldState extends State<StandardInputField> with SingleTick
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.red),
+          borderSide: BorderSide(color: Colors.red, width: 0.3),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.red, width: 1.5),
+          borderSide: BorderSide(color: Colors.red, width: 1.3),
         ),
         errorStyle: UIHelper.current.funnelTextStyle(color: Colors.red, fontSize: 13, fontWeight: FontWeight.w500),
         errorMaxLines: 2,

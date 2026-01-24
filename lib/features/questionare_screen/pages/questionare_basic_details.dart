@@ -65,7 +65,7 @@ class _QuestionareBasicDetailsViewState extends State<QuestionareBasicDetailsVie
               keyboardType: TextInputType.emailAddress,
               validator: InputValidators.current.emailValidator,
             ),
-            SizedBox(height: 200),
+            SizedBox(height: 350),
           ],
         ),
       ),

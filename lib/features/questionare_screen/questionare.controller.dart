@@ -34,6 +34,7 @@ class _QuestionareControllerScreenState extends State<QuestionareControllerScree
 
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _businessNameController = TextEditingController();
 
   void _handlePrimaryButtonTap() {
     final data = questionareServices.handlePrimaryButtonTap(
@@ -87,6 +88,7 @@ class _QuestionareControllerScreenState extends State<QuestionareControllerScree
             : Form(
                 key: _questionareBusinessQuestionsFormKey,
                 child: QuestionareBusinessDetailsView(
+                  businessNameController: _businessNameController,
                   key: ValueKey(QuestionareScreenOptions.buisnessQuestions.toString()),
                 ),
               ),
