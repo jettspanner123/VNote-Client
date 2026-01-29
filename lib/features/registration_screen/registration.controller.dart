@@ -53,7 +53,7 @@ class _RegistrationControllerScreenState extends State<RegistrationControllerScr
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
+      extendBody: true,
       // Main content
       body: SafeArea(
         child: Padding(
@@ -72,8 +72,8 @@ class _RegistrationControllerScreenState extends State<RegistrationControllerScr
                       // Hero Image
                       Container(
                         color: Colors.blue,
-                        height: 240,
-                        child: Image.asset("assets/images/others/registration_screen_main.png", height: 300),
+                        height: 200,
+                        child: Image.asset("assets/images/others/registration_screen_main.png"),
                       ),
 
                       // Registration Type Segment

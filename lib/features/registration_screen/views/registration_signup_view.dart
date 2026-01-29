@@ -6,9 +6,8 @@ import 'package:vnote_client/models/validators/input_validators.dart';
 import 'package:vnote_client/shared/components/buttons/button_padding.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/components/buttons/outline_button.dart';
-import 'package:vnote_client/shared/components/buttons/regular_button.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_field.dart';
-import 'package:vnote_client/utils/keyboard_helper.dart';
+import 'package:vnote_client/shared/views/submit_button_with_dismiss_keyboard_button.dart';
 
 class RegisterSignUpView extends StatefulWidget {
   final GlobalKey<FormState> formState;
@@ -23,12 +22,14 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
     with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   final registrationService = RegistrationService();
   final _phoneNumberController = TextEditingController();
+  final _fullNameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
 
   final submitButtonKey = GlobalKey();
 
   bool isKeyboardUp = false;
+  bool isRegisteringAccount = false;
 
   @override
   void initState() {
@@ -54,6 +55,22 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
     }
   }
 
+  void handleRegestringAccount() async {
+    setState(() => isRegisteringAccount = true);
+    try {
+      await registrationService.registerAccount(
+        formState: widget.formState,
+        context: context,
+        emailController: _emailController,
+        phoneNumberController: _phoneNumberController,
+        fullNameController: _fullNameController,
+        passwordController: _passwordController,
+      );
+    } finally {
+      setState(() => isRegisteringAccount = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -61,6 +78,8 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
       child: Column(
         children: [
           SizedBox(height: 20),
+
+          // MARK: Phone Number Input
           StandardInputField(
             textController: _phoneNumberController,
             icon: Icon(Icons.phone),
@@ -76,13 +95,36 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
             onFocus: () async {
               await Future.delayed(const Duration(milliseconds: 200));
               widget.scrollController.animateTo(
-                widget.scrollController.position.maxScrollExtent + 50,
+                widget.scrollController.position.maxScrollExtent + 20,
                 duration: const Duration(milliseconds: 400),
                 curve: Curves.fastEaseInToSlowEaseOut,
               );
             },
           ),
           SizedBox(height: 10),
+
+          // MARK: Full Name Input
+          StandardInputField(
+            icon: Icon(Icons.person),
+            placeholder: "Enter Full Name",
+            textController: _fullNameController,
+            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z ]'))],
+            keyboardType: TextInputType.name,
+            validator: InputValidators.current.fullNameValidator,
+          ),
+          SizedBox(height: 10),
+
+          // MARK: Email Input
+          StandardInputField(
+            icon: Icon(Icons.email),
+            placeholder: "Enter Email",
+            textController: _emailController,
+            validator: InputValidators.current.emailValidator,
+            keyboardType: TextInputType.emailAddress,
+          ),
+          SizedBox(height: 10),
+
+          // MARK: Password Input
           StandardInputField(
             textController: _passwordController,
             icon: Icon(Icons.lock),
@@ -91,54 +133,11 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
               return InputValidators.current.passwordValidator(value, _passwordController);
             },
           ),
-          SizedBox(height: 10),
-          StandardInputField(
-            textController: _confirmPasswordController,
-            icon: Icon(Icons.lock_outline),
-            placeholder: "Confirm Password",
-            validator: (value) {
-              return InputValidators.current.passwordValidator(value, _passwordController);
-            },
-          ),
           SizedBox(height: 30),
-          SizedBox(
-            width: double.infinity,
-            child: Row(
-              spacing: 5,
-              children: [
-                AnimatedSize(
-                  duration: const Duration(milliseconds: 150),
-                  curve: Curves.fastEaseInToSlowEaseOut,
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 150),
-                    transitionBuilder: (child, animation) {
-                      return ScaleTransition(scale: animation, child: child);
-                    },
-                    child: isKeyboardUp
-                        ? OutlineButtonComponent(
-                            child: StandardButtonPadding(
-                              padding: const EdgeInsets.all(13),
-                              child: Icon(Icons.keyboard_arrow_down),
-                            ),
-                            onTap: () {
-                              KeyboardHelper.current.dismissKeyboad(context);
-                            },
-                          )
-                        : SizedBox.shrink(),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: StandardButtonComponent(
-                    key: submitButtonKey,
-                    child: StandardButtonText(text: "Create Account"),
-                    onTap: () {
-                      registrationService.registerAccount(widget.formState, context);
-                    },
-                  ),
-                ),
-              ],
-            ),
+          StandardButtonWithDismissKeyboardComponent(
+            isLoading: isRegisteringAccount,
+            onTap: handleRegestringAccount,
+            child: StandardButtonText(text: "Create Account"),
           ),
 
           SizedBox(height: 10),

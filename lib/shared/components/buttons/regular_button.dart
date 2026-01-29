@@ -81,22 +81,12 @@ class _StandardButtonComponentState extends State<StandardButtonComponent> {
                   : widget.backgroundColor,
               borderRadius: BorderRadius.circular(widget.borderRadius),
             ),
-            child: AnimatedSwitcher(
-              duration: Duration(milliseconds: 500),
-              transitionBuilder: (child, animation) {
-                final curvedAnimation = CurvedAnimation(parent: animation, curve: Curves.fastEaseInToSlowEaseOut);
-                return ScaleTransition(
-                  scale: curvedAnimation,
-                  child: FadeTransition(opacity: curvedAnimation, child: child),
-                );
-              },
-              child: widget.isLoading
-                  ? Padding(
-                      padding: ComponentConstants.standardButtonPadding,
-                      child: CupertinoActivityIndicator(color: widget.loadingStateColor, radius: 11),
-                    )
-                  : widget.child,
-            ),
+            child: widget.isLoading
+                ? Padding(
+                    padding: ComponentConstants.standardButtonPadding,
+                    child: CupertinoActivityIndicator(color: widget.loadingStateColor, radius: 11),
+                  )
+                : widget.child,
           ),
         ),
       ),

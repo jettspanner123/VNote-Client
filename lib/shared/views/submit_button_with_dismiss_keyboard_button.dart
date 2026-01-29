@@ -12,6 +12,7 @@ class StandardButtonWithDismissKeyboardComponent extends StatefulWidget {
   final VoidCallback? secondaryOnTap;
   final Widget child;
   final Widget? secondaryButtonChild;
+  final bool isLoading;
   const StandardButtonWithDismissKeyboardComponent({
     super.key,
     this.globalKey,
@@ -19,6 +20,7 @@ class StandardButtonWithDismissKeyboardComponent extends StatefulWidget {
     required this.child,
     this.secondaryButtonChild,
     this.secondaryOnTap,
+    this.isLoading = false,
   });
 
   @override
@@ -66,7 +68,12 @@ class _StandardButtonWithDismissKeyboardComponentState extends State<StandardBut
               children: [
                 Expanded(
                   flex: 1,
-                  child: StandardButtonComponent(onTap: widget.onTap, key: widget.globalKey, child: widget.child),
+                  child: StandardButtonComponent(
+                    isLoading: widget.isLoading,
+                    onTap: widget.onTap,
+                    key: widget.globalKey,
+                    child: widget.child,
+                  ),
                 ),
 
                 AnimatedSize(
