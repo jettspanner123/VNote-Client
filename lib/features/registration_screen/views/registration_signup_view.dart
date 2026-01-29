@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vnote_client/features/registration_screen/registration.service.dart';
 import 'package:vnote_client/models/validators/input_validators.dart';
 import 'package:vnote_client/shared/components/buttons/button_padding.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
@@ -9,7 +11,9 @@ import 'package:vnote_client/shared/components/inputs/standard_input_field.dart'
 import 'package:vnote_client/utils/keyboard_helper.dart';
 
 class RegisterSignUpView extends StatefulWidget {
-  const RegisterSignUpView({super.key});
+  final GlobalKey<FormState> formState;
+  final ScrollController scrollController;
+  const RegisterSignUpView({super.key, required this.formState, required this.scrollController});
 
   @override
   State<RegisterSignUpView> createState() => _RegisterSignUpViewState();
@@ -17,6 +21,7 @@ class RegisterSignUpView extends StatefulWidget {
 
 class _RegisterSignUpViewState extends State<RegisterSignUpView>
     with WidgetsBindingObserver, SingleTickerProviderStateMixin {
+  final registrationService = RegistrationService();
   final _phoneNumberController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -61,10 +66,20 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
             icon: Icon(Icons.phone),
             placeholder: "Enter Phone Number",
             keyboardType: TextInputType.number,
+            onChange: (value) {
+              if (value.length == 10) {
+                FocusScope.of(context).nextFocus();
+              }
+            },
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(10)],
             validator: InputValidators.current.phoneNumberValidator,
             onFocus: () async {
               await Future.delayed(const Duration(milliseconds: 200));
-              Scrollable.ensureVisible(submitButtonKey.currentContext!, duration: const Duration(milliseconds: 500));
+              widget.scrollController.animateTo(
+                widget.scrollController.position.maxScrollExtent + 50,
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.fastEaseInToSlowEaseOut,
+              );
             },
           ),
           SizedBox(height: 10),
@@ -72,12 +87,18 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
             textController: _passwordController,
             icon: Icon(Icons.lock),
             placeholder: "Enter Password",
+            validator: (value) {
+              return InputValidators.current.passwordValidator(value, _passwordController);
+            },
           ),
           SizedBox(height: 10),
           StandardInputField(
             textController: _confirmPasswordController,
             icon: Icon(Icons.lock_outline),
             placeholder: "Confirm Password",
+            validator: (value) {
+              return InputValidators.current.passwordValidator(value, _passwordController);
+            },
           ),
           SizedBox(height: 30),
           SizedBox(
@@ -111,6 +132,9 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
                   child: StandardButtonComponent(
                     key: submitButtonKey,
                     child: StandardButtonText(text: "Create Account"),
+                    onTap: () {
+                      registrationService.registerAccount(widget.formState, context);
+                    },
                   ),
                 ),
               ],

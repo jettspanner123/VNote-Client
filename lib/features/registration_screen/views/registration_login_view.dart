@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vnote_client/constants/navigation_factory.dart';
 import 'package:vnote_client/features/forgot_password_screen/forgot_password.controller.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
-import 'package:vnote_client/shared/components/buttons/ghost_button.dart';
+import 'package:vnote_client/shared/components/buttons/outline_button.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_field.dart';
 import 'package:vnote_client/shared/views/submit_button_with_dismiss_keyboard_button.dart';
 
@@ -54,7 +54,7 @@ class _RegistrationLoginViewState extends State<RegistrationLoginView> {
           SizedBox(height: 10),
           SizedBox(
             width: double.infinity,
-            child: GhostButtonComponent(
+            child: OutlineButtonComponent(
               onTap: () {
                 NavigationFactory.current.pushPage(context, ForgotPasswordControllerScreen());
               },

@@ -4,6 +4,9 @@ import 'package:vnote_client/models/frontend/segment_control.dart';
 import 'package:vnote_client/shared/components/segment/segmented_controller.dart';
 import 'package:vnote_client/features/registration_screen/views/registration_signup_view.dart';
 
+final _registerFormKey = GlobalKey<FormState>();
+final _loginFormKey = GlobalKey<FormState>();
+
 class RegistrationControllerScreen extends StatefulWidget {
   const RegistrationControllerScreen({super.key});
 
@@ -16,6 +19,8 @@ enum RegistrationControllerScreenOptions { register, login }
 class _RegistrationControllerScreenState extends State<RegistrationControllerScreen>
     with SingleTickerProviderStateMixin {
   RegistrationControllerScreenOptions selectedScreen = RegistrationControllerScreenOptions.register;
+
+  final _scrollController = ScrollController();
 
   late AnimationController _animationController;
   late Animation<Offset> _slideFromTopAnimation;
@@ -54,6 +59,7 @@ class _RegistrationControllerScreenState extends State<RegistrationControllerScr
         child: Padding(
           padding: EdgeInsetsGeometry.only(left: 20, right: 20, top: 0, bottom: 0),
           child: SingleChildScrollView(
+            controller: _scrollController,
             padding: EdgeInsets.only(bottom: 30),
             child: Column(
               spacing: 0,
@@ -99,8 +105,18 @@ class _RegistrationControllerScreenState extends State<RegistrationControllerScr
                       return FadeTransition(opacity: animation, child: child);
                     },
                     child: selectedScreen == RegistrationControllerScreenOptions.register
-                        ? const RegisterSignUpView(key: ValueKey("registration_screen_signup"))
-                        : const RegistrationLoginView(key: ValueKey("registration_screen_login")),
+                        ? Form(
+                            key: _registerFormKey,
+                            child: RegisterSignUpView(
+                              formState: _registerFormKey,
+                              scrollController: _scrollController,
+                              key: ValueKey("registration_screen_signup"),
+                            ),
+                          )
+                        : Form(
+                            key: _loginFormKey,
+                            child: RegistrationLoginView(key: ValueKey("registration_screen_login")),
+                          ),
                   ),
                 ),
               ],

@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:vnote_client/constants/component_constants.dart';
-import 'package:vnote_client/features/questionare_screen/pages/quesitonare_type_of_user.dart';
 import 'package:vnote_client/features/questionare_screen/questionare.components.dart';
 import 'package:vnote_client/features/questionare_screen/questionare.controller.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_field.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_label.dart';
-import 'package:vnote_client/utils/keyboard_helper.dart';
-import 'package:vnote_client/utils/ui_helper.dart';
 
 enum QuestionareTypeOfBusiness { retailShop, foodRestraunt, services, professional, onlineIt, others, none }
 
 class QuestionareBusinessDetailsView extends StatefulWidget {
   final TextEditingController businessNameController;
-  const QuestionareBusinessDetailsView({super.key, required this.businessNameController});
+  final TextEditingController otherBusinessController;
+  const QuestionareBusinessDetailsView({
+    super.key,
+    required this.businessNameController,
+    required this.otherBusinessController,
+  });
 
   @override
   State<QuestionareBusinessDetailsView> createState() => _QuestionareBusinessDetailsViewState();
@@ -22,21 +24,13 @@ class _QuestionareBusinessDetailsViewState extends State<QuestionareBusinessDeta
   QuestionareTypeOfBusiness _businessType = QuestionareTypeOfBusiness.none;
   final _scrollController = ScrollController();
 
-  final _otherFieldKey = GlobalKey();
-
   void _handleOnKeyboardOpen() async {
     await Future.delayed(const Duration(milliseconds: 150));
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final context = _otherFieldKey.currentContext;
-      if (context != null) {
-        Scrollable.ensureVisible(
-          context,
-          duration: const Duration(milliseconds: 250),
-          curve: Curves.fastEaseInToSlowEaseOut,
-          alignment: -2.5,
-        );
-      }
-    });
+    _scrollController.animateTo(
+      _scrollController.offset + 100,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.fastEaseInToSlowEaseOut,
+    );
   }
 
   @override
@@ -107,6 +101,9 @@ class _QuestionareBusinessDetailsViewState extends State<QuestionareBusinessDeta
                 ),
               ],
               onSelectionChange: (data) {
+                if (data.value == QuestionareTypeOfBusiness.others) {
+                  _handleOnKeyboardOpen();
+                }
                 setState(() {
                   _businessType = data.value;
                 });
@@ -126,18 +123,17 @@ class _QuestionareBusinessDetailsViewState extends State<QuestionareBusinessDeta
                       children: [
                         StandardInputLabelComponent(text: "Explain your business in 4 - 5 words"),
                         StandardInputField(
-                          key: _otherFieldKey,
                           onFocus: _handleOnKeyboardOpen,
                           placeholder: "Custom Business Type",
                           icon: Icon(Icons.store),
-                          textController: TextEditingController(),
+                          textController: widget.otherBusinessController,
                         ),
                       ],
                     )
                   : SizedBox.shrink(),
             ),
 
-            SizedBox(height: 100),
+            SizedBox(height: 200),
           ],
         ),
       ),

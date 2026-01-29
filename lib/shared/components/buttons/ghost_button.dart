@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -60,14 +62,20 @@ class _GhostButtonComponentState extends State<GhostButtonComponent> {
         child: AnimatedScale(
           scale: _isClicked ? 0.95 : 1.0,
           duration: Duration(milliseconds: widget.animationDuration),
-          child: AnimatedContainer(
-            duration: Duration(milliseconds: widget.animationDuration),
-            decoration: BoxDecoration(
-              border: BoxBorder.all(color: Colors.white),
-              borderRadius: BorderRadius.circular(widget.borderRadius),
-              color: widget.backgroundColor ?? Colors.black.withAlpha(15),
+          child: ClipRRect(
+            borderRadius: BorderRadiusGeometry.circular(widget.borderRadius),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: widget.animationDuration),
+                decoration: BoxDecoration(
+                  border: BoxBorder.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(widget.borderRadius),
+                  color: widget.backgroundColor ?? Colors.black.withAlpha(15),
+                ),
+                child: widget.child,
+              ),
             ),
-            child: widget.child,
           ),
         ),
       ),
