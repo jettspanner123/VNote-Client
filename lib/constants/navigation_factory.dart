@@ -14,8 +14,11 @@ class NavigationFactory {
   static const String forgotPasswordScreen = "/forogt-password";
   static const String successPage = "/success";
   static const String registrationOtpScreen = "/registration-otp";
+  static const String welcomeScreen = "/welcome";
   static const String registrationWelcomeScreen = "/registration-welcome";
+  static const String languageSelectorScreen = "/language-selector";
 
+  static const String homeScreen = "/home-screen";
   Future pushPage(BuildContext context, Widget page) {
     return Navigator.push(
       context,

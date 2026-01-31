@@ -13,6 +13,7 @@ class WelcomeScreenController extends StatefulWidget {
 }
 
 class _WelcomeScreenControllerState extends State<WelcomeScreenController> {
+  void _changeScreen() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +72,10 @@ class _WelcomeScreenControllerState extends State<WelcomeScreenController> {
                         SizedBox(height: 30),
                         SizedBox(
                           width: double.infinity,
-                          child: StandardButtonComponent(child: StandardButtonText(text: "Let Us Get Started")),
+                          child: StandardButtonComponent(
+                            onTap: _changeScreen,
+                            child: StandardButtonText(text: "Let Us Get Started"),
+                          ),
                         ),
                       ],
                     ),
