@@ -19,17 +19,15 @@ class RegistrationService {
     //   KeyboardHelper.current.dismissKeyboad(context);
 
     // Api Call
-    final data = await _RegistrationHelperService.createUser(
-      fullName: fullNameController.text,
-      email: emailController.text,
-      phoneNumber: phoneNumberController.text,
-      password: passwordController.text,
-    );
-
-    print(data);
+    // final data = await _RegistrationHelperService.createUser(
+    //   fullName: fullNameController.text,
+    //   email: emailController.text,
+    //   phoneNumber: phoneNumberController.text,
+    //   password: passwordController.text,
+    // );
 
     //   // Move To Next Page
-    //   Navigator.pushNamed(context, NavigationFactory.registrationOtpScreen);
+    Navigator.pushNamed(context, NavigationFactory.registrationOtpScreen);
     // }
   }
 }

@@ -7,6 +7,7 @@ import 'package:vnote_client/features/questionare_screen/questionare.controller.
 import 'package:vnote_client/features/registration_screen/registration.controller.dart';
 import 'package:vnote_client/features/registration_screen/views/registration_otp_view.dart';
 import 'package:vnote_client/features/splash_screen/splash.controller.dart';
+import 'package:vnote_client/features/welcome_screen/welcome.controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'VNote',
       debugShowCheckedModeBanner: false,
-      initialRoute: NavigationFactory.registrationScreen,
+      initialRoute: NavigationFactory.onboardingScreen,
       routes: {
         NavigationFactory.splashScreen: (context) => const SplashScreenController(),
         NavigationFactory.landingScreen: (context) => const LandingControllerScreen(),
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         NavigationFactory.registrationScreen: (context) => const RegistrationControllerScreen(),
         NavigationFactory.forgotPasswordScreen: (context) => const ForgotPasswordControllerScreen(),
         NavigationFactory.registrationOtpScreen: (context) => const RegistrationOtpView(),
+        NavigationFactory.registrationWelcomeScreen: (context) => const WelcomeScreenController(),
       },
     );
   }
