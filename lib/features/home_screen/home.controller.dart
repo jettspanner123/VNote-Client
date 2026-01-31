@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+enum HomeScreenPageOptions { ledger, payments, loan, marketing }
+
 class HomeScreenController extends StatefulWidget {
   const HomeScreenController({super.key});
 

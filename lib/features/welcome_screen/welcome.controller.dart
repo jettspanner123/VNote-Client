@@ -12,8 +12,44 @@ class WelcomeScreenController extends StatefulWidget {
   State<WelcomeScreenController> createState() => _WelcomeScreenControllerState();
 }
 
-class _WelcomeScreenControllerState extends State<WelcomeScreenController> {
-  void _changeScreen() {}
+class _WelcomeScreenControllerState extends State<WelcomeScreenController> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<Offset> _uddeshyaCardSlideTransition;
+  late Animation<Offset> _vanshikaCardSlideTransition;
+  late Animation<Offset> _bottomContentSlideTransition;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(vsync: this, duration: 1.seconds);
+    final curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.fastEaseInToSlowEaseOut);
+    _uddeshyaCardSlideTransition = Tween<Offset>(
+      begin: const Offset(-1, 0),
+      end: const Offset(0, 0),
+    ).animate(curvedAnimation);
+    _vanshikaCardSlideTransition = Tween<Offset>(
+      begin: const Offset(1, 0),
+      end: const Offset(0, 0),
+    ).animate(curvedAnimation);
+    _bottomContentSlideTransition = Tween<Offset>(
+      begin: const Offset(0, 1.2),
+      end: const Offset(0, 0),
+    ).animate(curvedAnimation);
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
+  }
+
+  void _changeScreen() {
+    _animationController.reverse();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,63 +65,66 @@ class _WelcomeScreenControllerState extends State<WelcomeScreenController> {
                 Positioned(
                   top: 150,
                   left: -130,
-                  child: Transform.rotate(
-                    angle: -50,
-                    child: Image.asset("assets/images/others/uddeshya_card.png", height: 250),
+                  child: SlideTransition(
+                    position: _uddeshyaCardSlideTransition,
+                    child: Transform.rotate(
+                      angle: -50,
+                      child: Image.asset("assets/images/others/uddeshya_card.png", height: 250),
+                    ),
                   ),
-                ).animate().slideX(begin: -1, end: 0, duration: 1.seconds, curve: Curves.fastEaseInToSlowEaseOut),
+                ),
                 Positioned(
                   top: 70,
                   right: -150,
-                  child: Transform.rotate(
-                    angle: -50,
-                    child: Image.asset("assets/images/others/vanshika_card.png", height: 250),
+                  child: SlideTransition(
+                    position: _vanshikaCardSlideTransition,
+                    child: Transform.rotate(
+                      angle: -50,
+                      child: Image.asset("assets/images/others/vanshika_card.png", height: 250),
+                    ),
                   ),
-                ).animate().slideX(begin: 1, end: 0, duration: 1.25.seconds, curve: Curves.fastEaseInToSlowEaseOut),
+                ),
                 Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  child: Container(
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: Column(
-                      children: [
-                        Text(
-                          "Take control of you finances on just your phone.",
-                          style: UIHelper.current.funnelTextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            height: 1.05,
+                  child: SlideTransition(
+                    position: _bottomContentSlideTransition,
+                    child: Container(
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Take control of you finances on just your phone.",
+                            style: UIHelper.current.funnelTextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                              height: 1.05,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        Text(
-                          "Convenience to control and manage your finances in one place to save your time.",
-                          style: UIHelper.current.funnelTextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w200,
-                            height: 1.05,
-                            color: Colors.black.withAlpha(110),
+                          SizedBox(height: 20),
+                          Text(
+                            "Convenience to control and manage your finances in one place to save your time.",
+                            style: UIHelper.current.funnelTextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w200,
+                              height: 1.05,
+                              color: Colors.black.withAlpha(110),
+                            ),
                           ),
-                        ),
 
-                        SizedBox(height: 30),
-                        SizedBox(
-                          width: double.infinity,
-                          child: StandardButtonComponent(
-                            onTap: _changeScreen,
-                            child: StandardButtonText(text: "Let Us Get Started"),
+                          SizedBox(height: 30),
+                          SizedBox(
+                            width: double.infinity,
+                            child: StandardButtonComponent(
+                              onTap: _changeScreen,
+                              child: StandardButtonText(text: "Let Us Get Started"),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ).animate().slideY(
-                  begin: 1.5,
-                  end: 0,
-                  duration: 1.seconds,
-                  curve: Curves.fastEaseInToSlowEaseOut,
-                  delay: 500.ms,
                 ),
               ],
             ),
