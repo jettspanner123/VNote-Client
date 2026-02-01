@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vnote_client/features/registration_screen/registration.service.dart';
 import 'package:vnote_client/models/validators/input_validators.dart';
@@ -8,6 +9,7 @@ import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/components/buttons/outline_button.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_field.dart';
 import 'package:vnote_client/shared/views/submit_button_with_dismiss_keyboard_button.dart';
+import 'package:vnote_client/utils/ui_helper.dart';
 
 class RegisterSignUpView extends StatefulWidget {
   final GlobalKey<FormState> formState;
@@ -30,6 +32,8 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
 
   bool isKeyboardUp = false;
   bool isRegisteringAccount = false;
+  bool isError = false;
+  String error = "";
 
   @override
   void initState() {
@@ -55,6 +59,13 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
     }
   }
 
+  void _handleErrorState(String errorMessage) {
+    setState(() {
+      error = errorMessage;
+      isError = true;
+    });
+  }
+
   void handleRegestringAccount() async {
     setState(() => isRegisteringAccount = true);
     try {
@@ -65,6 +76,7 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
         phoneNumberController: _phoneNumberController,
         fullNameController: _fullNameController,
         passwordController: _passwordController,
+        onError: _handleErrorState,
       );
     } finally {
       setState(() => isRegisteringAccount = false);
@@ -133,7 +145,25 @@ class _RegisterSignUpViewState extends State<RegisterSignUpView>
               return InputValidators.current.passwordValidator(value, _passwordController);
             },
           ),
-          SizedBox(height: 30),
+          SizedBox(height: isError ? 20 : 30),
+
+          AnimatedSwitcher(
+            duration: 250.milliseconds,
+            transitionBuilder: (child, animation) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: isError
+                ? Column(
+                    children: [
+                      Text(
+                        error,
+                        style: UIHelper.current.funnelTextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  )
+                : SizedBox.shrink(),
+          ),
           StandardButtonWithDismissKeyboardComponent(
             isLoading: isRegisteringAccount,
             onTap: handleRegestringAccount,
