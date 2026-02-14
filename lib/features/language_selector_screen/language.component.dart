@@ -77,7 +77,7 @@ class _LanguageOptionState extends State<LanguageOption> {
                 ),
               ),
               Text(
-                widget.language.$1.toString().split(".").last.capitalizeFirst(),
+                getLanguageName(widget.language.$1),
                 style: UIHelper.current.funnelTextStyle(fontWeight: FontWeight.bold),
               ),
             ],

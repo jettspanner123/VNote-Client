@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vnote_client/constants/navigation_factory.dart';
 import 'package:vnote_client/features/forgot_password_screen/forgot_password.controller.dart';
 import 'package:vnote_client/features/home_screen/home.controller.dart';
@@ -22,9 +23,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: const Locale("en"),
+      supportedLocales: const [Locale('en'), Locale('hi'), Locale('pa'), Locale('ta'), Locale('te')],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       title: 'VNote',
       debugShowCheckedModeBanner: false,
-      initialRoute: NavigationFactory.registrationScreen,
+      initialRoute: NavigationFactory.homeScreen,
       routes: {
         NavigationFactory.splashScreen: (context) => const SplashScreenController(),
         NavigationFactory.landingScreen: (context) => const LandingControllerScreen(),

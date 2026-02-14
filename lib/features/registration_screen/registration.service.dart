@@ -14,28 +14,28 @@ class RegistrationService {
     required TextEditingController passwordController,
     required Function(String) onError,
   }) async {
-    // if (formState.currentState?.validate() ?? false) {
-    KeyboardHelper.current.dismissKeyboad(context);
+    if (formState.currentState?.validate() ?? false) {
+      KeyboardHelper.current.dismissKeyboad(context);
 
-    // Api Call
-    final data = await ApiFactory.current.user.createUser(
-      fullName: fullNameController.text,
-      email: emailController.text,
-      phoneNumber: phoneNumberController.text,
-      password: passwordController.text,
-    );
+      // Api Call
+      final data = await ApiFactory.current.user.createUser(
+        fullName: fullNameController.text,
+        email: emailController.text,
+        phoneNumber: phoneNumberController.text,
+        password: passwordController.text,
+      );
 
-    if (data == null) {
-      onError("Something Went Wrong! Please try again.");
-      return;
+      if (data == null) {
+        onError("Something Went Wrong! Please try again.");
+        return;
+      }
+      if (data.success) {
+        await Future.delayed(500.milliseconds, () {
+          Navigator.pushNamed(context, NavigationFactory.registrationOtpScreen);
+        });
+      } else {
+        onError(data.message);
+      }
     }
-    if (data.success) {
-      await Future.delayed(500.milliseconds, () {
-        Navigator.pushNamed(context, NavigationFactory.registrationOtpScreen);
-      });
-    } else {
-      onError(data.message);
-    }
-    // }
   }
 }

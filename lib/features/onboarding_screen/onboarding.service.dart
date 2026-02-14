@@ -22,8 +22,7 @@ class OnboardingService {
     ),
   ];
 
-  Future<void> completeOnboarding(BuildContext context) async {
-    await Future.delayed(const Duration(milliseconds: 250));
+  void completeOnboarding(BuildContext context) async {
     Navigator.pushNamed(context, NavigationFactory.registrationScreen);
   }
 }

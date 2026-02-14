@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class OutlineButtonComponent extends StatefulWidget {
   final Widget child;
@@ -59,17 +60,20 @@ class _OutlineButtonComponentState extends State<OutlineButtonComponent> {
         onTap: () {
           widget.onTap?.call();
         },
-        child: AnimatedScale(
-          scale: _isClicked ? 0.95 : 1.0,
-          duration: Duration(milliseconds: widget.animationDuration),
-          child: AnimatedContainer(
+        child: AnimatedSize(
+          duration: 500.milliseconds,
+          child: AnimatedScale(
+            scale: _isClicked ? 0.95 : 1.0,
             duration: Duration(milliseconds: widget.animationDuration),
-            decoration: BoxDecoration(
-              border: widget.border ?? BoxBorder.all(color: Colors.black, width: 0.3),
-              borderRadius: BorderRadius.circular(widget.borderRadius),
-              color: widget.backgroundColor,
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: widget.animationDuration),
+              decoration: BoxDecoration(
+                border: widget.border ?? BoxBorder.all(color: Colors.black, width: 0.3),
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                color: widget.backgroundColor,
+              ),
+              child: widget.child,
             ),
-            child: widget.child,
           ),
         ),
       ),

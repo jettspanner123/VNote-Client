@@ -20,6 +20,23 @@ final List<(Language language, String image)> LANGUAGE_OPTIONS = [
   (Language.telugu, "assets/images/languages/telgu.png"),
 ];
 
+String getLanguageName(Language language) {
+  switch (language) {
+    case Language.hindi:
+      return "हिन्दी";
+    case Language.english:
+      return "English";
+    case Language.punjabi:
+      return "ਪੰਜਾਬੀ";
+    case Language.hinglish:
+      return "Hinglish";
+    case Language.tamil:
+      return "தமிழ்";
+    case Language.telugu:
+      return "తెలుగు";
+  }
+}
+
 class LanguageSelectorController extends StatefulWidget {
   const LanguageSelectorController({super.key});
 
