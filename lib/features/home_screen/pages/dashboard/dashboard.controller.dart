@@ -10,6 +10,6 @@ class DashboardController extends StatefulWidget {
 class _DashboardControllerState extends State<DashboardController> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(backgroundColor: Colors.white);
   }
 }
