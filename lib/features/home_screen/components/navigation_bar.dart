@@ -6,14 +6,31 @@ import 'package:vnote_client/constants/color_factory.dart';
 import 'package:vnote_client/features/home_screen/home.controller.dart';
 import 'package:vnote_client/store/home_scree_controller_bloc/home_screen.bloc.dart';
 import 'package:vnote_client/store/home_scree_controller_bloc/home_screen.event.dart';
-import 'package:vnote_client/utils/ui_helper.dart';
 
-final List<(String, IconData, HomeScreenPageOptions, HomeScreenControllerEvent)> NavigationBarOptions = [
-  ("Home", Icons.home, HomeScreenPageOptions.dashboard, HomeScreenDashboardPressed()),
-  ("Stats", Icons.auto_graph, HomeScreenPageOptions.statistics, HomeScreenStatisticsPressed()),
-  ("Add", Icons.add, HomeScreenPageOptions.add, HomeScreenAddPressed()),
-  ("Card", Icons.credit_card, HomeScreenPageOptions.card, HomeScreenCardPressed()),
-  ("Profile", Icons.person, HomeScreenPageOptions.profile, HomeScreenProfilePressed()),
+final List<(String, String, String, HomeScreenPageOptions, HomeScreenControllerEvent)> NavigationBarOptions = [
+  (
+    "Home",
+    "assets/icons/navigation_bar/home_icon_selected.png",
+    "assets/icons/navigation_bar/home_icon_unselected.png",
+    HomeScreenPageOptions.dashboard,
+    HomeScreenDashboardPressed(),
+  ),
+  (
+    "Stats",
+    "assets/icons/navigation_bar/stats_icon_selected.png",
+    "assets/icons/navigation_bar/stats_icon_unselected.png",
+    HomeScreenPageOptions.statistics,
+    HomeScreenStatisticsPressed(),
+  ),
+  ("Add", "", "", HomeScreenPageOptions.add, HomeScreenAddPressed()),
+  ("Card", "", "", HomeScreenPageOptions.card, HomeScreenCardPressed()),
+  (
+    "Profile",
+    "assets/icons/navigation_bar/profile_icon_selected.png",
+    "assets/icons/navigation_bar/profile_icon_unselected.png",
+    HomeScreenPageOptions.profile,
+    HomeScreenProfilePressed(),
+  ),
 ];
 
 class NavigationBarComponent extends StatefulWidget {
@@ -44,10 +61,11 @@ class NavigationBarComponentState extends State<NavigationBarComponent> {
             children: NavigationBarOptions.map(
               (item) => NavigationBarItemComponent(
                 name: item.$1,
-                icon: item.$2,
-                value: item.$3,
+                active_icon: item.$2,
+                inactive_icon: item.$3,
+                value: item.$4,
                 globalValue: homeScreenBloc.state.currentPage,
-                event: item.$4,
+                event: item.$5,
               ),
             ).toList(),
           ),
@@ -59,14 +77,16 @@ class NavigationBarComponentState extends State<NavigationBarComponent> {
 
 class NavigationBarItemComponent extends StatefulWidget {
   final String name;
-  final IconData icon;
+  final String active_icon;
+  final String inactive_icon;
   final HomeScreenPageOptions value;
   final HomeScreenPageOptions globalValue;
   final HomeScreenControllerEvent event;
   const NavigationBarItemComponent({
     super.key,
     required this.name,
-    required this.icon,
+    required this.active_icon,
+    required this.inactive_icon,
     required this.value,
     required this.globalValue,
     required this.event,
@@ -107,10 +127,7 @@ class _NavigationBarItemComponentState extends State<NavigationBarItemComponent>
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: ColorFactory.accentColor),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(widget.icon, color: Colors.white),
-                    Text(widget.name, style: UIHelper.current.funnelTextStyle(fontSize: 12, color: Colors.white)),
-                  ],
+                  children: [Image.asset(widget.inactive_icon)],
                 ),
               )
             : AnimatedScale(
@@ -135,12 +152,17 @@ class _NavigationBarItemComponentState extends State<NavigationBarItemComponent>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(widget.icon),
-                        Transform.translate(
-                          offset: const Offset(0, -3),
-                          child: Text(
-                            widget.name,
-                            style: UIHelper.current.funnelTextStyle(fontSize: 10, fontWeight: FontWeight.w100),
+                        Container(
+                          height: 40,
+                          width: 40,
+                          child: Container(
+                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(1000)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Image.asset(
+                                widget.globalValue == widget.value ? widget.active_icon : widget.inactive_icon,
+                              ),
+                            ),
                           ),
                         ),
                       ],

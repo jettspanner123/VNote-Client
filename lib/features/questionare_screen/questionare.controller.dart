@@ -33,7 +33,7 @@ class QuestionareControllerScreen extends StatefulWidget {
 class _QuestionareControllerScreenState extends State<QuestionareControllerScreen> {
   final questionareServices = QuestionareServices();
   QuestionareScreenOptions _currentScreen = QuestionareScreenOptions.finalPage;
-  QuesitonareTypeOfUser _currentTypeOfUser = QuesitonareTypeOfUser.personal;
+  final QuesitonareTypeOfUser _currentTypeOfUser = QuesitonareTypeOfUser.personal;
 
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();

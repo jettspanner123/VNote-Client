@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:vnote_client/constants/color_factory.dart';
-import 'package:vnote_client/extensions/string_extensions.dart';
 import 'package:vnote_client/features/language_selector_screen/language.controller.dart';
 import 'package:vnote_client/utils/ui_helper.dart';
 

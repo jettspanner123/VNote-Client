@@ -10,6 +10,9 @@ class ProfileContorller extends StatefulWidget {
 class _ProfileContorllerState extends State<ProfileContorller> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(child: Container(child: Text("Profile View"))),
+    );
   }
 }

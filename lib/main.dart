@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         ],
         title: 'VNote',
         debugShowCheckedModeBanner: false,
-        initialRoute: NavigationFactory.splashScreen,
+        initialRoute: NavigationFactory.homeScreen,
         routes: {
           NavigationFactory.splashScreen: (context) => const SplashScreenController(),
           NavigationFactory.landingScreen: (context) => const LandingControllerScreen(),

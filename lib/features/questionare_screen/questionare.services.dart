@@ -29,6 +29,7 @@ class QuestionareServices {
       case QuestionareScreenOptions.finalPage:
         return null;
     }
+    return null;
   }
 
   QuestionareScreenOptions? handleSecondaryButtonTap(QuestionareScreenOptions currentScreen) {
