@@ -11,7 +11,7 @@ import 'package:vnote_client/utils/ui_helper.dart';
 final List<(String, IconData, HomeScreenPageOptions, HomeScreenControllerEvent)> NavigationBarOptions = [
   ("Home", Icons.home, HomeScreenPageOptions.dashboard, HomeScreenDashboardPressed()),
   ("Stats", Icons.auto_graph, HomeScreenPageOptions.statistics, HomeScreenStatisticsPressed()),
-  ("Scan", Icons.scanner, HomeScreenPageOptions.scan, HomeScreenScanPressed()),
+  ("Add", Icons.add, HomeScreenPageOptions.add, HomeScreenAddPressed()),
   ("Card", Icons.credit_card, HomeScreenPageOptions.card, HomeScreenCardPressed()),
   ("Profile", Icons.person, HomeScreenPageOptions.profile, HomeScreenProfilePressed()),
 ];
@@ -100,7 +100,7 @@ class _NavigationBarItemComponentState extends State<NavigationBarItemComponent>
           await HapticFeedback.lightImpact();
           homeScreenControllerBloc.add(widget.event);
         },
-        child: widget.value == HomeScreenPageOptions.scan
+        child: widget.value == HomeScreenPageOptions.add
             ? Container(
                 height: 60,
                 width: 60,

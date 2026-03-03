@@ -13,8 +13,8 @@ class HomeScreenControllerBloc extends Bloc<HomeScreenControllerEvent, HomeScree
       emit(HomeScreenControllerState(HomeScreenPageOptions.statistics));
     });
 
-    on<HomeScreenScanPressed>((event, emit) {
-      emit(HomeScreenControllerState(HomeScreenPageOptions.scan));
+    on<HomeScreenAddPressed>((event, emit) {
+      emit(HomeScreenControllerState(HomeScreenPageOptions.add));
     });
 
     on<HomeScreenCardPressed>((event, emit) {

@@ -4,7 +4,7 @@ class HomeScreenDashboardPressed extends HomeScreenControllerEvent {}
 
 class HomeScreenStatisticsPressed extends HomeScreenControllerEvent {}
 
-class HomeScreenScanPressed extends HomeScreenControllerEvent {}
+class HomeScreenAddPressed extends HomeScreenControllerEvent {}
 
 class HomeScreenCardPressed extends HomeScreenControllerEvent {}
 

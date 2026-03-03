@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vnote_client/features/home_screen/components/navigation_bar.dart';
+import 'package:vnote_client/features/home_screen/pages/card/card.contorller.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard/dashboard.controller.dart';
+import 'package:vnote_client/features/home_screen/pages/profile/profile.controller.dart';
 import 'package:vnote_client/features/home_screen/pages/statistics/statistics.controller.dart';
 import 'package:vnote_client/store/home_scree_controller_bloc/home_screen.bloc.dart';
 import 'package:vnote_client/store/home_scree_controller_bloc/home_screen.value.dart';
 
-enum HomeScreenPageOptions { dashboard, statistics, scan, card, profile }
+enum HomeScreenPageOptions { dashboard, statistics, add, card, profile }
 
 class HomeScreenController extends StatefulWidget {
   const HomeScreenController({super.key});
@@ -25,6 +27,8 @@ class _HomeScreenControllerState extends State<HomeScreenController> {
             children: [
               if (state.currentPage == HomeScreenPageOptions.dashboard) const DashboardController(),
               if (state.currentPage == HomeScreenPageOptions.statistics) const StatisticsController(),
+              if (state.currentPage == HomeScreenPageOptions.card) const CardController(),
+              if (state.currentPage == HomeScreenPageOptions.profile) const ProfileContorller(),
               Positioned(bottom: 25, right: 15, left: 15, child: NavigationBarComponent()),
             ],
           ),
