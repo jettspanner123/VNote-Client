@@ -23,7 +23,13 @@ final List<(String, String, String, HomeScreenPageOptions, HomeScreenControllerE
     HomeScreenStatisticsPressed(),
   ),
   ("Add", "", "", HomeScreenPageOptions.add, HomeScreenAddPressed()),
-  ("Card", "", "", HomeScreenPageOptions.card, HomeScreenCardPressed()),
+  (
+    "Card",
+    "assets/icons/navigation_bar/card_icon_selected.png",
+    "assets/icons/navigation_bar/card_icon_unselected.png",
+    HomeScreenPageOptions.card,
+    HomeScreenCardPressed(),
+  ),
   (
     "Profile",
     "assets/icons/navigation_bar/profile_icon_selected.png",
@@ -124,10 +130,14 @@ class _NavigationBarItemComponentState extends State<NavigationBarItemComponent>
             ? Container(
                 height: 60,
                 width: 60,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(100), color: ColorFactory.accentColor),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: ColorFactory.accentColor,
+                  boxShadow: [BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 10, offset: const Offset(0, 5))],
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Image.asset(widget.inactive_icon)],
+                  children: [Icon(Icons.add, color: Colors.white, size: 30)],
                 ),
               )
             : AnimatedScale(

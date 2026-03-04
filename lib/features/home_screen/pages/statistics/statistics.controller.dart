@@ -10,6 +10,9 @@ class StatisticsController extends StatefulWidget {
 class _StatisticsControllerState extends State<StatisticsController> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white);
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(child: Text("Statistics Page")),
+    );
   }
 }

@@ -18,6 +18,21 @@ class HomeScreenController extends StatefulWidget {
 }
 
 class _HomeScreenControllerState extends State<HomeScreenController> {
+  Widget _buildCurrentPage(HomeScreenControllerState state) {
+    switch (state.currentPage) {
+      case HomeScreenPageOptions.dashboard:
+        return const DashboardController();
+      case HomeScreenPageOptions.statistics:
+        return const StatisticsController();
+      case HomeScreenPageOptions.card:
+        return const CardController();
+      case HomeScreenPageOptions.profile:
+        return const ProfileContorller();
+      case HomeScreenPageOptions.add:
+        return const SizedBox.shrink();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeScreenControllerBloc, HomeScreenControllerState>(
@@ -25,10 +40,17 @@ class _HomeScreenControllerState extends State<HomeScreenController> {
         return Scaffold(
           body: Stack(
             children: [
-              if (state.currentPage == HomeScreenPageOptions.dashboard) const DashboardController(),
-              if (state.currentPage == HomeScreenPageOptions.statistics) const StatisticsController(),
-              if (state.currentPage == HomeScreenPageOptions.card) const CardController(),
-              if (state.currentPage == HomeScreenPageOptions.profile) const ProfileContorller(),
+              Positioned.fill(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 280),
+                  switchInCurve: Curves.easeOut,
+                  switchOutCurve: Curves.easeIn,
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  child: KeyedSubtree(key: ValueKey(state.currentPage), child: _buildCurrentPage(state)),
+                ),
+              ),
               Positioned(bottom: 25, right: 15, left: 15, child: NavigationBarComponent()),
             ],
           ),
