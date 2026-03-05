@@ -13,12 +13,17 @@ class OnTapScaleInteractionValue {
     this.duration,
     this.wantHaptics = true,
   });
+
+  static OnTapScaleInteractionValue normalInteraction() {
+    return OnTapScaleInteractionValue(initialScale: 1, finalScale: 1.1);
+  }
 }
 
 class OnTapScaleInteractionComponent extends StatefulWidget {
   final Widget child;
   final OnTapScaleInteractionValue config;
-  const OnTapScaleInteractionComponent({super.key, required this.child, required this.config});
+  VoidCallback? onTap;
+  OnTapScaleInteractionComponent({super.key, required this.child, required this.config, this.onTap});
 
   @override
   State<OnTapScaleInteractionComponent> createState() => _OnTapScaleInteractionComponentState();
@@ -41,6 +46,7 @@ class _OnTapScaleInteractionComponentState extends State<OnTapScaleInteractionCo
         setState(() {
           _isTapped = false;
         });
+        widget.onTap?.call();
       },
       onPointerCancel: (_) {
         if (!_isTapped) return;

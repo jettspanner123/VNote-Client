@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard/components/dashboard.main_content.controller.dart';
+import 'package:vnote_client/shared/components/page/appbar_action_button.dart';
 
 class DashboardController extends StatefulWidget {
   const DashboardController({super.key});
@@ -24,19 +25,10 @@ class _DashboardControllerState extends State<DashboardController> {
               padding: const EdgeInsetsGeometry.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100),
-                      border: BoxBorder.all(color: Colors.black.withAlpha(20), width: 1),
-                      boxShadow: [
-                        BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 10, offset: const Offset(0, 5)),
-                      ],
-                    ),
-                  ),
+                  AppbarActionButton(),
+                  AppbarActionButton()
                 ],
               ),
             ),

@@ -55,7 +55,7 @@ class NavigationBarComponentState extends State<NavigationBarComponent> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(100),
-        border: BoxBorder.all(color: Colors.black.withAlpha(20), width: 1),
+        border: BoxBorder.all(color: Colors.black.withAlpha(50), width: 1),
         boxShadow: [BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 10, offset: const Offset(0, 5))],
       ),
       child: Padding(
@@ -156,7 +156,7 @@ class _NavigationBarItemComponentState extends State<NavigationBarItemComponent>
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(100),
                       border: BoxBorder.all(
-                        color: widget.globalValue == widget.value ? Colors.black.withAlpha(20) : Colors.transparent,
+                        color: widget.globalValue == widget.value ? Colors.black.withAlpha(40) : Colors.transparent,
                       ),
                     ),
                     child: Column(
