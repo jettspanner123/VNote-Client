@@ -27,8 +27,16 @@ class _DashboardControllerState extends State<DashboardController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppbarActionButton(),
-                  AppbarActionButton()
+                  AppbarActionButton(
+                    expandInto: Padding(
+                      padding: const EdgeInsets.all(40.0),
+                      child: Text("Hello, world"),
+                    ),
+                    child: Icon(Icons.add),
+                  ),
+                  AppbarActionButton(
+                    child: Icon(Icons.person),
+                  )
                 ],
               ),
             ),
