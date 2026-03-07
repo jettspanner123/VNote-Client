@@ -22,8 +22,9 @@ class OnTapScaleInteractionValue {
 class OnTapScaleInteractionComponent extends StatefulWidget {
   final Widget child;
   final OnTapScaleInteractionValue config;
-  VoidCallback? onTap;
-  OnTapScaleInteractionComponent({super.key, required this.child, required this.config, this.onTap});
+  final bool? oneTapOnly;
+  final VoidCallback? onTap;
+  OnTapScaleInteractionComponent({super.key, required this.child, required this.config, this.onTap, this.oneTapOnly});
 
   @override
   State<OnTapScaleInteractionComponent> createState() => _OnTapScaleInteractionComponentState();
@@ -31,18 +32,35 @@ class OnTapScaleInteractionComponent extends StatefulWidget {
 
 class _OnTapScaleInteractionComponentState extends State<OnTapScaleInteractionComponent> {
   bool _isTapped = false;
+  int _tapCount = 0;
+
+  bool get _shouldScale {
+    if (widget.oneTapOnly != true) return true;
+    return _tapCount % 2 == 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Listener(
       onPointerDown: (_) {
         if (_isTapped) return;
+
+        final shouldScale = _shouldScale;
+
         setState(() {
-          _isTapped = true;
+          _isTapped = shouldScale;
+          _tapCount++;
         });
-        HapticFeedback.lightImpact();
+
+        if (shouldScale && widget.config.wantHaptics) {
+          HapticFeedback.lightImpact();
+        }
       },
       onPointerUp: (_) {
-        if (!_isTapped) return;
+        if (!_isTapped) {
+          widget.onTap?.call();
+          return;
+        }
         setState(() {
           _isTapped = false;
         });
