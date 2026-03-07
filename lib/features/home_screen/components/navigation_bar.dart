@@ -67,8 +67,8 @@ class NavigationBarComponentState extends State<NavigationBarComponent> {
             children: NavigationBarOptions.map(
               (item) => NavigationBarItemComponent(
                 name: item.$1,
-                active_icon: item.$2,
-                inactive_icon: item.$3,
+                activeIcon: item.$2,
+                inactiveIcon: item.$3,
                 value: item.$4,
                 globalValue: homeScreenBloc.state.currentPage,
                 event: item.$5,
@@ -83,16 +83,16 @@ class NavigationBarComponentState extends State<NavigationBarComponent> {
 
 class NavigationBarItemComponent extends StatefulWidget {
   final String name;
-  final String active_icon;
-  final String inactive_icon;
+  final String activeIcon;
+  final String inactiveIcon;
   final HomeScreenPageOptions value;
   final HomeScreenPageOptions globalValue;
   final HomeScreenControllerEvent event;
   const NavigationBarItemComponent({
     super.key,
     required this.name,
-    required this.active_icon,
-    required this.inactive_icon,
+    required this.activeIcon,
+    required this.inactiveIcon,
     required this.value,
     required this.globalValue,
     required this.event,
@@ -162,7 +162,7 @@ class _NavigationBarItemComponentState extends State<NavigationBarItemComponent>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
+                        SizedBox(
                           height: 40,
                           width: 40,
                           child: Container(
@@ -170,7 +170,7 @@ class _NavigationBarItemComponentState extends State<NavigationBarItemComponent>
                             child: Padding(
                               padding: const EdgeInsets.all(5),
                               child: Image.asset(
-                                widget.globalValue == widget.value ? widget.active_icon : widget.inactive_icon,
+                                widget.globalValue == widget.value ? widget.activeIcon : widget.inactiveIcon,
                               ),
                             ),
                           ),
