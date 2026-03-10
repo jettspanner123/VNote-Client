@@ -74,6 +74,7 @@ flutter:
     - assets/images/questionare_image/
     - assets/images/languages/
     - assets/icons/navigation_bar/
+    - assets/icons/dashboard/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

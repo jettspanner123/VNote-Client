@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard/components/dashboard.main_content.controller.dart';
-import 'package:vnote_client/shared/components/page/appbar.dart';
-import 'package:vnote_client/shared/components/page/appbar_action_button.dart';
-import 'package:vnote_client/utils/ui_helper.dart';
+import 'package:flutter/services.dart';
 
 class DashboardController extends StatefulWidget {
   const DashboardController({super.key});
@@ -13,42 +11,20 @@ class DashboardController extends StatefulWidget {
 
 class _DashboardControllerState extends State<DashboardController> {
   @override
+  void initState() {
+    super.initState();
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          DashboardMainContentController(),
-          Positioned(
-            top: 80,
-            left: 0,
-            right: 0,
-            child: Text("Dashboard", style: UIHelper.current.funnelTextStyle(fontSize: 19), textAlign: TextAlign.center),
-          ),
-          AppbarComponent(
-            children: [
-              AppbarActionButton(
-                expandInto: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 0),
-                  child: SizedBox.expand(
-                    child: Column(
-                      spacing: 0,
-                      children: [
-                        AppBarActionButtonOption(title: "Contacts", icon: Icons.person, isEdge: true),
-                        Divider(indent: 1),
-                        AppBarActionButtonOption(title: "Contacts", icon: Icons.person, isEdge: true),
-                      ],
-                    ),
-                  ),
-                ),
-                expandHeight: 106,
-                child: Icon(Icons.add),
-              ),
-              AppbarActionButton(child: Icon(Icons.person)),
-            ],
-          ),
-        ],
-      ),
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      body: Stack(children: [DashboardMainContentController()]),
     );
   }
 }
