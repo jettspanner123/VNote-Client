@@ -18,6 +18,7 @@ class NavigationFactory {
   static const String welcomeScreen = "/welcome";
   static const String registrationWelcomeScreen = "/registration-welcome";
   static const String languageSelectorScreen = "/language-selector";
+  static const String subscriptionScreen = "/subscription";
 
   static const String homeScreen = "/home-screen";
   Future pushPage(BuildContext context, Widget page) {

@@ -8,122 +8,124 @@ final _registerFormKey = GlobalKey<FormState>();
 final _loginFormKey = GlobalKey<FormState>();
 
 class RegistrationControllerScreen extends StatefulWidget {
-  const RegistrationControllerScreen({super.key});
+    const RegistrationControllerScreen({super.key});
 
-  @override
-  State<RegistrationControllerScreen> createState() => _RegistrationControllerScreenState();
+    @override
+    State<RegistrationControllerScreen> createState() => _RegistrationControllerScreenState();
 }
 
 enum RegistrationControllerScreenOptions { register, login }
 
 class _RegistrationControllerScreenState extends State<RegistrationControllerScreen>
     with SingleTickerProviderStateMixin {
-  RegistrationControllerScreenOptions selectedScreen = RegistrationControllerScreenOptions.register;
+    RegistrationControllerScreenOptions selectedScreen = RegistrationControllerScreenOptions.register;
 
-  final _scrollController = ScrollController();
+    final _scrollController = ScrollController();
 
-  late AnimationController _animationController;
-  late Animation<Offset> _slideFromTopAnimation;
-  late Animation<Offset> _slideFromBottomAnimation;
+    late AnimationController _animationController;
+    late Animation<Offset> _slideFromTopAnimation;
+    late Animation<Offset> _slideFromBottomAnimation;
 
-  bool isLoading = false;
+    bool isLoading = false;
 
-  @override
-  void initState() {
-    super.initState();
+    @override
+    void initState() {
+        super.initState();
 
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 750));
+        _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 750));
 
-    final curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.fastEaseInToSlowEaseOut);
-    _slideFromTopAnimation = Tween<Offset>(
-      begin: const Offset(0, -2),
-      end: const Offset(0, 0),
-    ).animate(curvedAnimation);
-    _slideFromBottomAnimation = Tween<Offset>(
-      begin: const Offset(0, 2),
-      end: const Offset(0, 0),
-    ).animate(curvedAnimation);
+        final curvedAnimation = CurvedAnimation(parent: _animationController, curve: Curves.fastEaseInToSlowEaseOut);
+        _slideFromTopAnimation = Tween<Offset>(
+            begin: const Offset(0, -2),
+            end: const Offset(0, 0),
+        ).animate(curvedAnimation);
+        _slideFromBottomAnimation = Tween<Offset>(
+            begin: const Offset(0, 2),
+            end: const Offset(0, 0),
+        ).animate(curvedAnimation);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _animationController.forward();
-    });
-  }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+                _animationController.forward();
+            }
+        );
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      extendBody: true,
-      // Main content
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsetsGeometry.only(left: 20, right: 20, top: 0, bottom: 0),
-          child: SingleChildScrollView(
-            controller: _scrollController,
-            padding: EdgeInsets.only(bottom: 30),
-            child: Column(
-              spacing: 0,
-              children: [
-                SlideTransition(
-                  position: _slideFromTopAnimation,
-                  child: Column(
-                    children: [
-                      SizedBox(height: 30),
-                      // Hero Image
-                      Container(
-                        color: Colors.blue,
-                        height: 200,
-                        child: Image.asset("assets/images/others/registration_screen_main.png"),
-                      ),
+    @override
+    Widget build(BuildContext context) {
+        return Scaffold(
+            backgroundColor: Colors.white,
+            extendBody: true,
+            // Main content
+            body: SafeArea(
+                child: Padding(
+                    padding: EdgeInsetsGeometry.only(left: 20, right: 20, top: 0, bottom: 0),
+                    child: SingleChildScrollView(
+                        controller: _scrollController,
+                        padding: EdgeInsets.only(bottom: 30),
+                        child: Column(
+                            spacing: 0,
+                            children: [
+                                SlideTransition(
+                                    position: _slideFromTopAnimation,
+                                    child: Column(
+                                        children: [
+                                            SizedBox(height: 30),
+                                            // Hero Image
+                                            Container(
+                                                color: Colors.blue,
+                                                height: 200,
+                                                child: Image.asset("assets/images/others/registration_screen_main.png"),
+                                            ),
 
-                      // Registration Type Segment
-                      Transform.translate(
-                        offset: const Offset(0, -8),
-                        child: SegmentedController<RegistrationControllerScreenOptions>(
-                          selected: selectedScreen,
-                          onSelectionChange: (newValue) {
-                            setState(() {
-                              selectedScreen = newValue;
-                            });
-                          },
-                          segments: [
-                            SegmentControl(value: RegistrationControllerScreenOptions.register, label: "Register"),
-                            SegmentControl(value: RegistrationControllerScreenOptions.login, label: "Login"),
-                          ],
+                                            // Registration Type Segment
+                                            Transform.translate(
+                                                offset: const Offset(0, -8),
+                                                child: SegmentedController<RegistrationControllerScreenOptions>(
+                                                    selected: selectedScreen,
+                                                    onSelectionChange: (newValue) {
+                                                        setState(() {
+                                                                selectedScreen = newValue;
+                                                            }
+                                                        );
+                                                    },
+                                                    segments: [
+                                                        SegmentControl(value: RegistrationControllerScreenOptions.register, label: "Register"),
+                                                        SegmentControl(value: RegistrationControllerScreenOptions.login, label: "Login"),
+                                                    ],
+                                                ),
+                                            ),
+                                        ],
+                                    ),
+                                ),
+
+                                // Register and Login Views
+                                SlideTransition(
+                                    position: _slideFromBottomAnimation,
+                                    child: AnimatedSwitcher(
+                                        duration: const Duration(milliseconds: 150),
+                                        transitionBuilder: (child, animation) {
+                                            return FadeTransition(opacity: animation, child: child);
+                                        },
+                                        child: selectedScreen == RegistrationControllerScreenOptions.register
+                                            ? Form(
+                                                key: _registerFormKey,
+                                                child: RegisterSignUpView(
+                                                    formState: _registerFormKey,
+                                                    scrollController: _scrollController,
+                                                    key: ValueKey("registration_screen_signup"),
+                                                ),
+                                            )
+                                            : Form(
+                                                key: _loginFormKey,
+                                                child: RegistrationLoginView(key: ValueKey("registration_screen_login")),
+                                            ),
+                                    ),
+                                ),
+                            ],
                         ),
-                      ),
-                    ],
-                  ),
+                    ),
                 ),
-
-                // Register and Login Views
-                SlideTransition(
-                  position: _slideFromBottomAnimation,
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 150),
-                    transitionBuilder: (child, animation) {
-                      return FadeTransition(opacity: animation, child: child);
-                    },
-                    child: selectedScreen == RegistrationControllerScreenOptions.register
-                        ? Form(
-                            key: _registerFormKey,
-                            child: RegisterSignUpView(
-                              formState: _registerFormKey,
-                              scrollController: _scrollController,
-                              key: ValueKey("registration_screen_signup"),
-                            ),
-                          )
-                        : Form(
-                            key: _loginFormKey,
-                            child: RegistrationLoginView(key: ValueKey("registration_screen_login")),
-                          ),
-                  ),
-                ),
-              ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
+        );
+    }
 }

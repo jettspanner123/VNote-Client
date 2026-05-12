@@ -1,0 +1,27 @@
+{
+  "name": "vnote-client",
+  "version": "1.0.0",
+  "description": "A new Flutter project.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:secrets": "bash -c 'source scripts/set-env-dev.sh && exec $SHELL'",
+    "dev:start": "flutter run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jettspanner123/VNote-Client.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jettspanner123/VNote-Client/issues"
+  },
+  "homepage": "https://github.com/jettspanner123/VNote-Client#readme"
+}

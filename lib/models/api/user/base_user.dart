@@ -1,45 +1,53 @@
-import 'package:vnote_client/models/api/business/business.dart';
+import 'package:vnote_client/constants/network_constants.dart';
 
-class SafeUser {
+class BaseUser {
     final String id;
-    final String fullName;
+    final String firstName;
+    final String lastName;
     final String email;
     final String phoneNumber;
+    final UserRole role;
+    final UserLanguage language;
     final DateTime createdAt;
     final DateTime updatedAt;
-    final List<Business> businesses;
 
-    const SafeUser({
+    const BaseUser({
         required this.id,
-        required this.fullName,
+        required this.firstName,
+        required this.lastName,
         required this.email,
         required this.phoneNumber,
+        required this.role,
+        required this.language,
         required this.createdAt,
         required this.updatedAt,
-        required this.businesses,
     });
 
-    factory SafeUser.fromJson(Map<String, dynamic> json) {
-        return SafeUser(
+    factory BaseUser.fromJson(Map<String, dynamic> json) {
+        return BaseUser(
             id: json['id'] as String,
-            fullName: json['fullName'] as String,
+            firstName: json['firstName'] as String,
+            lastName: json['lastName'] as String,
             email: json['email'] as String,
             phoneNumber: json['phoneNumber'] as String,
+            role: UserRole.fromString(json['role'] as String),
+            language: UserLanguage.fromString(json['language'] as String),
             createdAt: DateTime.parse(json['createdAt']),
             updatedAt: DateTime.parse(json['updatedAt']),
-            businesses: (json['businesses'] as List<dynamic>).map((e) => Business.fromJson(e)).toList(),
         );
     }
 
     Map<String, dynamic> toJson() {
         return {
             'id': id,
-            'fullName': fullName,
+            'firstName': firstName,
+            'lastName': lastName,
             'email': email,
             'phoneNumber': phoneNumber,
+            'role': role.value,
+            'language': language.value,
             'createdAt': createdAt.toIso8601String(),
             'updatedAt': updatedAt.toIso8601String(),
-            'businesses': businesses.map((e) => e.toJson()).toList(),
         };
     }
 }

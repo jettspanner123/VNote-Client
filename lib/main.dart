@@ -12,47 +12,49 @@ import 'package:vnote_client/features/registration_screen/registration.controlle
 import 'package:vnote_client/features/registration_screen/views/registration_otp_view.dart';
 import 'package:vnote_client/features/registration_screen/views/registration_welcome.controller.dart';
 import 'package:vnote_client/features/splash_screen/splash.controller.dart';
+import 'package:vnote_client/features/subscription_screen/subscription.controller.dart';
 import 'package:vnote_client/features/welcome_screen/welcome.controller.dart';
 import 'package:vnote_client/store/home_scree_controller_bloc/home_screen.bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+    runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+    const MyApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => HomeScreenControllerBloc())],
-      child: MaterialApp(
-        locale: const Locale("en"),
-        supportedLocales: const [Locale('en'), Locale('hi'), Locale('pa'), Locale('ta'), Locale('te')],
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        title: 'VNote',
-        debugShowCheckedModeBanner: false,
-        initialRoute: NavigationFactory.homeScreen,
-        routes: {
-          NavigationFactory.splashScreen: (context) => const SplashScreenController(),
-          NavigationFactory.landingScreen: (context) => const LandingControllerScreen(),
-          NavigationFactory.onboardingScreen: (context) => const OnboardingControllerScreen(),
-          NavigationFactory.questionareScreen: (context) => const QuestionareControllerScreen(),
-          NavigationFactory.registrationScreen: (context) => const RegistrationControllerScreen(),
-          NavigationFactory.forgotPasswordScreen: (context) => const ForgotPasswordControllerScreen(),
-          NavigationFactory.registrationOtpScreen: (context) => const RegistrationOtpView(),
-          NavigationFactory.welcomeScreen: (context) => const WelcomeScreenController(),
-          NavigationFactory.registrationWelcomeScreen: (context) => const RegistrationWelcomeController(),
-          NavigationFactory.languageSelectorScreen: (context) => const LanguageSelectorController(),
+    @override
+    Widget build(BuildContext context) {
+        return MultiBlocProvider(
+            providers: [BlocProvider(create: (context) => HomeScreenControllerBloc())],
+            child: MaterialApp(
+                locale: const Locale("en"),
+                supportedLocales: const[Locale('en'), Locale('hi'), Locale('pa'), Locale('ta'), Locale('te')],
+                localizationsDelegates: const[
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                ],
+                title: 'VNote',
+                debugShowCheckedModeBanner: false,
+                initialRoute: NavigationFactory.registrationScreen,
+                routes: {
+                    NavigationFactory.splashScreen:(context) => const SplashScreenController(),
+                    NavigationFactory.landingScreen:(context) => const LandingControllerScreen(),
+                    NavigationFactory.onboardingScreen:(context) => const OnboardingControllerScreen(),
+                    NavigationFactory.questionareScreen:(context) => const QuestionareControllerScreen(),
+                    NavigationFactory.registrationScreen:(context) => const RegistrationControllerScreen(),
+                    NavigationFactory.forgotPasswordScreen:(context) => const ForgotPasswordControllerScreen(),
+                    NavigationFactory.registrationOtpScreen:(context) => const RegistrationOtpView(),
+                    NavigationFactory.welcomeScreen:(context) => const WelcomeScreenController(),
+                    NavigationFactory.registrationWelcomeScreen:(context) => const RegistrationWelcomeController(),
+                    NavigationFactory.languageSelectorScreen:(context) => const LanguageSelectorController(),
+                    NavigationFactory.subscriptionScreen:(context) => const SubscriptionController(),
 
-          // MARK: Main Screens
-          NavigationFactory.homeScreen: (context) => const HomeScreenController(),
-        },
-      ),
-    );
-  }
+                    // MARK: Main Screens
+                    NavigationFactory.homeScreen:(context) => const HomeScreenController(),
+                },
+            ),
+        );
+    }
 }

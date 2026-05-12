@@ -4,25 +4,30 @@ import 'package:vnote_client/store/home_scree_controller_bloc/home_screen.event.
 import 'package:vnote_client/store/home_scree_controller_bloc/home_screen.value.dart';
 
 class HomeScreenControllerBloc extends Bloc<HomeScreenControllerEvent, HomeScreenControllerState> {
-  HomeScreenControllerBloc() : super(HomeScreenControllerState(HomeScreenPageOptions.dashboard)) {
-    on<HomeScreenDashboardPressed>((event, emit) {
-      emit(HomeScreenControllerState(HomeScreenPageOptions.dashboard));
-    });
+    HomeScreenControllerBloc() : super(HomeScreenControllerState(HomeScreenPageOptions.dashboard)) {
+        on<HomeScreenDashboardPressed>((event, emit) {
+                emit(HomeScreenControllerState(HomeScreenPageOptions.dashboard));
+            }
+        );
 
-    on<HomeScreenStatisticsPressed>((event, emit) {
-      emit(HomeScreenControllerState(HomeScreenPageOptions.statistics));
-    });
+        on<HomeScreenStatisticsPressed>((event, emit) {
+                emit(HomeScreenControllerState(HomeScreenPageOptions.statistics));
+            }
+        );
 
-    on<HomeScreenAddPressed>((event, emit) {
-      emit(HomeScreenControllerState(HomeScreenPageOptions.add));
-    });
+        on<HomeScreenAddPressed>((event, emit) {
+                emit(HomeScreenControllerState(HomeScreenPageOptions.add));
+            }
+        );
 
-    on<HomeScreenCardPressed>((event, emit) {
-      emit(HomeScreenControllerState(HomeScreenPageOptions.card));
-    });
+        on<HomeScreenCardPressed>((event, emit) {
+                emit(HomeScreenControllerState(HomeScreenPageOptions.card));
+            }
+        );
 
-    on<HomeScreenProfilePressed>((event, emit) {
-      emit(HomeScreenControllerState(HomeScreenPageOptions.profile));
-    });
-  }
+        on<HomeScreenProfilePressed>((event, emit) {
+                emit(HomeScreenControllerState(HomeScreenPageOptions.profile));
+            }
+        );
+    }
 }
