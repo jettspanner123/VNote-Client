@@ -10,7 +10,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:secrets": "bash -c 'source scripts/set-env-dev.sh && exec $SHELL'",
-    "dev:start": "flutter run"
+    "dev:start": "flutter run",
+    "dev:profile": "flutter run --profile",
+    "dev:clean": "flutter clean",
+    "dev:build": "flutter pub get",
+    "dev:verbose": "flutter run --verbose"
+
   },
   "repository": {
     "type": "git",

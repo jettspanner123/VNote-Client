@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../constants/color_factory.dart';
+
 class UIHelper {
     static final current = UIHelper();
 
@@ -82,6 +84,44 @@ class UIHelper {
             decorationStyle: decorationStyle,
             decorationThickness: decorationThickness,
         );
+    }
+
+    Color getBackgroundColorForColorMode(AppColorMode colorMode) {
+        if (colorMode == AppColorMode.DARK) return ColorFactory.darkBackgroundColor;
+        return ColorFactory.backgroundColor;
+    }
+
+    Color getDefaultColorOrCustom(Color defaultColor, Color? customColor) {
+        if (customColor == null) return defaultColor;
+        return customColor;
+    }
+
+    Color getTextColorForColorMode(AppColorMode colorMode) {
+        if (colorMode == AppColorMode.DARK) return Colors.white;
+        return Colors.black;
+    }
+
+    Color getForegroundColorForColorMode(AppColorMode colorMode) {
+        if (colorMode == AppColorMode.DARK) return ColorFactory.darkForegroundColor;
+        return Colors.white;
+    }
+
+    T getValueAccordingToColorMode<T>({required AppColorMode colorMode, required T darkValue, required T lightValue}) {
+        if (colorMode == AppColorMode.DARK) return darkValue;
+        return lightValue;
+    }
+
+    BoxShadow getDefaultBoxShadow({Color color = Colors.black, double borderRadius = 10, Offset offset = const Offset(0, 5), int opacity = 10}) {
+        return BoxShadow(
+            color: color.withAlpha(opacity),
+            blurRadius: 10,
+            offset: const Offset(0, 5)
+        );
+    }
+
+    BoxBorder getDefaultBorder({required AppColorMode colorMode, Color lightColor = Colors.black, Color darkColor = Colors.white, double width = 1, int opacity = 50}) {
+        if (colorMode == AppColorMode.DARK) return Border.all(color: darkColor.withAlpha(opacity), width: width);
+        return Border.all(color: lightColor.withAlpha(opacity), width: width);
     }
 
     void scrollDownToKey(GlobalKey key) async {

@@ -14,6 +14,7 @@ import 'package:vnote_client/features/registration_screen/views/registration_wel
 import 'package:vnote_client/features/splash_screen/splash.controller.dart';
 import 'package:vnote_client/features/subscription_screen/subscription.controller.dart';
 import 'package:vnote_client/features/welcome_screen/welcome.controller.dart';
+import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
 import 'package:vnote_client/store/home_scree_controller_bloc/home_screen.bloc.dart';
 
 void main() {
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
         return MultiBlocProvider(
-            providers: [BlocProvider(create: (context) => HomeScreenControllerBloc())],
+            providers: [
+                BlocProvider(create: (context) => HomeScreenControllerBloc()),
+                BlocProvider(create: (context) => GlobalColorModeControllerBloc()),
+            ],
             child: MaterialApp(
                 locale: const Locale("en"),
                 supportedLocales: const[Locale('en'), Locale('hi'), Locale('pa'), Locale('ta'), Locale('te')],
@@ -37,7 +41,7 @@ class MyApp extends StatelessWidget {
                 ],
                 title: 'VNote',
                 debugShowCheckedModeBanner: false,
-                initialRoute: NavigationFactory.registrationScreen,
+                initialRoute: NavigationFactory.homeScreen,
                 routes: {
                     NavigationFactory.splashScreen:(context) => const SplashScreenController(),
                     NavigationFactory.landingScreen:(context) => const LandingControllerScreen(),

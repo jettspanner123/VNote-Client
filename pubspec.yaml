@@ -73,6 +73,7 @@ flutter:
     - assets/icons/
     - assets/images/success_badge/
     - assets/images/questionare_image/
+    - assets/images/template/
     - assets/images/languages/
     - assets/icons/navigation_bar/
     - assets/icons/dashboard/
