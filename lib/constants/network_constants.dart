@@ -2,7 +2,7 @@ class NetworkConstants {
   static final current = NetworkConstants();
   final String hostname = "Uddeshyas-MacBook-Air.local";
   final String port = "8080";
-  final String baseURL = '${NetworkConstants.current.hostname}:${NetworkConstants.current.port}';
+  String get baseURL => 'http://$hostname:$port';
 }
 
 enum NetworkServiceAccessModifiers {
