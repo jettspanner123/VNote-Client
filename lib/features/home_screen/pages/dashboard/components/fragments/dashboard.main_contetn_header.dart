@@ -18,7 +18,6 @@ class DashboardMainContentHeaderController extends StatefulWidget {
 class _DashboardMainContentHeaderState extends State<DashboardMainContentHeaderController> {
     @override
     Widget build(BuildContext context) {
-
         final globalColorModeBloc = context.watch<GlobalColorModeControllerBloc>();
         return Padding(
             padding: const EdgeInsetsGeometry.all(10),
