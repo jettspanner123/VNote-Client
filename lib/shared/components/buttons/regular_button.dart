@@ -9,6 +9,7 @@ class StandardButtonComponent extends StatefulWidget {
   final VoidCallback? onTap;
   final bool isLoading;
   final Color backgroundColor;
+  final Color tapBackgroundColor;
   final double borderRadius;
   final int animationDuration;
   final bool wantTapAnimation;
@@ -20,6 +21,7 @@ class StandardButtonComponent extends StatefulWidget {
     this.onTap,
     this.isLoading = false,
     this.backgroundColor = Colors.black,
+    this.tapBackgroundColor = ColorFactory.accentColor,
     this.borderRadius = 100,
     this.animationDuration = 25,
     this.wantTapAnimation = true,
@@ -77,7 +79,7 @@ class _StandardButtonComponentState extends State<StandardButtonComponent> {
               color: !widget.wantTapAnimation
                   ? widget.backgroundColor
                   : _isClicked
-                  ? ColorFactory.accentColor
+                  ? widget.tapBackgroundColor
                   : widget.backgroundColor,
               borderRadius: BorderRadius.circular(widget.borderRadius),
             ),
