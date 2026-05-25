@@ -9,17 +9,15 @@ class DashboardNumberButtonController extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GridView.count(
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: 3,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
-        childAspectRatio: 1.75,
-        children: DashboardMoneyRequestConstants.current.NUMBER_BUTTONS.map((value) {
-          return DashboardNumberButtonComponent(value: value, onTap: () => onButtonTap(value));
-        }).toList(),
-      ),
+    return GridView.count(
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 3,
+      mainAxisSpacing: 12,
+      crossAxisSpacing: 12,
+      childAspectRatio: 1.75,
+      children: DashboardMoneyRequestConstants.current.NUMBER_BUTTONS.map((value) {
+        return DashboardNumberButtonComponent(value: value, onTap: () => onButtonTap(value));
+      }).toList(),
     );
   }
 }

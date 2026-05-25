@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vnote_client/constants/color_factory.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/constants/dashboard.money_request_constants.dart';
-import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/dashboard.request_money_screen.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
 import 'package:vnote_client/utils/ui_helper.dart';
 
@@ -19,6 +18,7 @@ class DashboardNumberPresetController extends StatelessWidget {
       height: 36,
       child: ListView(
         scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(left: 18),
         children: DashboardMoneyRequestConstants.current.NUMBER_BUTTON_PRESETS.map((preset) {
           final isSelected = currentValue == preset.toString();
           return Padding(
