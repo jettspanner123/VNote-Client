@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/components/dashboard.number_button_controller.dart';
+import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/components/dashboard.number_preset_controller.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/constants/dashboard.money_request_constants.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/components/dashboard.number_counter_controller.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
@@ -146,6 +147,13 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
                             child: Column(
                               children: [
                                 DashboardNumberCounterController(enteredRequestMoneyValue: enteredRequestMoneyValue),
+                                const SizedBox(height: 14),
+                                DashboardNumberPresetController(
+                                  currentValue: enteredRequestMoneyValue,
+                                  onPresetTap: (value) => setState(() {
+                                    enteredRequestMoneyValue = value;
+                                  }),
+                                ),
                                 const SizedBox(height: 14),
                                 DashboardNumberButtonController(onButtonTap: _onNumberButtonTap),
                                 const SizedBox(height: 12),

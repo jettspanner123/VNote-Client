@@ -14,8 +14,8 @@
     "dev:profile": "flutter run --profile",
     "dev:clean": "flutter clean",
     "dev:build": "flutter pub get",
-    "dev:verbose": "flutter run --verbose"
-
+    "dev:verbose": "flutter run --verbose",
+    "dev:devices": "flutter devices"
   },
   "repository": {
     "type": "git",
