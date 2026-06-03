@@ -15,6 +15,9 @@ class StandardInputField extends StatefulWidget {
   final Widget? prefixWidget;
   final bool isDisabled;
   final List<TextInputFormatter>? inputFormatters;
+  final Color borderColor;
+  final Color placeholderTextColor;
+  final Color iconColor;
   const StandardInputField({
     super.key,
     required this.textController,
@@ -28,6 +31,9 @@ class StandardInputField extends StatefulWidget {
     this.isDisabled = false,
     this.onChange,
     this.inputFormatters,
+    this.borderColor = Colors.black,
+    this.placeholderTextColor = Colors.black,
+    this.iconColor = Colors.black,
   });
 
   @override
@@ -68,7 +74,7 @@ class _StandardInputFieldState extends State<StandardInputField> with SingleTick
         hintText: widget.placeholder,
         hintStyle: UIHelper.current.funnelTextStyle(
           fontSize: 15.5,
-          color: Colors.black.withAlpha(80),
+          color: widget.placeholderTextColor.withAlpha(80),
           fontWeight: FontWeight.w500,
         ),
         prefix: widget.prefixWidget,
@@ -76,11 +82,11 @@ class _StandardInputFieldState extends State<StandardInputField> with SingleTick
         prefixIcon: widget.icon,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.black.withAlpha(90), width: 0.3),
+          borderSide: BorderSide(color: widget.borderColor.withAlpha(90), width: 0.3),
         ),
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.black.withAlpha(50), width: 0.5),
+          borderSide: BorderSide(color: widget.borderColor.withAlpha(50), width: 0.5),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -95,7 +101,7 @@ class _StandardInputFieldState extends State<StandardInputField> with SingleTick
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(width: 1.5, color: Colors.black),
+          borderSide: BorderSide(width: 1.5, color: widget.borderColor),
           gapPadding: 0,
         ),
       ),

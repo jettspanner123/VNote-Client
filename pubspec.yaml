@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  audioplayers:
   animated_switcher_plus:
   http:
   flutter:
@@ -72,6 +73,7 @@ flutter:
     - assets/images/onboarding_images/
     - assets/images/others/
     - assets/icons/
+    - assets/sounds/
     - assets/images/success_badge/
     - assets/images/questionare_image/
     - assets/images/template/

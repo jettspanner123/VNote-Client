@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vnote_client/constants/color_factory.dart';
-import 'package:vnote_client/shared/components/buttons/button_text.dart';
-import 'package:vnote_client/shared/components/buttons/regular_button.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_field.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_label.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
@@ -123,17 +121,6 @@ class DashboardRequestMoneyCreateUserControllerState extends State<DashboardRequ
                       },
                     ),
                     const SizedBox(height: 32),
-
-                    // ── Submit ─────────────────────────────────────────────
-                    SizedBox(
-                      width: double.infinity,
-                      child: StandardButtonComponent(
-                        tapBackgroundColor: Colors.white,
-                        backgroundColor: ColorFactory.accentColor,
-                        onTap: _submit,
-                        child: StandardButtonText(text: "Add Person"),
-                      ),
-                    ),
                   ],
                 ),
               ),

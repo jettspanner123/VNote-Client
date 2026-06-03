@@ -4,9 +4,11 @@ import 'package:vnote_client/constants/component_constants.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/views/dashboard.request_money_create_user_controller.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/views/dashboard.request_money_payment_controller.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/views/dashboard.request_money_select_user_controller.dart';
+import 'package:vnote_client/shared/animations/circle_reveal_route_animation.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/components/buttons/regular_button.dart';
 import 'package:vnote_client/shared/components/page/appbar_action_button.dart';
+import 'package:vnote_client/shared/views/money_sent_or_requested_successfully_component.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
 import 'package:vnote_client/constants/color_factory.dart';
 import 'package:vnote_client/utils/ui_helper.dart';
@@ -27,14 +29,32 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
 
   String enteredRequestMoneyValue = "0";
   DashboardRequestMoneyScreenState currentScreenState = DashboardRequestMoneyScreenState.ENTER_PAYMENT_DETAILS;
+  final GlobalKey _fabKey = GlobalKey();
+
+  Offset _getFabCenter() {
+    final box = _fabKey.currentContext?.findRenderObject() as RenderBox?;
+    if (box == null) return Offset.zero;
+    final position = box.localToGlobal(Offset.zero);
+    return position + Offset(box.size.width / 2, box.size.height / 2);
+  }
 
   void _goTo(DashboardRequestMoneyScreenState next) {
     setState(() => currentScreenState = next);
   }
 
   void _handleFloatingActionButtonTap() {
-    if (DashboardRequestMoneyScreenState.ENTER_PAYMENT_DETAILS == currentScreenState) {
+    if (currentScreenState == DashboardRequestMoneyScreenState.ENTER_PAYMENT_DETAILS) {
       _goTo(DashboardRequestMoneyScreenState.SELECT_USER);
+    } else if (currentScreenState == DashboardRequestMoneyScreenState.SELECT_USER) {
+      final center = _getFabCenter();
+      Navigator.of(context).push(
+        CircularRevealRoute(
+          originCenter: center,
+          builder: (_) => const MoneySentOrRequestedSuccessfullyComponent(
+            moneyFlowDirection: MoneySentOrRequestedSuccessfullyFlowDirection.REQUESTED,
+          ),
+        ),
+      );
     }
   }
 
@@ -188,6 +208,7 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
           child: SizedBox(
             width: double.infinity,
             child: StandardButtonComponent(
+              key: _fabKey,
               onTap: _handleFloatingActionButtonTap,
               backgroundColor: ColorFactory.accentColor,
               tapBackgroundColor: Colors.black,
