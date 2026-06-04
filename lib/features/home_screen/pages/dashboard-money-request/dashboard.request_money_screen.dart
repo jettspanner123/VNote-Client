@@ -7,7 +7,9 @@ import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/
 import 'package:vnote_client/shared/animations/circle_reveal_route_animation.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/components/buttons/regular_button.dart';
+import 'package:vnote_client/shared/components/buttons/slide_succession_component.dart';
 import 'package:vnote_client/shared/components/page/appbar_action_button.dart';
+import 'package:vnote_client/shared/components/page/page_button_holder.dart';
 import 'package:vnote_client/shared/views/money_sent_or_requested_successfully_component.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
 import 'package:vnote_client/constants/color_factory.dart';
@@ -201,25 +203,20 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: SizedBox(
-        width: double.infinity,
-        child: Padding(
-          padding: ComponentConstants.screenHorizontalPadding,
-          child: SizedBox(
-            width: double.infinity,
-            child: StandardButtonComponent(
-              key: _fabKey,
-              onTap: _handleFloatingActionButtonTap,
-              backgroundColor: ColorFactory.accentColor,
-              tapBackgroundColor: Colors.black,
-              child: StandardButtonText(
-                text: currentScreenState == DashboardRequestMoneyScreenState.ENTER_PAYMENT_DETAILS
-                    ? "Proceed"
-                    : "Request Money",
+      floatingActionButton: FloatingButtonHolderComponent(
+        child: currentScreenState == DashboardRequestMoneyScreenState.SELECT_USER
+            ? SlideSuccessionComponent()
+            : StandardButtonComponent(
+                key: _fabKey,
+                onTap: _handleFloatingActionButtonTap,
+                backgroundColor: ColorFactory.accentColor,
+                tapBackgroundColor: Colors.black,
+                child: StandardButtonText(
+                  text: currentScreenState == DashboardRequestMoneyScreenState.ENTER_PAYMENT_DETAILS
+                      ? "Proceed"
+                      : "Request Money",
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }

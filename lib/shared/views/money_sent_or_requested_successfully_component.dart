@@ -5,8 +5,8 @@ import 'package:vnote_client/constants/color_factory.dart';
 import 'package:vnote_client/services/audio_service.dart';
 import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/components/buttons/regular_button.dart';
+import 'package:vnote_client/shared/components/page/page_button_holder.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
-import 'package:vnote_client/utils/ui_helper.dart';
 
 enum MoneySentOrRequestedSuccessfullyFlowDirection { SENT, REQUESTED }
 
@@ -54,6 +54,10 @@ class MoneySentOrRequestedSuccessfullyComponentState extends State<MoneySentOrRe
             ),
           ],
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingButtonHolderComponent(
+        child: StandardButtonComponent(child: StandardButtonText(text: "Continue")),
       ),
     );
   }
