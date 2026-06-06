@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vnote_client/constants/component_constants.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/views/dashboard.request_money_create_user_controller.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/views/dashboard.request_money_payment_controller.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/views/dashboard.request_money_select_user_controller.dart';
@@ -32,9 +31,10 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
   String enteredRequestMoneyValue = "0";
   DashboardRequestMoneyScreenState currentScreenState = DashboardRequestMoneyScreenState.ENTER_PAYMENT_DETAILS;
   final GlobalKey _fabKey = GlobalKey();
+  final GlobalKey _slideThumbKey = GlobalKey();
 
-  Offset _getFabCenter() {
-    final box = _fabKey.currentContext?.findRenderObject() as RenderBox?;
+  Offset _getKeyCenter(GlobalKey key) {
+    final box = key.currentContext?.findRenderObject() as RenderBox?;
     if (box == null) return Offset.zero;
     final position = box.localToGlobal(Offset.zero);
     return position + Offset(box.size.width / 2, box.size.height / 2);
@@ -47,17 +47,19 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
   void _handleFloatingActionButtonTap() {
     if (currentScreenState == DashboardRequestMoneyScreenState.ENTER_PAYMENT_DETAILS) {
       _goTo(DashboardRequestMoneyScreenState.SELECT_USER);
-    } else if (currentScreenState == DashboardRequestMoneyScreenState.SELECT_USER) {
-      final center = _getFabCenter();
-      Navigator.of(context).push(
-        CircularRevealRoute(
-          originCenter: center,
-          builder: (_) => const MoneySentOrRequestedSuccessfullyComponent(
-            moneyFlowDirection: MoneySentOrRequestedSuccessfullyFlowDirection.REQUESTED,
-          ),
-        ),
-      );
     }
+  }
+
+  void _handleSlideConfirmed() {
+    final center = _getKeyCenter(_slideThumbKey);
+    Navigator.of(context).push(
+      CircularRevealRoute(
+        originCenter: center,
+        builder: (_) => const MoneySentOrRequestedSuccessfullyComponent(
+          moneyFlowDirection: MoneySentOrRequestedSuccessfullyFlowDirection.REQUESTED,
+        ),
+      ),
+    );
   }
 
   void _handleCreateUserTap() {
@@ -205,7 +207,7 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingButtonHolderComponent(
         child: currentScreenState == DashboardRequestMoneyScreenState.SELECT_USER
-            ? SlideSuccessionComponent()
+            ? SlideSuccessionComponent(thumbKey: _slideThumbKey, onConfirmed: _handleSlideConfirmed)
             : StandardButtonComponent(
                 key: _fabKey,
                 onTap: _handleFloatingActionButtonTap,
