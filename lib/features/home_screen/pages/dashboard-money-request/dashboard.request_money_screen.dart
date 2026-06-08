@@ -39,6 +39,8 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
         originCenter: thumbCenter,
         builder: (_) => const MoneySentOrRequestedSuccessfullyComponent(
           moneyFlowDirection: MoneySentOrRequestedSuccessfullyFlowDirection.REQUESTED,
+          heading: "Request Sent!",
+          description: "Your money request has been sent successfully.",
         ),
       ),
     );
@@ -65,6 +67,9 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
           originCenter: center,
           builder: (_) => const MoneySentOrRequestedSuccessfullyComponent(
             moneyFlowDirection: MoneySentOrRequestedSuccessfullyFlowDirection.REQUESTED,
+            heading: "Request Sent!",
+            description:
+                "Your money request has been sent successfully. The recipient will be notified and can review it shortly. You'll get an update once they respond.",
           ),
         ),
       );

@@ -39,6 +39,8 @@ class _DashboardTransferMoneyControllerState extends State<DashboardTransferMone
         originCenter: thumbCenter,
         builder: (_) => const MoneySentOrRequestedSuccessfullyComponent(
           moneyFlowDirection: MoneySentOrRequestedSuccessfullyFlowDirection.SENT,
+          heading: "Transfer Successful!",
+          description: "Your money has been transferred successfully.",
         ),
       ),
     );
@@ -65,6 +67,9 @@ class _DashboardTransferMoneyControllerState extends State<DashboardTransferMone
           originCenter: center,
           builder: (_) => const MoneySentOrRequestedSuccessfullyComponent(
             moneyFlowDirection: MoneySentOrRequestedSuccessfullyFlowDirection.SENT,
+            heading: "Transfer Successful!",
+            description:
+                "Your money has been transferred successfully. The amount will reflect in the recipient's account shortly. A confirmation has been sent to your registered contact.",
           ),
         ),
       );

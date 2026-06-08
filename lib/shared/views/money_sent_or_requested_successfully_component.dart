@@ -12,7 +12,14 @@ enum MoneySentOrRequestedSuccessfullyFlowDirection { SENT, REQUESTED }
 
 class MoneySentOrRequestedSuccessfullyComponent extends StatefulWidget {
   final MoneySentOrRequestedSuccessfullyFlowDirection moneyFlowDirection;
-  const MoneySentOrRequestedSuccessfullyComponent({super.key, required this.moneyFlowDirection});
+  final String heading;
+  final String description;
+  const MoneySentOrRequestedSuccessfullyComponent({
+    super.key,
+    required this.moneyFlowDirection,
+    required this.heading,
+    required this.description,
+  });
 
   @override
   State<MoneySentOrRequestedSuccessfullyComponent> createState() => MoneySentOrRequestedSuccessfullyComponentState();
@@ -122,7 +129,7 @@ class MoneySentOrRequestedSuccessfullyComponentState extends State<MoneySentOrRe
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: Text(
-                      "Money Request Successfully!",
+                      widget.heading,
                       textAlign: TextAlign.center,
                       style: UIHelper.current.funnelTextStyle(
                         fontWeight: FontWeight.bold,
@@ -140,9 +147,9 @@ class MoneySentOrRequestedSuccessfullyComponentState extends State<MoneySentOrRe
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      "A money thig has beeing happened with some shit kind of person bitch!",
+                      widget.description,
                       textAlign: TextAlign.center,
-                      style: UIHelper.current.funnelTextStyle(color: Colors.white.withAlpha(200)),
+                      style: UIHelper.current.funnelTextStyle(color: Colors.white.withAlpha(200), fontSize: 19),
                     ),
                   ),
                 ),
