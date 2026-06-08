@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:vnote_client/constants/color_factory.dart';
 import 'package:vnote_client/shared/components/text/color_mode_aware_text.dart';
+import 'package:vnote_client/shared/interaction/tap_scale_interaction.dart';
 import 'package:vnote_client/utils/ui_helper.dart';
 
 class SlideSuccessionComponent extends StatefulWidget {
@@ -136,14 +137,21 @@ class _SlideSuccessionComponentState extends State<SlideSuccessionComponent> wit
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: _thumbPadding),
             child: Stack(
+              clipBehavior: Clip.none,
               alignment: Alignment.center,
               children: [
-                // Label
-                ColorModeAwareTextComponent(
-                  text: "Slide To Confirm",
-                  lightColor: Colors.black.withAlpha(50),
-                  darkColor: Colors.white.withAlpha(50),
-                  style: UIHelper.current.funnelTextStyle(fontWeight: FontWeight.w500),
+                // Label — fades and blurs out as thumb advances
+                Opacity(
+                  opacity: (1.0 - progress).clamp(0.0, 1.0),
+                  child: ImageFiltered(
+                    imageFilter: ImageFilter.blur(sigmaX: progress * 8, sigmaY: progress * 8),
+                    child: ColorModeAwareTextComponent(
+                      text: "Slide To Confirm",
+                      lightColor: Colors.black.withAlpha(50),
+                      darkColor: Colors.white.withAlpha(50),
+                      style: UIHelper.current.funnelTextStyle(fontWeight: FontWeight.w500),
+                    ),
+                  ),
                 ),
 
                 // Slidable thumb
@@ -152,15 +160,18 @@ class _SlideSuccessionComponentState extends State<SlideSuccessionComponent> wit
                   child: GestureDetector(
                     onHorizontalDragUpdate: _onDragUpdate,
                     onHorizontalDragEnd: _onDragEnd,
-                    child: Container(
-                      height: _thumbSize,
-                      width: _thumbSize,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: ColorFactory.accentColor,
-                        border: Border.all(color: Colors.white.withAlpha(20), width: 1),
+                    child: OnTapScaleInteractionComponent(
+                      child: Container(
+                        height: _thumbSize,
+                        width: _thumbSize,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: ColorFactory.accentColor,
+                          border: Border.all(color: Colors.white.withAlpha(20), width: 1),
+                        ),
+                        child: Center(child: _buildThumbIcon(progress)),
                       ),
-                      child: Center(child: _buildThumbIcon(progress)),
+                      config: OnTapScaleInteractionValue(initialScale: 1.05, finalScale: 1),
                     ),
                   ),
                 ),
