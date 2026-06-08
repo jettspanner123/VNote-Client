@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vnote_client/constants/component_constants.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/views/dashboard.request_money_create_user_controller.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/views/dashboard.request_money_payment_controller.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard-money-request/views/dashboard.request_money_select_user_controller.dart';
@@ -32,6 +31,18 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
   String enteredRequestMoneyValue = "0";
   DashboardRequestMoneyScreenState currentScreenState = DashboardRequestMoneyScreenState.ENTER_PAYMENT_DETAILS;
   final GlobalKey _fabKey = GlobalKey();
+  final GlobalKey _slideThumbKey = GlobalKey();
+
+  void _handleSlideConfirmed(Offset thumbCenter) {
+    Navigator.of(context).push(
+      CircularRevealRoute(
+        originCenter: thumbCenter,
+        builder: (_) => const MoneySentOrRequestedSuccessfullyComponent(
+          moneyFlowDirection: MoneySentOrRequestedSuccessfullyFlowDirection.REQUESTED,
+        ),
+      ),
+    );
+  }
 
   Offset _getFabCenter() {
     final box = _fabKey.currentContext?.findRenderObject() as RenderBox?;
@@ -205,7 +216,7 @@ class _DashboardRequestMoneyControllerState extends State<DashboardRequestMoneyC
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingButtonHolderComponent(
         child: currentScreenState == DashboardRequestMoneyScreenState.SELECT_USER
-            ? SlideSuccessionComponent()
+            ? SlideSuccessionComponent(thumbKey: _slideThumbKey, onConfirmed: _handleSlideConfirmed)
             : StandardButtonComponent(
                 key: _fabKey,
                 onTap: _handleFloatingActionButtonTap,

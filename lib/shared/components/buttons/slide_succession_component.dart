@@ -9,7 +9,10 @@ import 'package:vnote_client/shared/interaction/tap_scale_interaction.dart';
 import 'package:vnote_client/utils/ui_helper.dart';
 
 class SlideSuccessionComponent extends StatefulWidget {
-  const SlideSuccessionComponent({super.key});
+  final void Function(Offset confirmedCenter)? onConfirmed;
+  final GlobalKey? thumbKey;
+
+  const SlideSuccessionComponent({super.key, this.onConfirmed, this.thumbKey});
 
   @override
   State<SlideSuccessionComponent> createState() => _SlideSuccessionComponentState();
@@ -24,6 +27,7 @@ class _SlideSuccessionComponentState extends State<SlideSuccessionComponent> wit
 
   double _trackWidth = 0;
   double _thumbOffset = 0;
+  final GlobalKey _trackKey = GlobalKey();
 
   double get _maxOffset => (_trackWidth - _thumbSize - _thumbPadding * 2).clamp(0.0, double.infinity);
 
@@ -59,6 +63,22 @@ class _SlideSuccessionComponentState extends State<SlideSuccessionComponent> wit
     final velocity = details.primaryVelocity ?? 0.0;
     final progress = _maxOffset > 0 ? _thumbOffset / _maxOffset : 0.0;
     final shouldConfirm = progress >= _confirmFraction || velocity >= _flickVelocity;
+    if (shouldConfirm) {
+      // Calculate where the thumb CENTER will be when fully at the end.
+      // Track left edge + padding + maxOffset + half thumbSize.
+      final trackBox = _trackKey.currentContext?.findRenderObject() as RenderBox?;
+      final Offset center;
+      if (trackBox != null) {
+        final trackOrigin = trackBox.localToGlobal(Offset.zero);
+        final finalThumbLeft = trackOrigin.dx + _thumbPadding + _maxOffset;
+        final thumbCenterX = finalThumbLeft + _thumbSize / 2;
+        final thumbCenterY = trackOrigin.dy + _height / 2;
+        center = Offset(thumbCenterX, thumbCenterY);
+      } else {
+        center = Offset.zero;
+      }
+      widget.onConfirmed?.call(center);
+    }
     _springTo(shouldConfirm ? _maxOffset : 0.0, velocity: velocity);
   }
 
@@ -128,6 +148,7 @@ class _SlideSuccessionComponentState extends State<SlideSuccessionComponent> wit
         });
 
         return Container(
+          key: _trackKey,
           height: _height,
           decoration: BoxDecoration(
             color: Colors.white.withAlpha(30),
@@ -162,6 +183,7 @@ class _SlideSuccessionComponentState extends State<SlideSuccessionComponent> wit
                     onHorizontalDragEnd: _onDragEnd,
                     child: OnTapScaleInteractionComponent(
                       child: Container(
+                        key: widget.thumbKey,
                         height: _thumbSize,
                         width: _thumbSize,
                         decoration: BoxDecoration(
