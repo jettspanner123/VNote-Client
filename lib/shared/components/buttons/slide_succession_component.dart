@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:vnote_client/constants/color_factory.dart';
@@ -16,8 +19,6 @@ class _SlideSuccessionComponentState extends State<SlideSuccessionComponent> wit
   static const double _thumbSize = 65.0;
   static const double _thumbPadding = 5.0;
   static const double _confirmFraction = 0.75;
-
-  // Velocity threshold (px/s) — a fast flick confirms even below 75%.
   static const double _flickVelocity = 800.0;
 
   double _trackWidth = 0;
@@ -30,7 +31,6 @@ class _SlideSuccessionComponentState extends State<SlideSuccessionComponent> wit
   @override
   void initState() {
     super.initState();
-    // Unbounded controller — spring simulation drives the value directly.
     _controller = AnimationController.unbounded(vsync: this);
     _controller.addListener(() {
       setState(() {
@@ -57,29 +57,67 @@ class _SlideSuccessionComponentState extends State<SlideSuccessionComponent> wit
   void _onDragEnd(DragEndDetails details) {
     final velocity = details.primaryVelocity ?? 0.0;
     final progress = _maxOffset > 0 ? _thumbOffset / _maxOffset : 0.0;
-
-    final bool shouldConfirm = progress >= _confirmFraction || velocity >= _flickVelocity;
-
-    final double target = shouldConfirm ? _maxOffset : 0.0;
-    _springTo(target, velocity: velocity);
+    final shouldConfirm = progress >= _confirmFraction || velocity >= _flickVelocity;
+    _springTo(shouldConfirm ? _maxOffset : 0.0, velocity: velocity);
   }
 
   void _springTo(double target, {double velocity = 0.0}) {
-    // Spring: stiffness controls snappiness, damping controls bounciness.
-    final spring = SpringDescription.withDampingRatio(
-      mass: 1.0,
-      stiffness: 300.0,
-      ratio: 0.7, // < 1.0 = under-damped = bouncy
-    );
+    final spring = SpringDescription.withDampingRatio(mass: 1.0, stiffness: 300.0, ratio: 0.7);
+    _controller.animateWith(SpringSimulation(spring, _thumbOffset, target, velocity));
+  }
 
-    final simulation = SpringSimulation(spring, _thumbOffset, target, velocity);
-    _controller.animateWith(simulation);
+  // ── icon blend ──────────────────────────────────────────────────────────
+
+  Widget _buildThumbIcon(double progress) {
+    final chevronOpacity = (1.0 - progress * 2).clamp(0.0, 1.0);
+    final checkOpacity = ((progress - 0.5) * 2).clamp(0.0, 1.0);
+    final chevronAngle = math.pi / 2 * progress;
+    final checkAngle = -math.pi / 2 * (1.0 - progress);
+    final blurAmount = math.sin(progress * math.pi) * 6.0;
+
+    Widget blurred(Widget child, double blur) {
+      if (blur < 0.1) return child;
+      return ImageFiltered(
+        imageFilter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
+        child: child,
+      );
+    }
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Chevron — rotates and fades out
+        Opacity(
+          opacity: chevronOpacity,
+          child: blurred(
+            Transform.rotate(
+              angle: chevronAngle,
+              child: const Icon(Icons.chevron_right, color: Colors.white, size: 30),
+            ),
+            blurAmount * chevronOpacity,
+          ),
+        ),
+        // Checkmark — rotates and fades in
+        Opacity(
+          opacity: checkOpacity,
+          child: blurred(
+            Transform.rotate(
+              angle: checkAngle,
+              child: const Icon(Icons.check_rounded, color: Colors.white, size: 28),
+            ),
+            blurAmount * checkOpacity,
+          ),
+        ),
+      ],
+    );
   }
 
   // ── build ────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
+    final progress = _maxOffset > 0 ? (_thumbOffset / _maxOffset).clamp(0.0, 1.0) : 0.0;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -122,7 +160,7 @@ class _SlideSuccessionComponentState extends State<SlideSuccessionComponent> wit
                         color: ColorFactory.accentColor,
                         border: Border.all(color: Colors.white.withAlpha(20), width: 1),
                       ),
-                      child: const Center(child: Icon(Icons.chevron_right, color: Colors.white, size: 30)),
+                      child: Center(child: _buildThumbIcon(progress)),
                     ),
                   ),
                 ),
