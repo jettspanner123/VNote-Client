@@ -6,6 +6,7 @@ import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
 class ColorModeAwareTextComponent extends StatefulWidget {
   final String text;
   final TextStyle? style;
+  final TextAlign? textAlign;
   final Color lightColor;
   final Color darkColor;
   const ColorModeAwareTextComponent({
@@ -14,6 +15,7 @@ class ColorModeAwareTextComponent extends StatefulWidget {
     required this.style,
     this.lightColor = Colors.black,
     this.darkColor = Colors.white,
+    this.textAlign = TextAlign.center,
   });
 
   @override
@@ -26,6 +28,7 @@ class _ColorModeAwareTextComponentState extends State<ColorModeAwareTextComponen
     final globalColorModeBloc = context.watch<GlobalColorModeControllerBloc>();
     return Text(
       widget.text,
+      textAlign: widget.textAlign,
       style: widget.style?.copyWith(
         color: globalColorModeBloc.state.colorMode == AppColorMode.LIGHT ? widget.lightColor : widget.darkColor,
       ),

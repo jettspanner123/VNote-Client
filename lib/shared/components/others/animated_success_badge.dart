@@ -32,7 +32,6 @@ class _AnimatedSuccessBadgeComponentState extends State<AnimatedSuccessBadgeComp
     return Container(
       height: widget.size,
       width: widget.size,
-      color: Colors.white,
       child: Stack(
         alignment: AlignmentGeometry.center,
         children: [
