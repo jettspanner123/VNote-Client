@@ -57,7 +57,6 @@ class DashboardRequestMoneyPaymentControllerState extends State<DashboardRequest
 
   @override
   Widget build(BuildContext context) {
-    final globalColorModeBloc = context.watch<GlobalColorModeControllerBloc>();
     return Column(
       children: [
         Padding(

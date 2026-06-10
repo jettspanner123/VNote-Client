@@ -6,6 +6,7 @@ import 'package:vnote_client/features/forgot_password_screen/forgot_password.con
 import 'package:vnote_client/features/home_screen/home.controller.dart';
 import 'package:vnote_client/features/landing_screen/landing.controller.dart';
 import 'package:vnote_client/features/language_selector_screen/language.controller.dart';
+import 'package:vnote_client/features/lock_screen/lockscreen.controller.dart';
 import 'package:vnote_client/features/onboarding_screen/onboarding.controller.dart';
 import 'package:vnote_client/features/questionare_screen/questionare.controller.dart';
 import 'package:vnote_client/features/registration_screen/registration.controller.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         ],
         title: 'VNote',
         debugShowCheckedModeBanner: false,
-        initialRoute: NavigationFactory.homeScreen,
+        initialRoute: NavigationFactory.lockScreen,
         routes: {
           NavigationFactory.splashScreen: (context) => const SplashScreenController(),
           NavigationFactory.landingScreen: (context) => const LandingControllerScreen(),
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
 
           // MARK: Main Screens
           NavigationFactory.homeScreen: (context) => const HomeScreenController(),
+          NavigationFactory.lockScreen: (context) => const LockScreenController(),
         },
       ),
     );

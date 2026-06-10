@@ -21,6 +21,7 @@ class NavigationFactory {
   static const String subscriptionScreen = "/subscription";
 
   static const String homeScreen = "/home-screen";
+  static const String lockScreen = "/lock-screen";
   Future pushPage(BuildContext context, Widget page) {
     return Navigator.push(
       context,

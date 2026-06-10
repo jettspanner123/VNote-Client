@@ -32,20 +32,14 @@ class MoneySentOrRequestedSuccessfullyComponentState extends State<MoneySentOrRe
   late final AnimationController _subtitleController;
 
   late final Animation<Offset> _badgeSlide;
-  late final Animation<double> _badgeFade;
   late final Animation<Offset> _titleSlide;
-  late final Animation<double> _titleFade;
   late final Animation<Offset> _subtitleSlide;
-  late final Animation<double> _subtitleFade;
 
   static const _duration = Duration(milliseconds: 600);
   static const _curve = Cubic(0.22, 1, 0.36, 1); // ease-out-quint
 
   Animation<Offset> _buildSlide(AnimationController c) =>
-      Tween<Offset>(begin: const Offset(0, 0.35), end: Offset.zero).animate(CurvedAnimation(parent: c, curve: _curve));
-
-  Animation<double> _buildFade(AnimationController c) =>
-      Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: c, curve: _curve));
+      Tween<Offset>(begin: const Offset(0, 3.0), end: Offset.zero).animate(CurvedAnimation(parent: c, curve: _curve));
 
   AnimationController _makeController() => AnimationController(vsync: this, duration: _duration);
 
@@ -58,11 +52,8 @@ class MoneySentOrRequestedSuccessfullyComponentState extends State<MoneySentOrRe
     _subtitleController = _makeController();
 
     _badgeSlide = _buildSlide(_badgeController);
-    _badgeFade = _buildFade(_badgeController);
     _titleSlide = _buildSlide(_titleController);
-    _titleFade = _buildFade(_titleController);
     _subtitleSlide = _buildSlide(_subtitleController);
-    _subtitleFade = _buildFade(_subtitleController);
 
     // Staggered starts — each kicks off 150ms after the previous,
     // but they all run concurrently (600ms duration each).
@@ -118,39 +109,36 @@ class MoneySentOrRequestedSuccessfullyComponentState extends State<MoneySentOrRe
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 100),
-              FadeTransition(
-                opacity: _badgeFade,
-                child: SlideTransition(position: _badgeSlide, child: AnimatedSuccessBadgeComponent(size: 325)),
+              SlideTransition(
+                position: _badgeSlide,
+                child: AnimatedSuccessBadgeComponent(
+                  successBadgeBackground: "assets/images/success_badge/success_white_bg.png",
+                  size: 325,
+                ),
               ),
-              FadeTransition(
-                opacity: _titleFade,
-                child: SlideTransition(
-                  position: _titleSlide,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Text(
-                      widget.heading,
-                      textAlign: TextAlign.center,
-                      style: UIHelper.current.funnelTextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        color: Colors.white,
-                      ),
+              SlideTransition(
+                position: _titleSlide,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10, top: 20),
+                  child: Text(
+                    widget.heading,
+                    textAlign: TextAlign.center,
+                    style: UIHelper.current.funnelTextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      color: Colors.white,
                     ),
                   ),
                 ),
               ),
-              FadeTransition(
-                opacity: _subtitleFade,
-                child: SlideTransition(
-                  position: _subtitleSlide,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      widget.description,
-                      textAlign: TextAlign.center,
-                      style: UIHelper.current.funnelTextStyle(color: Colors.white.withAlpha(200), fontSize: 19),
-                    ),
+              SlideTransition(
+                position: _subtitleSlide,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    widget.description,
+                    textAlign: TextAlign.center,
+                    style: UIHelper.current.funnelTextStyle(color: Colors.white.withAlpha(200), fontSize: 19),
                   ),
                 ),
               ),

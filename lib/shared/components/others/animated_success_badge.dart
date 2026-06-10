@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 
 class AnimatedSuccessBadgeComponent extends StatefulWidget {
   final double size;
-  const AnimatedSuccessBadgeComponent({super.key, this.size = 250});
+  final String successBadgeBackground;
+  final String successBadgeForeground;
+  const AnimatedSuccessBadgeComponent({
+    super.key,
+    this.size = 250,
+    this.successBadgeBackground = "assets/images/success_badge/success_bg.png",
+    this.successBadgeForeground = "assets/images/success_badge/success_fg.png",
+  });
 
   @override
   State<AnimatedSuccessBadgeComponent> createState() => _AnimatedSuccessBadgeComponentState();
@@ -35,11 +42,12 @@ class _AnimatedSuccessBadgeComponentState extends State<AnimatedSuccessBadgeComp
       child: Stack(
         alignment: AlignmentGeometry.center,
         children: [
-          RotationTransition(
-            turns: _infiniteRotateAnimation,
-            child: Image.asset("assets/images/success_badge/success_bg.png"),
-          ),
-          Image.asset("assets/images/success_badge/success_fg.png", height: widget.size * 0.28),
+          RotationTransition(turns: _infiniteRotateAnimation, child: Image.asset(widget.successBadgeBackground)),
+          Image.asset(widget.successBadgeForeground, height: widget.size * 0.28),
+          //   Transform.translate(
+          //     offset: Offset(0, -widget.size * 0.80),
+          //     child: Image.asset("assets/images/success_badge/success_person_top.png"),
+          //   ),
         ],
       ),
     );
