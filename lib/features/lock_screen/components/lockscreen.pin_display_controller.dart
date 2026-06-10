@@ -12,35 +12,23 @@ class LockScreenPinDisplayController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final globalColorModeBloc = context.watch<GlobalColorModeControllerBloc>();
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 26),
-      decoration: BoxDecoration(
-        color: UIHelper.current.getValueAccordingToColorMode(
-          colorMode: globalColorModeBloc.state.colorMode,
-          darkValue: const Color(0xFF2A2A2A),
-          lightValue: const Color(0xFFF1F4F3),
-        ),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Column(
-        children: [
-          LockScreenPinDisplayComponent(enteredPin: enteredPin),
-          const SizedBox(height: 8),
-          Text(
-            "Enter PIN",
-            style: UIHelper.current.funnelTextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: UIHelper.current.getValueAccordingToColorMode(
-                colorMode: globalColorModeBloc.state.colorMode,
-                darkValue: Colors.white70,
-                lightValue: const Color(0xFF6D7773),
-              ),
+    return Column(
+      children: [
+        LockScreenPinDisplayComponent(enteredPin: enteredPin),
+        const SizedBox(height: 30),
+        Text(
+          "Enter PIN",
+          style: UIHelper.current.funnelTextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: UIHelper.current.getValueAccordingToColorMode(
+              colorMode: globalColorModeBloc.state.colorMode,
+              darkValue: Colors.white70,
+              lightValue: const Color(0xFF6D7773),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

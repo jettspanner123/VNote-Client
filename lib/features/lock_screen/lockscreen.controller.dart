@@ -64,11 +64,12 @@ class _LockScreenControllerState extends State<LockScreenController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // PIN display card
+                const SizedBox(height: 100),
                 LockScreenPinDisplayController(enteredPin: _enteredPin),
                 const SizedBox(height: 40),
 
                 // Number pad — fixed height so it doesn't stretch
-                SizedBox(height: 420, child: LockScreenNumberButtonController(onButtonTap: _onButtonTap)),
+                Expanded(child: LockScreenNumberButtonController(onButtonTap: _onButtonTap)),
               ],
             ),
           ),
