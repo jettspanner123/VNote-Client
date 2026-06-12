@@ -31,8 +31,8 @@ class LockScreenPinDisplayComponent extends StatelessWidget {
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeOutCubic,
           margin: const EdgeInsets.symmetric(horizontal: 10),
-          width: isFilled ? 30 : 22,
-          height: isFilled ? 30 : 22,
+          width: isFilled ? 26 : 22,
+          height: isFilled ? 26 : 22,
           decoration: BoxDecoration(color: isFilled ? filledColor : emptyColor, shape: BoxShape.circle),
         );
       }),

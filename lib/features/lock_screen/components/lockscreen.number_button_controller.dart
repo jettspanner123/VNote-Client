@@ -15,7 +15,7 @@ class LockScreenNumberButtonController extends StatelessWidget {
       mainAxisSpacing: 10,
       crossAxisSpacing: 10,
       childAspectRatio: 1,
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 35),
       children: LockScreenConstants.current.NUMBER_BUTTONS.map((value) {
         return LockScreenNumberButtonComponent(value: value, onTap: () => onButtonTap(value));
       }).toList(),

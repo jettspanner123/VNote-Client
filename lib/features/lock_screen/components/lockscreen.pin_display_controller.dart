@@ -15,7 +15,7 @@ class LockScreenPinDisplayController extends StatelessWidget {
     return Column(
       children: [
         LockScreenPinDisplayComponent(enteredPin: enteredPin),
-        const SizedBox(height: 30),
+        const SizedBox(height: 20),
         Text(
           "Enter PIN",
           style: UIHelper.current.funnelTextStyle(

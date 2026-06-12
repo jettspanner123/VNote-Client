@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vnote_client/constants/color_factory.dart';
 import 'package:vnote_client/features/lock_screen/components/lockscreen.number_button_controller.dart';
 import 'package:vnote_client/features/lock_screen/components/lockscreen.pin_display_controller.dart';
 import 'package:vnote_client/features/lock_screen/constants/lockscreen.constants.dart';
@@ -47,12 +46,15 @@ class _LockScreenControllerState extends State<LockScreenController> {
   @override
   Widget build(BuildContext context) {
     final globalColorModeBloc = context.watch<GlobalColorModeControllerBloc>();
+
+    UIHelper.current.setStatusBarColors(globalColorModeBloc.state.colorMode);
+
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
       backgroundColor: UIHelper.current.getValueAccordingToColorMode(
         colorMode: globalColorModeBloc.state.colorMode,
-        darkValue: ColorFactory.darkForegroundColor,
+        darkValue: Color.fromARGB(255, 23, 23, 23),
         lightValue: Colors.white,
       ),
       body: SafeArea(
@@ -64,7 +66,19 @@ class _LockScreenControllerState extends State<LockScreenController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // PIN display card
-                const SizedBox(height: 100),
+                const SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                  child: Padding(
+                    padding: const EdgeInsets.all(25),
+                    child: Image.asset(
+                      "assets/images/others/splash_screen_logo_transparent.png",
+                      height: 120,
+                      width: 70,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
                 LockScreenPinDisplayController(enteredPin: _enteredPin),
                 const SizedBox(height: 40),
 
@@ -75,6 +89,13 @@ class _LockScreenControllerState extends State<LockScreenController> {
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      //   floatingActionButton: FloatingButtonHolderComponent(
+      //     child: OnTapScaleInteractionComponent(
+      //       config: OnTapScaleInteractionValue(initialScale: 0.95, finalScale: 1),
+      //       child: StandardButtonText(text: "Forgot App Code?"),
+      //     ),
+      //   ),
     );
   }
 }
