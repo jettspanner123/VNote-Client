@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vnote_client/constants/color_factory.dart';
-import 'package:vnote_client/constants/navigation_factory.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard/components/fragments/dashboard.transaction_tile.dart';
 import 'package:vnote_client/models/mock/transaction_mock_model.dart';
 import 'package:vnote_client/services/mock_data_service.dart';
@@ -425,37 +424,19 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
             ],
           ),
 
-          // Bottom Floating Action Buttons Row
+          // Bottom Floating Action Button Row (Get Receipt only, primary green button)
           Positioned(
             bottom: 25,
             left: 15,
             right: 15,
-            child: Row(
-              children: [
-                Expanded(
-                  child: _buildFloatingActionButton(
-                    label: "Statistics",
-                    icon: Icons.insights_rounded,
-                    isPrimary: true,
-                    colorMode: colorMode,
-                    onTap: () {
-                      Navigator.pushNamed(context, NavigationFactory.transactionStatisticsScreen);
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildFloatingActionButton(
-                    label: "Get Receipt",
-                    icon: Icons.receipt_long_rounded,
-                    isPrimary: false,
-                    colorMode: colorMode,
-                    onTap: () {
-                      // Action placeholder
-                    },
-                  ),
-                ),
-              ],
+            child: _buildFloatingActionButton(
+              label: "Get Receipt",
+              icon: Icons.receipt_long_rounded,
+              isPrimary: true,
+              colorMode: colorMode,
+              onTap: () {
+                // Action placeholder
+              },
             ),
           ),
         ],

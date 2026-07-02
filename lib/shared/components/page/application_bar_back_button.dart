@@ -47,33 +47,34 @@ class ApplicationBarBackButtonComponentState extends State<ApplicationBarBackBut
     final colorMode = globalColorModeBloc.state.colorMode;
 
     final backgroundColor = UIHelper.current.getForegroundColorForColorMode(colorMode);
-    final borderColor = colorMode == AppColorMode.DARK 
-        ? Colors.white.withAlpha(40) 
-        : Colors.black.withAlpha(40);
+    final borderColor = colorMode == AppColorMode.DARK ? Colors.white.withAlpha(40) : Colors.black.withAlpha(40);
     final iconColor = UIHelper.current.getTextColorForColorMode(colorMode);
 
-    return Listener(
-      onPointerDown: _handleTapDown,
-      onPointerUp: _handleTapUp,
-      onPointerCancel: _handleTapCancel,
-      child: GestureDetector(
-        onTap:
-            widget.onTap ??
-            () {
-              Navigator.of(context).pop();
-            },
-        child: AnimatedScale(
-          scale: isTapped ? 0.95 : 1,
-          duration: const Duration(milliseconds: 100),
-          child: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              border: Border.all(color: borderColor, width: 1),
-              borderRadius: BorderRadiusDirectional.circular(100),
+    return Transform.translate(
+      offset: const Offset(0, 10),
+      child: Listener(
+        onPointerDown: _handleTapDown,
+        onPointerUp: _handleTapUp,
+        onPointerCancel: _handleTapCancel,
+        child: GestureDetector(
+          onTap:
+              widget.onTap ??
+              () {
+                Navigator.of(context).pop();
+              },
+          child: AnimatedScale(
+            scale: isTapped ? 0.95 : 1,
+            duration: const Duration(milliseconds: 100),
+            child: Container(
+              height: 45,
+              width: 45,
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                border: Border.all(color: borderColor, width: 1),
+                borderRadius: BorderRadiusDirectional.circular(100),
+              ),
+              child: Icon(Icons.chevron_left, color: iconColor),
             ),
-            child: Icon(Icons.chevron_left, color: iconColor),
           ),
         ),
       ),

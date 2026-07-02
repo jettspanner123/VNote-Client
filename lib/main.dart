@@ -18,7 +18,6 @@ import 'package:vnote_client/features/welcome_screen/welcome.controller.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
 import 'package:vnote_client/store/home_scree_controller_bloc/home_screen.bloc.dart';
 import 'package:vnote_client/features/transaction_history_screen/transaction_history.controller.dart';
-import 'package:vnote_client/features/transaction_statistics/transaction_statistics.controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -62,7 +61,6 @@ class MyApp extends StatelessWidget {
           NavigationFactory.homeScreen: (context) => const HomeScreenController(),
           NavigationFactory.lockScreen: (context) => const LockScreenController(),
           NavigationFactory.transactionHistoryScreen: (context) => const TransactionHistoryScreen(),
-          NavigationFactory.transactionStatisticsScreen: (context) => const TransactionStatisticsScreen(),
         },
       ),
     );
