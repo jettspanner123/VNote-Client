@@ -163,6 +163,11 @@ A highly reusable bottom sheet container designed to display comprehensive detai
 - **Properties**:
   - `required TransactionMockModel transaction`: The transaction model whose details will be displayed.
 
+### [DateRangePickerSheet](file:///Users/jettspanner123/JavaDevelopment/VNoteApp/VNote-Client/lib/shared/components/others/date_range_picker_sheet.dart)
+A reusable date range selector center dialog modal designed to gather a starting and ending date with theme-responsive calendar date pickers and side-by-side action buttons.
+- **Methods**:
+  - `static void show(BuildContext context)`: Triggers and shows the date range dialog.
+
 ---
 
 ## ⚡ Interactions & Animations

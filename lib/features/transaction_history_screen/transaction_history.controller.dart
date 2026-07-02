@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vnote_client/constants/color_factory.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard/components/fragments/dashboard.transaction_tile.dart';
+import 'package:vnote_client/shared/components/others/date_range_picker_sheet.dart';
 import 'package:vnote_client/models/mock/transaction_mock_model.dart';
 import 'package:vnote_client/services/mock_data_service.dart';
 import 'package:vnote_client/shared/components/page/appbar.dart';
@@ -435,7 +436,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
               isPrimary: true,
               colorMode: colorMode,
               onTap: () {
-                // Action placeholder
+                DateRangePickerSheet.show(context);
               },
             ),
           ),
