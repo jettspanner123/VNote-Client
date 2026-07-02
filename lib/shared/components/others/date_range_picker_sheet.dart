@@ -8,6 +8,7 @@ import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/components/buttons/regular_button.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_field.dart';
 import 'package:vnote_client/shared/components/inputs/standard_input_label.dart';
+import 'package:vnote_client/shared/components/others/custom_date_picker.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
 import 'package:vnote_client/utils/ui_helper.dart';
 
@@ -72,25 +73,11 @@ class _DateRangePickerSheetState extends State<DateRangePickerSheet> with Ticker
   }
 
   Future<void> _selectFromDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
+    final DateTime? picked = await CustomDatePicker.show(
+      context,
       initialDate: _fromDate ?? DateTime.now(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
-      builder: (context, child) {
-        final isDark = Theme.of(context).brightness == Brightness.dark;
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.dark(
-              primary: ColorFactory.accentColor,
-              onPrimary: Colors.white,
-              surface: isDark ? const Color(0xFF1C1C1E) : Colors.white,
-              onSurface: isDark ? Colors.white : Colors.black,
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
     if (picked != null) {
       setState(() {
@@ -102,25 +89,11 @@ class _DateRangePickerSheetState extends State<DateRangePickerSheet> with Ticker
   }
 
   Future<void> _selectToDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
+    final DateTime? picked = await CustomDatePicker.show(
+      context,
       initialDate: _toDate ?? DateTime.now(),
       firstDate: _fromDate ?? DateTime(2020),
       lastDate: DateTime(2030),
-      builder: (context, child) {
-        final isDark = Theme.of(context).brightness == Brightness.dark;
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.dark(
-              primary: ColorFactory.accentColor,
-              onPrimary: Colors.white,
-              surface: isDark ? const Color(0xFF1C1C1E) : Colors.white,
-              onSurface: isDark ? Colors.white : Colors.black,
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
     if (picked != null) {
       setState(() {

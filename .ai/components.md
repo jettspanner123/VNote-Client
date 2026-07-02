@@ -168,6 +168,15 @@ A reusable date range selector center dialog modal designed to gather a starting
 - **Methods**:
   - `static void show(BuildContext context)`: Triggers and shows the date range dialog.
 
+### [CustomDatePicker](file:///Users/jettspanner123/JavaDevelopment/VNoteApp/VNote-Client/lib/shared/components/others/custom_date_picker.dart)
+A highly reusable, custom calendar date picker dialog built using a Sunday-first grid. Features custom scale animations, haptic micro-taps, a quick Month & Year navigation panel, and full light/dark theme responsiveness.
+- **Methods**:
+  - `static Future<DateTime?> show(BuildContext context, {required DateTime initialDate, required DateTime firstDate, required DateTime lastDate})`: Displays the calendar dialog and returns a Future resolving to the selected date or `null` if cancelled.
+- **Properties**:
+  - `required DateTime initialDate`: The initially selected date.
+  - `required DateTime firstDate`: The earliest allowable date in selection grid.
+  - `required DateTime lastDate`: The latest allowable date in selection grid.
+
 ---
 
 ## ⚡ Interactions & Animations
