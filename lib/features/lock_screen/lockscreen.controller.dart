@@ -32,15 +32,6 @@ class _LockScreenControllerState extends State<LockScreenController> {
         _enteredPin += value;
       }
     });
-
-    // Auto-submit when all 6 digits are entered.
-    if (_enteredPin.length == maxLength) {
-      _onPinComplete(_enteredPin);
-    }
-  }
-
-  void _onPinComplete(String pin) {
-    // Handle PIN validation here.
   }
 
   @override

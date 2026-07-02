@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vnote_client/constants/color_factory.dart';
+import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
+import 'package:vnote_client/utils/ui_helper.dart';
 
 class ApplicationBarBackButtonComponent extends StatefulWidget {
   final VoidCallback? onTap;
@@ -39,6 +43,15 @@ class ApplicationBarBackButtonComponentState extends State<ApplicationBarBackBut
 
   @override
   Widget build(BuildContext context) {
+    final globalColorModeBloc = context.watch<GlobalColorModeControllerBloc>();
+    final colorMode = globalColorModeBloc.state.colorMode;
+
+    final backgroundColor = UIHelper.current.getForegroundColorForColorMode(colorMode);
+    final borderColor = colorMode == AppColorMode.DARK 
+        ? Colors.white.withAlpha(40) 
+        : Colors.black.withAlpha(40);
+    final iconColor = UIHelper.current.getTextColorForColorMode(colorMode);
+
     return Listener(
       onPointerDown: _handleTapDown,
       onPointerUp: _handleTapUp,
@@ -56,11 +69,11 @@ class ApplicationBarBackButtonComponentState extends State<ApplicationBarBackBut
             height: 50,
             width: 50,
             decoration: BoxDecoration(
-              color: Colors.white,
-              border: BoxBorder.all(color: Colors.black.withAlpha(50)),
+              color: backgroundColor,
+              border: Border.all(color: borderColor, width: 1),
               borderRadius: BorderRadiusDirectional.circular(100),
             ),
-            child: Icon(Icons.chevron_left),
+            child: Icon(Icons.chevron_left, color: iconColor),
           ),
         ),
       ),

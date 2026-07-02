@@ -7,11 +7,17 @@ import '../constants/color_factory.dart';
 class UIHelper {
   static final current = UIHelper();
 
+  Color getBackgroundColorForColorMode(AppColorMode colorMode) {
+    if (colorMode == AppColorMode.DARK) return ColorFactory.darkBackgroundColor;
+    return ColorFactory.backgroundColor;
+  }
+
   void setStatusBarColors(AppColorMode colorMode) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: colorMode == AppColorMode.DARK ? Brightness.light : Brightness.dark,
+        statusBarBrightness: colorMode == AppColorMode.DARK ? Brightness.dark : Brightness.light,
       ),
     );
   }
@@ -94,11 +100,6 @@ class UIHelper {
       decorationStyle: decorationStyle,
       decorationThickness: decorationThickness,
     );
-  }
-
-  Color getBackgroundColorForColorMode(AppColorMode colorMode) {
-    if (colorMode == AppColorMode.DARK) return ColorFactory.darkBackgroundColor;
-    return ColorFactory.backgroundColor;
   }
 
   Color getDefaultColorOrCustom(Color defaultColor, Color? customColor) {

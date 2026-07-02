@@ -54,115 +54,112 @@ class _DashboardMainContentActionButtonsControllerState extends State<DashboardM
   @override
   Widget build(BuildContext context) {
     final globalColorModeBloc = context.watch<GlobalColorModeControllerBloc>();
-    return Padding(
-      padding: const EdgeInsetsGeometry.symmetric(horizontal: 10),
-      child: Row(
-        spacing: 5,
-        children: [
-          // ── Request button ──────────────────────────────────────
-          Expanded(
-            child: OnTapScaleInteractionComponent(
-              config: OnTapScaleInteractionValue(initialScale: 0.95, finalScale: 1),
-              onTap: _openRequestOverlay,
-              child: Container(
-                height: 65,
-                decoration: BoxDecoration(
-                  color: UIHelper.current.getValueAccordingToColorMode(
-                    colorMode: globalColorModeBloc.state.colorMode,
-                    darkValue: ColorFactory.darkForegroundColor,
-                    lightValue: Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(100),
-                  border: UIHelper.current.getDefaultBorder(colorMode: globalColorModeBloc.state.colorMode),
-                  boxShadow: [UIHelper.current.getDefaultBoxShadow()],
+    return Row(
+      spacing: 5,
+      children: [
+        // ── Request button ──────────────────────────────────────
+        Expanded(
+          child: OnTapScaleInteractionComponent(
+            config: OnTapScaleInteractionValue(initialScale: 0.95, finalScale: 1),
+            onTap: _openRequestOverlay,
+            child: Container(
+              height: 65,
+              decoration: BoxDecoration(
+                color: UIHelper.current.getValueAccordingToColorMode(
+                  colorMode: globalColorModeBloc.state.colorMode,
+                  darkValue: ColorFactory.darkForegroundColor,
+                  lightValue: Colors.white,
                 ),
-                child: Padding(
-                  padding: const EdgeInsetsGeometry.all(5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: Container(
-                          key: _requestButtonKey,
-                          decoration: BoxDecoration(
-                            color: ColorFactory.accentColor,
-                            borderRadius: BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(100),
+                border: UIHelper.current.getDefaultBorder(colorMode: globalColorModeBloc.state.colorMode),
+                boxShadow: [UIHelper.current.getDefaultBoxShadow()],
+              ),
+              child: Padding(
+                padding: const EdgeInsetsGeometry.all(5),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
+                        key: _requestButtonKey,
+                        decoration: BoxDecoration(
+                          color: ColorFactory.accentColor,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: const Icon(Icons.call_received_rounded, color: Colors.white),
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ColorModeAwareTextComponent(
+                            text: "Request",
+                            style: UIHelper.current.funnelTextStyle(fontSize: 16),
                           ),
-                          child: const Icon(Icons.call_received_rounded, color: Colors.white),
-                        ),
+                        ],
                       ),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ColorModeAwareTextComponent(
-                              text: "Request",
-                              style: UIHelper.current.funnelTextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-          // ── Transfer button ─────────────────────────────────────
-          Expanded(
-            child: OnTapScaleInteractionComponent(
-              config: OnTapScaleInteractionValue(initialScale: 0.95, finalScale: 1),
-              onTap: _openTransferOverlay,
-              child: Container(
-                height: 65,
-                decoration: BoxDecoration(
-                  color: UIHelper.current.getValueAccordingToColorMode(
-                    colorMode: globalColorModeBloc.state.colorMode,
-                    darkValue: ColorFactory.darkForegroundColor,
-                    lightValue: Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(100),
-                  border: UIHelper.current.getDefaultBorder(colorMode: globalColorModeBloc.state.colorMode),
-                  boxShadow: [UIHelper.current.getDefaultBoxShadow()],
+        ),
+        // ── Transfer button ─────────────────────────────────────
+        Expanded(
+          child: OnTapScaleInteractionComponent(
+            config: OnTapScaleInteractionValue(initialScale: 0.95, finalScale: 1),
+            onTap: _openTransferOverlay,
+            child: Container(
+              height: 65,
+              decoration: BoxDecoration(
+                color: UIHelper.current.getValueAccordingToColorMode(
+                  colorMode: globalColorModeBloc.state.colorMode,
+                  darkValue: ColorFactory.darkForegroundColor,
+                  lightValue: Colors.white,
                 ),
-                child: Padding(
-                  padding: const EdgeInsetsGeometry.all(5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: Container(
-                          key: _transferButtonKey,
-                          decoration: BoxDecoration(
-                            color: ColorFactory.accentColor,
-                            borderRadius: BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(100),
+                border: UIHelper.current.getDefaultBorder(colorMode: globalColorModeBloc.state.colorMode),
+                boxShadow: [UIHelper.current.getDefaultBoxShadow()],
+              ),
+              child: Padding(
+                padding: const EdgeInsetsGeometry.all(5),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 1,
+                      child: Container(
+                        key: _transferButtonKey,
+                        decoration: BoxDecoration(
+                          color: ColorFactory.accentColor,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: const Icon(Icons.arrow_outward_rounded, color: Colors.white),
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ColorModeAwareTextComponent(
+                            text: "Transfer",
+                            style: UIHelper.current.funnelTextStyle(fontSize: 16),
                           ),
-                          child: const Icon(Icons.arrow_outward_rounded, color: Colors.white),
-                        ),
+                        ],
                       ),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ColorModeAwareTextComponent(
-                              text: "Transfer",
-                              style: UIHelper.current.funnelTextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

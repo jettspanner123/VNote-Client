@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard/components/dashboard.main_content.controller.dart';
-import 'package:flutter/services.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vnote_client/utils/ui_helper.dart';
-
-import '../../../../constants/color_factory.dart';
 
 class DashboardController extends StatefulWidget {
   const DashboardController({super.key});
@@ -21,13 +18,8 @@ class _DashboardControllerState extends State<DashboardController> {
 
     UIHelper.current.setStatusBarColors(globalColorModeBloc.state.colorMode);
 
-    Color getBackgroundColorForColorMode(AppColorMode colorMode) {
-      if (colorMode == AppColorMode.DARK) return ColorFactory.darkBackgroundColor;
-      return ColorFactory.backgroundColor;
-    }
-
     return Scaffold(
-      backgroundColor: getBackgroundColorForColorMode(globalColorModeBloc.state.colorMode),
+      backgroundColor: UIHelper.current.getBackgroundColorForColorMode(globalColorModeBloc.state.colorMode),
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Stack(children: [DashboardMainContentController()]),
