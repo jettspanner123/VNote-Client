@@ -15,8 +15,8 @@ import 'package:vnote_client/utils/ui_helper.dart';
 class DateRangePickerSheet extends StatefulWidget {
   const DateRangePickerSheet({super.key});
 
-  static void show(BuildContext context) {
-    showGeneralDialog(
+  static Future<DateTimeRange?> show(BuildContext context) {
+    return showGeneralDialog<DateTimeRange>(
       context: context,
       barrierDismissible: true,
       barrierLabel: "Date Range Dialog",
@@ -311,15 +311,9 @@ class _DateRangePickerSheetState extends State<DateRangePickerSheet> with Ticker
                       }
 
                       // Successfully completed validation
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            "Receipt downloaded successfully!",
-                            style: UIHelper.current.funnelTextStyle(color: Colors.white),
-                          ),
-                          backgroundColor: ColorFactory.accentColor,
-                        ),
+                      Navigator.pop(
+                        context,
+                        DateTimeRange(start: _fromDate!, end: _toDate!),
                       );
                     },
                     child: Padding(

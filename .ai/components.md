@@ -146,6 +146,11 @@ A round, high-contrast back button with micro-scale click responses that runs `N
 ### [ApplicationBarDismissButtonComponent](file:///Users/jettspanner123/JavaDevelopment/VNoteApp/VNote-Client/lib/shared/components/page/application_bar_dismiss_button.dart)
 A round, high-contrast close button with micro-scale click responses that runs `Navigator.pop` by default.
 
+### [ApplicationBarSearchButtonComponent](file:///Users/jettspanner123/JavaDevelopment/VNoteApp/VNote-Client/lib/shared/components/page/application_bar_search_button.dart)
+A round, high-contrast search button matching the styling, border outlines, vertical translation transforms, and tap-scale animations of the back button exactly, using the search icon. It navigates to the transaction search screen route by default.
+- **Properties**:
+  - `VoidCallback? onTap`: Optional click callback (defaults to pushing `/transaction-search` route).
+
 ---
 
 ## 🧩 Shared Complex Views
@@ -182,6 +187,11 @@ A highly reusable, custom calendar date picker dialog built using a Sunday-first
   - `required DateTime initialDate`: The initially selected date.
   - `required DateTime firstDate`: The earliest allowable date in selection grid.
   - `required DateTime lastDate`: The latest allowable date in selection grid.
+
+### [NotificationsSheet](file:///Users/jettspanner123/JavaDevelopment/VNoteApp/VNote-Client/lib/shared/components/others/notifications_sheet.dart)
+An almost full-screen bottom sheet (90% height) displaying a premium list of mock notifications (transfers, logins, alerts) with custom hued indicators and a close header button.
+- **Methods**:
+  - `static void show(BuildContext context)`: Triggers and shows the notifications modal sheet.
 
 ---
 

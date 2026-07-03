@@ -8,6 +8,7 @@ import 'package:vnote_client/models/mock/transaction_mock_model.dart';
 import 'package:vnote_client/services/mock_data_service.dart';
 import 'package:vnote_client/shared/components/page/appbar.dart';
 import 'package:vnote_client/shared/components/page/application_bar_back_button.dart';
+import 'package:vnote_client/shared/components/page/application_bar_search_button.dart';
 import 'package:vnote_client/shared/interaction/tap_scale_interaction.dart';
 import 'package:vnote_client/shared/components/text/secondary_section_header_component.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
@@ -22,6 +23,7 @@ class TransactionHistoryScreen extends StatefulWidget {
 
 class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
   String _selectedFilter = 'All';
+  DateTimeRange? _customDateRange;
 
   final List<String> _filters = const [
     'All',
@@ -33,6 +35,12 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
   ];
 
   bool _filterTransaction(TransactionMockModel transaction) {
+    if (_selectedFilter == 'Custom Range') {
+      if (_customDateRange == null) return true;
+      final start = DateTime(_customDateRange!.start.year, _customDateRange!.start.month, _customDateRange!.start.day);
+      final end = DateTime(_customDateRange!.end.year, _customDateRange!.end.month, _customDateRange!.end.day, 23, 59, 59, 999);
+      return transaction.createdAt.isAfter(start) && transaction.createdAt.isBefore(end);
+    }
     if (_selectedFilter == 'All') return true;
 
     final now = DateTime.now();
@@ -73,6 +81,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
       onTap: () {
         setState(() {
           _selectedFilter = label;
+          _customDateRange = null;
         });
       },
       child: AnimatedContainer(
@@ -100,6 +109,56 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
           ] : [],
         ),
         child: Text(label, style: textStyle),
+      ),
+    );
+  }
+
+  Widget _buildCalendarFilterChip(AppColorMode colorMode) {
+    final isSelected = _selectedFilter == 'Custom Range';
+    final iconColor = isSelected 
+        ? Colors.white 
+        : UIHelper.current.getTextColorForColorMode(colorMode).withAlpha(150);
+
+    return OnTapScaleInteractionComponent(
+      config: OnTapScaleInteractionValue(
+        initialScale: 0.95, 
+        finalScale: 1.0, 
+        duration: const Duration(milliseconds: 100),
+      ),
+      onTap: () async {
+        final range = await DateRangePickerSheet.show(context);
+        if (range != null) {
+          setState(() {
+            _customDateRange = range;
+            _selectedFilter = 'Custom Range';
+          });
+        }
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected 
+              ? ColorFactory.accentColor 
+              : UIHelper.current.getForegroundColorForColorMode(colorMode),
+          borderRadius: BorderRadius.circular(100),
+          border: Border.all(
+            color: isSelected 
+                ? Colors.transparent 
+                : colorMode == AppColorMode.LIGHT 
+                    ? Colors.black.withAlpha(20) 
+                    : Colors.white.withAlpha(20),
+            width: 0.8,
+          ),
+          boxShadow: isSelected ? [
+            BoxShadow(
+              color: ColorFactory.accentColor.withAlpha(40),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            )
+          ] : [],
+        ),
+        child: Icon(Icons.calendar_month_rounded, color: iconColor, size: 20),
       ),
     );
   }
@@ -380,7 +439,10 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   child: Row(
                     spacing: 8,
-                    children: _filters.map((filter) => _buildFilterChip(filter, colorMode)).toList(),
+                    children: [
+                      _buildCalendarFilterChip(colorMode),
+                      ..._filters.map((filter) => _buildFilterChip(filter, colorMode)),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 14),
@@ -430,7 +492,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                   letterSpacing: 0.5,
                 ),
               ),
-              const SizedBox(width: 50), // Balance the 50px width of the back button to center the title
+              const ApplicationBarSearchButtonComponent(),
             ],
           ),
 
@@ -444,8 +506,19 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
               icon: Icons.receipt_long_rounded,
               isPrimary: true,
               colorMode: colorMode,
-              onTap: () {
-                DateRangePickerSheet.show(context);
+              onTap: () async {
+                final range = await DateRangePickerSheet.show(context);
+                if (range != null && context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        "Receipt downloaded successfully!",
+                        style: UIHelper.current.funnelTextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: ColorFactory.accentColor,
+                    ),
+                  );
+                }
               },
             ),
           ),

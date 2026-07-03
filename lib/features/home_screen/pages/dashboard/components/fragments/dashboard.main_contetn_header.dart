@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../../constants/color_factory.dart';
+import '../../../../../../shared/components/others/notifications_sheet.dart';
 import '../../../../../../shared/components/page/appbar_action_button.dart';
 import '../../../../../../shared/components/text/color_mode_aware_text.dart';
 import '../../../../../../store/global_bloc/global_color_mode.bloc.dart';
@@ -63,6 +64,9 @@ class _DashboardMainContentHeaderState extends State<DashboardMainContentHeaderC
           },
         ),
         AppbarActionButton(
+          onTap: () {
+            NotificationsSheet.show(context);
+          },
           child: Icon(
             Icons.notifications,
             color: UIHelper.current.getTextColorForColorMode(globalColorModeBloc.state.colorMode),

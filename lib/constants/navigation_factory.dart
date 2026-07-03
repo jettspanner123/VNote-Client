@@ -23,6 +23,7 @@ class NavigationFactory {
   static const String homeScreen = "/home-screen";
   static const String lockScreen = "/lock-screen";
   static const String transactionHistoryScreen = "/transaction-history";
+  static const String transactionSearchScreen = "/transaction-search";
   Future pushPage(BuildContext context, Widget page) {
     return Navigator.push(
       context,
