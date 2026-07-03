@@ -8,7 +8,6 @@ import 'package:vnote_client/models/mock/transaction_mock_model.dart';
 import 'package:vnote_client/services/mock_data_service.dart';
 import 'package:vnote_client/shared/components/page/appbar.dart';
 import 'package:vnote_client/shared/components/page/application_bar_back_button.dart';
-import 'package:vnote_client/shared/components/page/application_bar_search_button.dart';
 import 'package:vnote_client/shared/interaction/tap_scale_interaction.dart';
 import 'package:vnote_client/shared/components/text/secondary_section_header_component.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
@@ -24,6 +23,27 @@ class TransactionHistoryScreen extends StatefulWidget {
 class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
   String _selectedFilter = 'All';
   DateTimeRange? _customDateRange;
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  final FocusNode _searchFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchFocusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.removeListener(_onFocusChange);
+    _searchFocusNode.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onFocusChange() {
+    setState(() {});
+  }
 
   final List<String> _filters = const [
     'All',
@@ -35,6 +55,15 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
   ];
 
   bool _filterTransaction(TransactionMockModel transaction) {
+    if (_searchQuery.isNotEmpty) {
+      final query = _searchQuery.toLowerCase();
+      final phoneMatch = transaction.secondaryUserPhoneNumber.toLowerCase().contains(query);
+      final noteMatch = transaction.note?.toLowerCase().contains(query) ?? false;
+      final typeMatch = transaction.transactionType.name.toLowerCase().contains(query);
+      final amountMatch = transaction.amount.toString().contains(query);
+      if (!phoneMatch && !noteMatch && !typeMatch && !amountMatch) return false;
+    }
+
     if (_selectedFilter == 'Custom Range') {
       if (_customDateRange == null) return true;
       final start = DateTime(_customDateRange!.start.year, _customDateRange!.start.month, _customDateRange!.start.day);
@@ -163,6 +192,164 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
     );
   }
 
+  Widget _buildSearchBar(AppColorMode colorMode) {
+    final cardBgColor = UIHelper.current.getForegroundColorForColorMode(colorMode);
+    final textColor = UIHelper.current.getTextColorForColorMode(colorMode);
+    final borderColor = colorMode == AppColorMode.DARK 
+        ? Colors.white.withAlpha(20) 
+        : Colors.black.withAlpha(20);
+
+    return Container(
+      margin: EdgeInsets.zero,
+      decoration: BoxDecoration(
+        color: cardBgColor,
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(color: borderColor, width: 1),
+        boxShadow: colorMode == AppColorMode.LIGHT ? [
+          BoxShadow(
+            color: Colors.black.withAlpha(10),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          )
+        ] : [],
+      ),
+      child: Row(
+        children: [
+          const SizedBox(width: 18),
+          Icon(
+            Icons.search_rounded,
+            color: textColor.withAlpha(130),
+            size: 26,
+          ),
+          const SizedBox(width: 10), // Keeps search icon and placeholder text closer
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              focusNode: _searchFocusNode,
+              keyboardAppearance: colorMode == AppColorMode.DARK 
+                  ? Brightness.dark 
+                  : Brightness.light,
+              onChanged: (val) {
+                setState(() {
+                  _searchQuery = val;
+                });
+              },
+              style: UIHelper.current.funnelTextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w600,
+                color: textColor,
+              ),
+              decoration: InputDecoration(
+                hintText: "Search transactions, remarks...",
+                hintStyle: UIHelper.current.funnelTextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                  color: textColor.withAlpha(100),
+                ),
+                border: InputBorder.none,
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(vertical: 14),
+              ),
+            ),
+          ),
+          if (_searchQuery.isNotEmpty) ...[
+            GestureDetector(
+              onTap: () {
+                _searchController.clear();
+                setState(() {
+                  _searchQuery = '';
+                });
+              },
+              child: Icon(
+                Icons.clear_rounded,
+                color: textColor.withAlpha(130),
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 18),
+          ] else ...[
+            const SizedBox(width: 18),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBarRow(AppColorMode colorMode) {
+    final showButton = _searchFocusNode.hasFocus;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildSearchBar(colorMode),
+          ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.fastOutSlowIn,
+            width: showButton ? 52 : 0,
+            height: 52,
+            margin: EdgeInsets.only(left: showButton ? 10 : 0),
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              opacity: showButton ? 1.0 : 0.0,
+              child: ClipRect(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: SizedBox(
+                    width: 52,
+                    height: 52,
+                    child: _buildHideKeyboardButton(colorMode),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHideKeyboardButton(AppColorMode colorMode) {
+    final cardBgColor = UIHelper.current.getForegroundColorForColorMode(colorMode);
+    final textColor = UIHelper.current.getTextColorForColorMode(colorMode);
+    final borderColor = colorMode == AppColorMode.DARK 
+        ? Colors.white.withAlpha(20) 
+        : Colors.black.withAlpha(20);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: cardBgColor,
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(color: borderColor, width: 1),
+        boxShadow: colorMode == AppColorMode.LIGHT ? [
+          BoxShadow(
+            color: Colors.black.withAlpha(10),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          )
+        ] : [],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(100),
+          onTap: () {
+            _searchFocusNode.unfocus();
+          },
+          child: Center(
+            child: Icon(
+              Icons.keyboard_hide_rounded,
+              color: textColor.withAlpha(180),
+              size: 24,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildFloatingActionButton({
     required String label,
     required IconData icon,
@@ -264,188 +451,226 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
           // Scrollable content underneath the floating appbar
           Positioned.fill(
             child: ListView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.only(
                 top: 120, // Prevents content from rendering under the floating app bar
                 bottom: 120, // Extra bottom padding so list scrolls fully above floating buttons
               ),
               children: [
-                // Compact Dynamic Volume Card
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    color: cardBgColor,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: borderColor, width: 1),
+                // 1. Compact Dynamic Volume Card (Animated height/opacity)
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.fastOutSlowIn,
+                  height: _searchFocusNode.hasFocus ? 0 : 160,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: _searchFocusNode.hasFocus ? 0 : 8,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${_selectedFilter.toUpperCase()} VOLUME",
-                        style: UIHelper.current.funnelTextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                          color: textMutedColor,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "\$${totalAmount.toStringAsFixed(2)}",
-                        style: GoogleFonts.oswald(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
-                          color: UIHelper.current.getTextColorForColorMode(colorMode),
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 14),
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 200),
+                    opacity: _searchFocusNode.hasFocus ? 0.0 : 1.0,
+                    child: ClipRect(
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: Container(
+                          padding: const EdgeInsets.all(18),
+                          decoration: BoxDecoration(
+                            color: cardBgColor,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: borderColor, width: 1),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${_selectedFilter.toUpperCase()} VOLUME",
+                                style: UIHelper.current.funnelTextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w800,
+                                  color: textMutedColor,
+                                  letterSpacing: 1.2,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "\$${totalAmount.toStringAsFixed(2)}",
+                                style: GoogleFonts.oswald(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w700,
+                                  color: UIHelper.current.getTextColorForColorMode(colorMode),
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 14),
 
-                      // Graphic proportion indicator bar
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: SizedBox(
-                          height: 10,
-                          width: double.infinity,
-                          child: totalAmount == 0
-                              ? Container(
-                                  color: colorMode == AppColorMode.DARK 
-                                      ? Colors.white.withAlpha(20) 
-                                      : Colors.black.withAlpha(10),
-                                )
-                              : Row(
-                                  children: [
-                                    if (creditAmount > 0)
-                                      Expanded(
-                                        flex: (ratio * 100).toInt().clamp(1, 99),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            gradient: const LinearGradient(
-                                              colors: [Color(0xFF34D399), Color(0xFF10B981)],
-                                            ),
-                                            borderRadius: creditAmount > 0 && debitAmount > 0
-                                                ? const BorderRadius.only(
-                                                    topLeft: Radius.circular(100),
-                                                    bottomLeft: Radius.circular(100),
-                                                  )
-                                                : BorderRadius.circular(100),
+                              // Graphic proportion indicator bar
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: SizedBox(
+                                  height: 10,
+                                  width: double.infinity,
+                                  child: totalAmount == 0
+                                      ? Container(
+                                          color: colorMode == AppColorMode.DARK 
+                                              ? Colors.white.withAlpha(20) 
+                                              : Colors.black.withAlpha(10),
+                                        )
+                                      : Row(
+                                          children: [
+                                            if (creditAmount > 0)
+                                              Expanded(
+                                                flex: (ratio * 100).toInt().clamp(1, 99),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    gradient: const LinearGradient(
+                                                      colors: [Color(0xFF34D399), Color(0xFF10B981)],
+                                                    ),
+                                                    borderRadius: creditAmount > 0 && debitAmount > 0
+                                                        ? const BorderRadius.only(
+                                                            topLeft: Radius.circular(100),
+                                                            bottomLeft: Radius.circular(100),
+                                                          )
+                                                        : BorderRadius.circular(100),
+                                                  ),
+                                                ),
+                                              ),
+                                            if (creditAmount > 0 && debitAmount > 0)
+                                              const SizedBox(width: 3.5),
+                                            if (debitAmount > 0)
+                                              Expanded(
+                                                flex: ((1.0 - ratio) * 100).toInt().clamp(1, 99),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    gradient: const LinearGradient(
+                                                      colors: [Color(0xFFEF4444), Color(0xFFF87171)],
+                                                    ),
+                                                    borderRadius: creditAmount > 0 && debitAmount > 0
+                                                        ? const BorderRadius.only(
+                                                            topRight: Radius.circular(100),
+                                                            bottomRight: Radius.circular(100),
+                                                          )
+                                                        : BorderRadius.circular(100),
+                                                  ),
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+
+                              // Side-by-side Credit and Debit breakdown amounts with percentage badges
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const CircleAvatar(radius: 3.5, backgroundColor: Color(0xFF10B981)),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        "Credit: \$${creditAmount.toStringAsFixed(2)}",
+                                        style: UIHelper.current.funnelTextStyle(
+                                          fontSize: 12.5,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xFF10B981),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF10B981).withAlpha(25),
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: Text(
+                                          "${(ratio * 100).toStringAsFixed(0)}%",
+                                          style: UIHelper.current.funnelTextStyle(
+                                            fontSize: 9.5,
+                                            fontWeight: FontWeight.w900,
+                                            color: const Color(0xFF10B981),
                                           ),
                                         ),
                                       ),
-                                    if (creditAmount > 0 && debitAmount > 0)
-                                      const SizedBox(width: 3.5),
-                                    if (debitAmount > 0)
-                                      Expanded(
-                                        flex: ((1.0 - ratio) * 100).toInt().clamp(1, 99),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            gradient: const LinearGradient(
-                                              colors: [Color(0xFFEF4444), Color(0xFFF87171)],
-                                            ),
-                                            borderRadius: creditAmount > 0 && debitAmount > 0
-                                                ? const BorderRadius.only(
-                                                    topRight: Radius.circular(100),
-                                                    bottomRight: Radius.circular(100),
-                                                  )
-                                                : BorderRadius.circular(100),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      const CircleAvatar(radius: 3.5, backgroundColor: Color(0xFFEF4444)),
+                                      const SizedBox(width: 6),
+                                      Text(
+                                        "Debit: \$${debitAmount.toStringAsFixed(2)}",
+                                        style: UIHelper.current.funnelTextStyle(
+                                          fontSize: 12.5,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xFFEF4444),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFFEF4444).withAlpha(25),
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: Text(
+                                          "${((1.0 - ratio) * 100).toStringAsFixed(0)}%",
+                                          style: UIHelper.current.funnelTextStyle(
+                                            fontSize: 9.5,
+                                            fontWeight: FontWeight.w900,
+                                            color: const Color(0xFFEF4444),
                                           ),
                                         ),
                                       ),
-                                  ],
-                                ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                    ),
+                  ),
+                ),
+                _buildSearchBarRow(colorMode),
 
-                      // Side-by-side Credit and Debit breakdown amounts with percentage badges
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              const CircleAvatar(radius: 3.5, backgroundColor: Color(0xFF10B981)),
-                              const SizedBox(width: 6),
-                              Text(
-                                "Credit: \$${creditAmount.toStringAsFixed(2)}",
-                                style: UIHelper.current.funnelTextStyle(
-                                  fontSize: 12.5,
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xFF10B981),
-                                ),
+                // 2. Filters Section Header and Filter Chips (Animated height/opacity)
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.fastOutSlowIn,
+                  height: _searchFocusNode.hasFocus ? 0 : 130,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 200),
+                    opacity: _searchFocusNode.hasFocus ? 0.0 : 1.0,
+                    child: ClipRect(
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                              child: SecondarySectionHeaderComponent(text: "Filters"),
+                            ),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                              child: Row(
+                                spacing: 8,
+                                children: [
+                                  _buildCalendarFilterChip(colorMode),
+                                  ..._filters.map((filter) => _buildFilterChip(filter, colorMode)),
+                                ],
                               ),
-                              const SizedBox(width: 5),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF10B981).withAlpha(25),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Text(
-                                  "${(ratio * 100).toStringAsFixed(0)}%",
-                                  style: UIHelper.current.funnelTextStyle(
-                                    fontSize: 9.5,
-                                    fontWeight: FontWeight.w900,
-                                    color: const Color(0xFF10B981),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const CircleAvatar(radius: 3.5, backgroundColor: Color(0xFFEF4444)),
-                              const SizedBox(width: 6),
-                              Text(
-                                "Debit: \$${debitAmount.toStringAsFixed(2)}",
-                                style: UIHelper.current.funnelTextStyle(
-                                  fontSize: 12.5,
-                                  fontWeight: FontWeight.w700,
-                                  color: const Color(0xFFEF4444),
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFEF4444).withAlpha(25),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                child: Text(
-                                  "${((1.0 - ratio) * 100).toStringAsFixed(0)}%",
-                                  style: UIHelper.current.funnelTextStyle(
-                                    fontSize: 9.5,
-                                    fontWeight: FontWeight.w900,
-                                    color: const Color(0xFFEF4444),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                            ),
+                            const SizedBox(height: 14),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  child: SecondarySectionHeaderComponent(text: "Filters"),
-                ),
-
-                // Horizontally Scrollable Filters List (Edge-to-edge scrolling)
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                  child: Row(
-                    spacing: 8,
-                    children: [
-                      _buildCalendarFilterChip(colorMode),
-                      ..._filters.map((filter) => _buildFilterChip(filter, colorMode)),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 14),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15),
                   child: SecondarySectionHeaderComponent(text: "Transactions"),
@@ -458,7 +683,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 80, left: 15, right: 15),
                       child: Text(
-                        "No transactions found for this filter.",
+                        "No transactions found matching your search.",
                         style: UIHelper.current.funnelTextStyle(
                           fontSize: 15,
                           color: UIHelper.current.getTextColorForColorMode(colorMode).withAlpha(100),
@@ -492,13 +717,14 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                   letterSpacing: 0.5,
                 ),
               ),
-              const ApplicationBarSearchButtonComponent(),
+              const SizedBox(width: 50), // Balance the 50px width of the back button to center the title
             ],
           ),
 
-          // Bottom Floating Action Button Row (Get Receipt only, primary green button)
-          Positioned(
-            bottom: 25,
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.fastOutSlowIn,
+            bottom: _searchFocusNode.hasFocus ? -80 : 25,
             left: 15,
             right: 15,
             child: _buildFloatingActionButton(

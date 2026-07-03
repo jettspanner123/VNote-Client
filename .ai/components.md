@@ -146,11 +146,6 @@ A round, high-contrast back button with micro-scale click responses that runs `N
 ### [ApplicationBarDismissButtonComponent](file:///Users/jettspanner123/JavaDevelopment/VNoteApp/VNote-Client/lib/shared/components/page/application_bar_dismiss_button.dart)
 A round, high-contrast close button with micro-scale click responses that runs `Navigator.pop` by default.
 
-### [ApplicationBarSearchButtonComponent](file:///Users/jettspanner123/JavaDevelopment/VNoteApp/VNote-Client/lib/shared/components/page/application_bar_search_button.dart)
-A round, high-contrast search button matching the styling, border outlines, vertical translation transforms, and tap-scale animations of the back button exactly, using the search icon. It navigates to the transaction search screen route by default.
-- **Properties**:
-  - `VoidCallback? onTap`: Optional click callback (defaults to pushing `/transaction-search` route).
-
 ---
 
 ## 🧩 Shared Complex Views
