@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
@@ -8,6 +9,7 @@ import 'package:vnote_client/shared/components/buttons/button_text.dart';
 import 'package:vnote_client/shared/components/buttons/regular_button.dart';
 import 'package:vnote_client/shared/components/page/appbar.dart';
 import 'package:vnote_client/shared/components/page/application_bar_dismiss_button.dart';
+import 'package:vnote_client/shared/interaction/tap_scale_interaction.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
 import 'package:vnote_client/utils/ui_helper.dart';
 
@@ -74,7 +76,7 @@ class TransactionDetailSheet extends StatelessWidget {
     final borderColor = colorMode == AppColorMode.LIGHT ? Colors.black.withAlpha(15) : Colors.white.withAlpha(15);
 
     final screenHeight = MediaQuery.of(context).size.height;
-    final sheetHeight = screenHeight * 0.93; // 90% full-screen height
+    final sheetHeight = screenHeight * 0.90; // 90% full-screen height
 
     return Container(
       height: sheetHeight,
@@ -261,10 +263,8 @@ class TransactionDetailSheet extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: StandardButtonComponent(
-                  backgroundColor: colorMode == AppColorMode.LIGHT ? Colors.black : Colors.white,
-                  tapBackgroundColor: colorMode == AppColorMode.LIGHT
-                      ? Colors.black.withAlpha(200)
-                      : Colors.white.withAlpha(200),
+                  backgroundColor: ColorFactory.accentColor,
+                  tapBackgroundColor: ColorFactory.accentColor.withAlpha(200),
                   onTap: () {
                     final isCredit = transaction.transactionDirection == TransactionMockDirection.CREDIT;
                     final directionText = isCredit ? "Received money from" : "Sent money to";
@@ -290,22 +290,14 @@ ${isCredit ? "✅ I received a payment from you." : "✅ I sent you a payment."}
 Fast • Secure • Simple 🚀
 """;
 
-                    // ignore: deprecated_member_use
-                    Share.share(shareText);
+                    ShareOptionsSheet.show(context, shareText);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.share_rounded,
-                        color: colorMode == AppColorMode.LIGHT ? Colors.white : Colors.black,
-                        size: 18,
-                      ),
+                      const Icon(Icons.share_rounded, color: Colors.white, size: 18),
                       const SizedBox(width: 8),
-                      StandardButtonText(
-                        text: "Share Receipt",
-                        foregroundColor: colorMode == AppColorMode.LIGHT ? Colors.white : Colors.black,
-                      ),
+                      const StandardButtonText(text: "Share Receipt", foregroundColor: Colors.white),
                     ],
                   ),
                 ),
@@ -367,6 +359,206 @@ Fast • Secure • Simple 🚀
           ),
         ),
       ],
+    );
+  }
+}
+
+class ShareOptionsSheet extends StatelessWidget {
+  final String shareText;
+
+  const ShareOptionsSheet({super.key, required this.shareText});
+
+  static void show(BuildContext context, String shareText) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => ShareOptionsSheet(shareText: shareText),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final globalColorModeBloc = context.watch<GlobalColorModeControllerBloc>();
+    final colorMode = globalColorModeBloc.state.colorMode;
+    final isDark = colorMode == AppColorMode.DARK;
+
+    final sheetBgColor = isDark ? const Color(0xFF1C1C1E) : Colors.grey.shade50;
+    final innerCardBgColor = isDark ? const Color(0xFF2C2C2E) : Colors.white;
+    final textColor = UIHelper.current.getTextColorForColorMode(colorMode);
+    final textMutedColor = textColor.withAlpha(120);
+    final borderColor = isDark ? Colors.white.withAlpha(15) : Colors.black.withAlpha(15);
+
+    final cancelButtonBg = isDark ? const Color(0xFF2C2C2E) : Colors.grey.shade300;
+    final cancelButtonTapBg = isDark ? const Color(0xFF3A3A3C) : Colors.grey.shade400;
+
+    return Container(
+      padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: MediaQuery.of(context).padding.bottom + 20),
+      decoration: BoxDecoration(
+        color: sheetBgColor,
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Drag handle
+          Center(
+            child: Container(
+              width: 40,
+              height: 4.5,
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white.withAlpha(30) : Colors.black.withAlpha(30),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Title
+          Text(
+            "Share Receipt Options",
+            textAlign: TextAlign.center,
+            style: UIHelper.current.funnelTextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: textColor),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            "Choose a method to export this transaction receipt.",
+            textAlign: TextAlign.center,
+            style: UIHelper.current.funnelTextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: textMutedColor),
+          ),
+          const SizedBox(height: 20),
+
+          // Options Container Card
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: innerCardBgColor,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: borderColor, width: 1),
+            ),
+            child: Column(
+              children: [
+                // Option 1: Copy to Clipboard
+                _buildOptionTile(
+                  context: context,
+                  icon: Icons.content_copy_rounded,
+                  iconColor: Colors.blue,
+                  title: "Copy to Clipboard",
+                  subtitle: "Copy formatted receipt text",
+                  textColor: textColor,
+                  textMutedColor: textMutedColor,
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(text: shareText));
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          "Receipt copied to clipboard!",
+                          style: UIHelper.current.funnelTextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: ColorFactory.accentColor,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
+                ),
+                Divider(color: borderColor, height: 16),
+                // Option 2: Share Externally
+                _buildOptionTile(
+                  context: context,
+                  icon: Icons.ios_share_rounded,
+                  iconColor: ColorFactory.accentColor,
+                  title: "Share Externally",
+                  subtitle: "Send via chat, email, or other apps",
+                  textColor: textColor,
+                  textMutedColor: textMutedColor,
+                  onTap: () {
+                    Navigator.pop(context);
+                    // ignore: deprecated_member_use
+                    Share.share(shareText);
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Cancel Action button
+          StandardButtonComponent(
+            backgroundColor: cancelButtonBg,
+            tapBackgroundColor: cancelButtonTapBg,
+            borderRadius: 100,
+            onTap: () => Navigator.pop(context),
+            child: SizedBox(
+              width: double.infinity,
+              child: StandardButtonText(text: "Cancel", foregroundColor: textColor),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOptionTile({
+    required BuildContext context,
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String subtitle,
+    required Color textColor,
+    required Color textMutedColor,
+    required VoidCallback onTap,
+  }) {
+    final colorMode = context.read<GlobalColorModeControllerBloc>().state.colorMode;
+    final isDark = colorMode == AppColorMode.DARK;
+
+    return OnTapScaleInteractionComponent(
+      config: OnTapScaleInteractionValue(initialScale: 0.98, finalScale: 1.0),
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        color: Colors.transparent,
+        child: Row(
+          children: [
+            Container(
+              width: 38,
+              height: 38,
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white.withAlpha(12) : Colors.black.withAlpha(12),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(icon, color: iconColor, size: 18),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: UIHelper.current.funnelTextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 1),
+                  Text(
+                    subtitle,
+                    style: UIHelper.current.funnelTextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color: textMutedColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right_rounded, color: textMutedColor, size: 20),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -103,6 +103,12 @@ Standard heading for card sections with optional "See More" clickable text.
   - `String? secondaryButtonText`: Right-aligned secondary action text.
   - `VoidCallback? onSecondaryButtonTap`: Secondary action handler.
 
+### [SecondarySectionHeaderComponent](file:///Users/jettspanner123/JavaDevelopment/VNoteApp/VNote-Client/lib/shared/components/text/secondary_section_header_component.dart)
+A smaller, bold, muted uppercase section header optimized for separating sub-lists and filter categories.
+- **Properties**:
+  - `required String text`: Section label text.
+  - `EdgeInsetsGeometry padding`: Padding wrapper (default: `vertical: 8`).
+
 ### [ColorModeAwareTextComponent](file:///Users/jettspanner123/JavaDevelopment/VNoteApp/VNote-Client/lib/shared/components/text/color_mode_aware_text.dart)
 A text component that automatically adapts its color based on the current theme mode.
 - **Properties**:

@@ -9,6 +9,7 @@ import 'package:vnote_client/services/mock_data_service.dart';
 import 'package:vnote_client/shared/components/page/appbar.dart';
 import 'package:vnote_client/shared/components/page/application_bar_back_button.dart';
 import 'package:vnote_client/shared/interaction/tap_scale_interaction.dart';
+import 'package:vnote_client/shared/components/text/secondary_section_header_component.dart';
 import 'package:vnote_client/store/global_bloc/global_color_mode.bloc.dart';
 import 'package:vnote_client/utils/ui_helper.dart';
 
@@ -367,7 +368,10 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  child: SecondarySectionHeaderComponent(text: "Filters"),
+                ),
 
                 // Horizontally Scrollable Filters List (Edge-to-edge scrolling)
                 SingleChildScrollView(
@@ -379,7 +383,12 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                     children: _filters.map((filter) => _buildFilterChip(filter, colorMode)).toList(),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 14),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: SecondarySectionHeaderComponent(text: "Transactions"),
+                ),
+                const SizedBox(height: 8),
 
                 // Transactions Cards List
                 if (filteredTransactions.isEmpty)

@@ -41,8 +41,8 @@ class _OnTapScaleInteractionComponentState extends State<OnTapScaleInteractionCo
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      onPointerDown: (_) {
+    return GestureDetector(
+      onTapDown: (_) {
         if (_isTapped) return;
 
         final shouldScale = _shouldScale;
@@ -56,22 +56,21 @@ class _OnTapScaleInteractionComponentState extends State<OnTapScaleInteractionCo
           HapticFeedback.lightImpact();
         }
       },
-      onPointerUp: (_) {
-        if (!_isTapped) {
-          widget.onTap?.call();
-          return;
+      onTapUp: (_) {
+        if (_isTapped) {
+          setState(() {
+            _isTapped = false;
+          });
         }
-        setState(() {
-          _isTapped = false;
-        });
-        widget.onTap?.call();
       },
-      onPointerCancel: (_) {
-        if (!_isTapped) return;
-        setState(() {
-          _isTapped = false;
-        });
+      onTapCancel: () {
+        if (_isTapped) {
+          setState(() {
+            _isTapped = false;
+          });
+        }
       },
+      onTap: widget.onTap,
       child: AnimatedScale(
         scale: _isTapped ? widget.config.initialScale : widget.config.finalScale,
         duration: widget.config.duration ?? const Duration(milliseconds: 50),
