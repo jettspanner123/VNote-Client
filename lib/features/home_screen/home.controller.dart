@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vnote_client/constants/color_factory.dart';
 import 'package:vnote_client/features/home_screen/components/navigation_bar.dart';
+import 'package:vnote_client/features/home_screen/components/android_navigation_bar.dart';
+import 'package:vnote_client/features/home_screen/pages/scan/scan.controller.dart';
 import 'package:vnote_client/features/home_screen/pages/card/card.contorller.dart';
 import 'package:vnote_client/features/home_screen/pages/dashboard/dashboard.controller.dart';
 import 'package:vnote_client/features/home_screen/pages/profile/profile.controller.dart';
@@ -30,7 +32,7 @@ class _HomeScreenControllerState extends State<HomeScreenController> {
       case HomeScreenPageOptions.profile:
         return const ProfileContorller();
       case HomeScreenPageOptions.add:
-        return const SizedBox.shrink();
+        return const ScanController();
     }
   }
 
@@ -54,7 +56,7 @@ class _HomeScreenControllerState extends State<HomeScreenController> {
                   child: KeyedSubtree(key: ValueKey(state.currentPage), child: _buildCurrentPage(state)),
                 ),
               ),
-              Positioned(bottom: 25, right: 15, left: 15, child: NavigationBarComponent()),
+              Positioned(bottom: 0, right: 0, left: 0, child: AndroidNavigationBarComponent()),
             ],
           ),
         );

@@ -45,6 +45,7 @@ dependencies:
   intl:
   flutter_dotenv: ^6.0.1
   share_plus: ^13.2.0
+  camera: ^0.12.0+1
 
 dev_dependencies:
   flutter_test:
